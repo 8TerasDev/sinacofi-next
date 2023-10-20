@@ -1,0 +1,10 @@
+.sinatable_container {
+    width: 100%;
+    display: grid;
+    grid-template-rows: 1fr auto;
+}
+
+.sinatable_footer {
+    display: flex;
+    justify-content: flex-end;
+}

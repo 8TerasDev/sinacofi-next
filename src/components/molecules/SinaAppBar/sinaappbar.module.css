@@ -1,0 +1,60 @@
+.sinappbar_container {
+    width: 100vw;
+    height: 10vh;
+    padding: 5px 0;
+    z-index: -1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    border-radius: var(--none, 0px);
+    background: #FFF;
+    box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.05);
+}
+
+.profile_container {
+    margin: 0 24px;
+    padding: 0 24px;
+    box-sizing: border-box;
+    border-left: 1px solid rgba(0, 0, 0, 0.12);
+    display: flex;
+    gap: 10px;
+}
+
+.profile_details {
+    display: flex;
+    align-content: center;
+    gap: 24px;
+}
+
+.profile_details_images {
+    align-self: center;
+    justify-self: center;
+    display: block;
+    border-radius: 50%;
+}
+
+
+.profile_details_text {
+    color: #000;
+    text-align: right;
+    font-family: Montserrat;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.profile_details_sub_text {
+    color: #000;
+    font-family: Montserrat;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+}
+
+.profile_actions {
+    display: grid;
+    place-items: center;
+    margin-left: 2rem;
+}

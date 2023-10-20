@@ -1,0 +1,29 @@
+.icons_open {
+    justify-self: center;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 1fr;
+}
+
+.icons_close {
+    justify-self: center;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr;
+
+}
+
+.icons_container {
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+}
+
+.active_icon_close {
+    border-right: 2px solid #2196F3;
+}
+.active_icon_open {
+    border-bottom: 2px solid #2196F3;
+}

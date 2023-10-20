@@ -1,0 +1,24 @@
+.cardheader_container{
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto;
+    column-gap: 3vw;
+    padding: 0vh 2vh 2vh 2vh;
+    align-items: center;
+}
+
+.text_container{
+    grid-column: 1/2;
+    justify-self: start;
+}
+
+.calendar_container{
+    display: grid;
+    grid-column: 2/3;
+    grid-template-columns: auto auto auto;
+    width: auto;
+    height: 5vh;
+    align-items: stretch;
+    justify-self: end;
+    column-gap: 1vw;
+}

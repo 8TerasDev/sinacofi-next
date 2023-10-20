@@ -1,0 +1,11 @@
+.declaraciones_container{
+    position: absolute;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    top: 16vh;
+    left: 22vw;
+    padding: var(--2, 4vh) var(--3, 2vw); 
+    width: 72vw;
+    background-color: #fff;
+    box-shadow: 1px 1px 20px 0px rgba(0, 0, 0, 0.12); 
+}
