@@ -15,13 +15,47 @@ import SinaText from "../../atoms/SinaText";
 import Imagen from "./4ed03bd6967cee4556fe322c59b7a87d.png";
 import Link from "next/link";
 
+const Cargando = () => {
+  return (
+    <div>
+      <h1>...cargando</h1>
+    </div>
+  )
+}
+
 const LoginTemplate = () => {
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
+  const [valueForm, setValueForm] = useState({
+    username: "",
+    password: "",
+  })
+
+  const [isLoading, isLoadingSetter] = useState(false)
+
+  function handleFormChanges(e: any) {
+    setValueForm({
+      ...valueForm,
+      [e.target.name]: e.target.value
+    })
+    console.log(valueForm)
+  }
+
+  function handleSubmit(e: any) {
+    e.preventDefault()
+    isLoadingSetter(true)
+    setTimeout(() => { isLoadingSetter(false) }, 2000)
+    console.log(valueForm)
+  }
+
+  if (isLoading) {
+    return <Cargando />
+  }
 
   return (
     <Box
+      //TODO: mover todo esto a un archivo css
       sx={{
         display: "grid",
         width: "100vw",
@@ -34,6 +68,7 @@ const LoginTemplate = () => {
     >
       <Paper
         elevation={1}
+        //TODO: mover todo esto a un archivo css
         sx={{
           display: "grid",
           gridTemplateRows: "auto auto auto 1fr",
@@ -48,6 +83,7 @@ const LoginTemplate = () => {
         <Grid
           container
           justifyContent="center"
+          //TODO: mover todo esto a un archivo css
           sx={{
             position: "sticky",
             top: 0,
@@ -68,7 +104,11 @@ const LoginTemplate = () => {
             Completa tus datos e ingresa a tu cuenta
           </SinaText>
         </Box>
-        <Box component="form" noValidate sx={{ width: "100%", mt: 1 }}>
+        <Box
+          component="form"
+          noValidate
+          //TODO: mover todo esto a un archivo css
+          sx={{ width: "100%", mt: 1 }}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -78,6 +118,7 @@ const LoginTemplate = () => {
             name="username"
             autoComplete="username"
             autoFocus
+            onChange={handleFormChanges}
           />
           <TextField
             label="Clave"
@@ -89,6 +130,7 @@ const LoginTemplate = () => {
             autoComplete="password"
             autoFocus
             type={showPassword ? "text" : "password"}
+            onChange={handleFormChanges}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -104,20 +146,21 @@ const LoginTemplate = () => {
           />
         </Box>
         <Box>
-          <Link href="/home">
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ margin: "24px 0 16px", backgroundColor: "#449BA7" }}
-            >
-              Login
-            </Button>
-          </Link>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            onClick={handleSubmit}
+            //TODO: mover todo esto a un archivo css
+            sx={{ margin: "24px 0 16px", backgroundColor: "#449BA7" }}
+          >
+            Login
+          </Button>
 
           <SinaText size="xsWide" color="var(--gray-text)">
             Necesitas ayuda? Contáctate con{" "}
             <a
+              //TODO: mover todo esto a un archivo css
               style={{
                 color: "#449BA7",
                 textDecoration: "none",
