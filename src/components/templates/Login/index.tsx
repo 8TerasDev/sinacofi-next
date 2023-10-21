@@ -57,6 +57,7 @@ const LoginTemplate = () => {
             borderRadius: '8px'
           }}
         >
+          {/* //TODO: usar next image */}
           {/* <img src={Imagen} alt="Logo" /> */}
         </Grid>
         <Box>
