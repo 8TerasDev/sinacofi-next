@@ -93,7 +93,7 @@ const LoginTemplate = () => {
   if (isPending) {
     return <Cargando />
   }
-
+  // avanzando
   return (
     <Box
       //TODO: mover todo esto a un archivo css
