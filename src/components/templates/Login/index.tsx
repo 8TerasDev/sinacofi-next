@@ -12,8 +12,18 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import SinaText from "../../atoms/SinaText";
+import { useRouter } from 'next/navigation'
+
 import Imagen from "./4ed03bd6967cee4556fe322c59b7a87d.png";
 import Link from "next/link";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { redirect } from "next/navigation";
+
+type valueForm = {
+  username: string,
+  password: string
+}
 
 const Cargando = () => {
   return (
@@ -23,33 +33,64 @@ const Cargando = () => {
   )
 }
 
+async function fetcher(valueForm: valueForm) {
+  try {
+    let payload = { ...valueForm }
+    let config = {
+      method: 'post',
+      url: '/api/auth/login',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: payload
+    };
+    const { data } = await axios(config)
+    return data
+  } catch (error: any) {
+    throw new Error(error.message)
+  }
+}
+
 const LoginTemplate = () => {
+  const route = useRouter()
+  const { mutate: onSubmit, isPending } = useMutation({
+    mutationFn: (valueForm: valueForm) => fetcher(valueForm),
+    onSuccess: () => {
+      console.log('success login')
+      route.push('/home')
+    },
+    onError: (error) => {
+      console.log("error login", { error })
+      setValueForm({
+        username: "",
+        password: "",
+      })
+    }
+  })
+
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
-  const [valueForm, setValueForm] = useState({
+  const [valueForm, setValueForm] = useState<valueForm>({
     username: "",
     password: "",
   })
 
-  const [isLoading, isLoadingSetter] = useState(false)
 
   function handleFormChanges(e: any) {
     setValueForm({
       ...valueForm,
       [e.target.name]: e.target.value
     })
-    console.log(valueForm)
   }
 
   function handleSubmit(e: any) {
     e.preventDefault()
-    isLoadingSetter(true)
-    setTimeout(() => { isLoadingSetter(false) }, 2000)
-    console.log(valueForm)
+    onSubmit(valueForm)
   }
 
-  if (isLoading) {
+
+  if (isPending) {
     return <Cargando />
   }
   // avanzando
