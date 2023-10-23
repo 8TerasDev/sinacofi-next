@@ -4,10 +4,6 @@ import jwt from "jsonwebtoken";
 import { serialize } from "cookie";
 import { cookies } from "next/headers";
 
-export async function GET(request: NextApiRequest) {
-  return NextResponse.json({ message: "GET method not allowed" });
-}
-
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
