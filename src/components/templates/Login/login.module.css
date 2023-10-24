@@ -1,0 +1,29 @@
+.box_1 {
+    display: "grid";
+    width: "100vw";
+    height: "100vh";
+    background: "linear-gradient(295deg, rgba(226, 51, 106, 0.70) -17.18%, rgba(255, 200, 67, 0.70) 3.8%, rgba(70, 185, 120, 0.70) 73.19%, rgba(0, 179, 226, 0.70) 112.7%)";
+    place-items: "center";
+    overflow: "hidden";
+}
+
+.box_2 {
+    display: "grid";
+    grid-template-rows: "auto auto auto 1fr";
+    padding: "30px 60px";
+    width: "35vw";
+    gap: 3;
+    border-radius: "10px";
+    max-height: "85vh";
+    overflow-y: "auto";
+}
+
+.box_3 {
+    justify-content: "center";
+    position: "sticky";
+    top: 0;
+    z-index: 10;
+    background-color: '#ffffff';
+    padding: '16px';
+    border-radius: '8px';
+}

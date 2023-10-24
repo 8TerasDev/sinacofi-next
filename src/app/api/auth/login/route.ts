@@ -19,7 +19,14 @@ export async function POST(req: NextRequest) {
         }
       );
     }
-
+    if (username !== "admin" || password !== "admin") {
+      return new Response(
+        JSON.stringify({ error: "Invalid username or password" }),
+        {
+          status: 400,
+        }
+      );
+    }
     const token = jwt.sign(
       {
         username,
