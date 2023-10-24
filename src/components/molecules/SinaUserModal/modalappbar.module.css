@@ -8,7 +8,7 @@
     justify-content: stretch;
     position: fixed;
     row-gap: 4vh;
-    right: 2vw;
+    left: 2vw;
     top: 50%;
     transform: translateY(-50%);
     overflow-x: hidden; 
