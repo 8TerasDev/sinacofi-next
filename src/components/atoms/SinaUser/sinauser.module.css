@@ -1,0 +1,45 @@
+
+.profile_container {
+    box-sizing: border-box;
+    display: flex;
+    overflow: hidden;
+}
+
+.profile_details {
+    display: flex;
+    align-content: center;
+    gap: 24px;
+}
+
+.profile_details_images {
+    align-self: center;
+    justify-self: center;
+    display: block;
+    border-radius: 50%;
+}
+
+
+.profile_details_text {
+    color: #000;
+    text-align: right;
+    font-family: Montserrat;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.profile_details_sub_text {
+    color: #000;
+    font-family: Montserrat;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+}
+
+.profile_actions {
+    display: grid;
+    place-items: center;
+    margin-left: 2rem;
+}

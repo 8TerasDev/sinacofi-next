@@ -10,7 +10,7 @@ import { Registro } from '../../organisms/SinaTable';
 
 const SinaTableCtaIcons = ({ registro }: { registro: Registro }) => {
   //Boton De Abrir
-  const { isOpen, handleClick } = useModalHandle();
+  const { isModalOpen, handleClick } = useModalHandle();
   
   return (
     <TableCell>
@@ -24,7 +24,7 @@ const SinaTableCtaIcons = ({ registro }: { registro: Registro }) => {
       <IconButton onClick={handleClick}>
         <InfoIcon />
       </IconButton>
-      <SinaTableModal registro={registro} isOpen={isOpen} handleClose={handleClick} />
+      <SinaTableModal registro={registro} isOpen={isModalOpen} handleClose={handleClick} />
       {/* ELIMINAR LUEGO */}
     </TableCell>
   );
