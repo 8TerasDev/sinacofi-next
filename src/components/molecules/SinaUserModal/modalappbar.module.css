@@ -70,12 +70,13 @@
 }
 .logOutButton {
     display: grid;
+    grid-template-columns: auto auto; /* Define dos columnas: una para el ícono y otra para el texto */
     grid-column: 2/3;
     justify-self: end;
     align-self: center;
-    width: min-content;
-    height: 3vh;
+    align-items: center; /* Alinear contenido verticalmente */
     width: auto;
+    height: auto;
 }
 
 .footerText {
