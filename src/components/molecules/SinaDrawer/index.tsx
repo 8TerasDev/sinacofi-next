@@ -3,6 +3,7 @@ import styles from './sinadrawer.module.css'
 import SinaBrand from '../../atoms/SinaBrand'
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import SinaUser from '@/components/atoms/SinaUser';
 
 type SinaDrawerProps = {
     children?: React.ReactNode,
@@ -14,7 +15,7 @@ const SinaDrawer = ({ children, isOpen, isOpenSetter }: SinaDrawerProps) => {
     return (
         <div className={isOpen ? styles.container_open : styles.container_close}>
             <div className={styles.top_brand}>
-                <SinaBrand isOpen={isOpen} />
+                <SinaUser isOpen={isOpen} />
             </div>
             <div className={styles.middle}>
                 {children}
