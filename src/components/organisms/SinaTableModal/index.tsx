@@ -2,7 +2,6 @@ import React from "react";
 import { Divider, Grid, Modal, Paper } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TableModalTitle from "../../molecules/TableModalTitle";
-import TableModalButtonControls from "../../molecules/TableModalButtonControls";
 import TableModalDetails from "../../molecules/TableModalDetails";
 import TableModalBenefi from "../../molecules/TableModalBenefi";
 import TableModalControl from "../../molecules/TableModalControl";
@@ -51,19 +50,25 @@ const SinaTableModal: React.FC<ItemModalProps & { registro: Registro }> = ({
             height: "90vh",
           }}
         >
-          <Grid container spacing={3} sx={{ p: "2vh 3vw" }}>
-            <Grid item xs={1}>
+          <Grid
+            container
+            spacing={3}
+            sx={{ p: "2vh 3vw", alignItems: "stretch" }}
+          >
+            <Grid item xs={11}>
+              <TableModalTitle registro={registro} />
+            </Grid>
+            <Grid
+              item
+              xs={1}
+              container
+              alignItems="start"
+              justifyContent="end"
+            >
               <TableModalCloseButton
                 isOpen={isOpen}
                 handleClose={handleClose}
               />
-            </Grid>
-            <Grid item xs={11} container alignItems="end">
-              <TableModalButtonControls />
-            </Grid>
-            <Grid item xs={12}>
-              <Divider sx={{ width: "100%", mb: "1vh" }} />
-              <TableModalTitle registro={registro} />
             </Grid>
             <Grid item xs={6}>
               <TableModalDetails />
