@@ -24,8 +24,9 @@ const SinCardHeader = () => {
         </LocalizationProvider>
         <Button
           variant="contained"
+          className={types.downloadButton}
         >
-          descargar lista en csv
+          descargar
         </Button>
       </div>
     </div>

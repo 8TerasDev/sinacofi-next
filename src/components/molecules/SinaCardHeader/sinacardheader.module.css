@@ -22,3 +22,7 @@
     justify-self: end;
     column-gap: 1vw;
 }
+
+.downloadButton{
+    padding: 0 5vw;
+}
