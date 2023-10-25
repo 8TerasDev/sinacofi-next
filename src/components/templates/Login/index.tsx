@@ -39,6 +39,7 @@ const LoginTemplate = () => {
     isError,
     isSuccess,
     handleFormChanges,
+    valueForm,
     handleSubmit,
     showPassword,
     handleClickShowPassword,
@@ -99,7 +100,7 @@ const LoginTemplate = () => {
           component="form"
           noValidate
           onSubmit={handleSubmit}
-          sx={{ width: "100%"}}
+          sx={{ width: "100%" }}
         >
           <TextField
             variant="outlined"
@@ -110,6 +111,7 @@ const LoginTemplate = () => {
             name="username"
             autoComplete="username"
             autoFocus
+            value={valueForm.username}
             onChange={handleFormChanges}
           />
           <TextField
@@ -120,6 +122,7 @@ const LoginTemplate = () => {
             id="password"
             name="password"
             autoComplete="password"
+            value={valueForm.password}
             autoFocus
             type={showPassword ? "text" : "password"}
             onChange={handleFormChanges}

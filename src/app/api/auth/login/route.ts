@@ -3,15 +3,14 @@ import { NextResponse, NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 import { serialize } from "cookie";
 import { cookies } from "next/headers";
+import { verifyCredentials } from "@/lib/queries.prisma";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { username, password } = body;
-    console.log({ body });
 
     if (!username || !password || username === "" || password === "") {
-      console.log("Missing username or password");
       return new Response(
         JSON.stringify({ error: "Missing username or password" }),
         {
@@ -19,7 +18,7 @@ export async function POST(req: NextRequest) {
         }
       );
     }
-    if (username !== "admin" || password !== "admin") {
+    if (!(await verifyCredentials(username, password))) {
       return new Response(
         JSON.stringify({ error: "Invalid username or password" }),
         {

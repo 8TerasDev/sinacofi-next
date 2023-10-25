@@ -38,10 +38,7 @@ const useLoginHook = () => {
         },
         onError: (error) => {
             console.log("error login", { error })
-            setValueForm({
-                username: "",
-                password: "",
-            })
+            handleCleanForm()
         }
     })
 
@@ -52,6 +49,14 @@ const useLoginHook = () => {
         username: "",
         password: "",
     })
+
+    function handleCleanForm() {
+        setValueForm({
+            ...valueForm,
+            username: "",
+            password: "",
+        })
+    }
 
     function handleFormChanges(e: any) {
         setValueForm({
@@ -72,7 +77,8 @@ const useLoginHook = () => {
         handleFormChanges,
         handleSubmit,
         showPassword,
-        handleClickShowPassword
+        handleClickShowPassword,
+        valueForm
     })
 }
 
