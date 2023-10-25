@@ -14,7 +14,6 @@ CREATE TABLE "Empleado" (
     "correo" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "empresa_id" INTEGER NOT NULL,
-
     CONSTRAINT "Empleado_pkey" PRIMARY KEY ("id")
 );
 
