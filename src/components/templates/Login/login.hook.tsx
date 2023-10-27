@@ -27,8 +27,6 @@ async function fetcher(valueForm: valueForm) {
 }
 const useLoginHook = () => {
     const route = useRouter()
-    const [onError, onErrorSetter] = useState(false);
-
 
     const { mutate: onSubmit, isPending, isError, isSuccess } = useMutation({
         mutationFn: (valueForm: valueForm) => fetcher(valueForm),

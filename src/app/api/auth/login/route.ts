@@ -9,8 +9,10 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { username, password } = body;
+    console.log("body", body);
 
     if (!username || !password || username === "" || password === "") {
+      console.log("username vacio");
       return new Response(
         JSON.stringify({ error: "Missing username or password" }),
         {
@@ -19,6 +21,7 @@ export async function POST(req: NextRequest) {
       );
     }
     if (!(await verifyCredentials(username, password))) {
+      console.log("usuario no existe");
       return new Response(
         JSON.stringify({ error: "Invalid username or password" }),
         {
@@ -26,6 +29,7 @@ export async function POST(req: NextRequest) {
         }
       );
     }
+    console.log("genero jwt");
     const token = jwt.sign(
       {
         username,
@@ -36,6 +40,7 @@ export async function POST(req: NextRequest) {
         expiresIn: "1h",
       }
     );
+    console.log("serializo jwt");
     const serializedToken = serialize("auth", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV !== "development",
@@ -43,6 +48,7 @@ export async function POST(req: NextRequest) {
       path: "/",
       maxAge: 3600,
     });
+    console.log("seteo jwt");
     const cookieStore = cookies();
     cookieStore.set("auth", serializedToken);
     const res = new Response(JSON.stringify({ token }), {
