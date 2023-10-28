@@ -1,16 +1,12 @@
 import React from "react";
-import { Divider, Grid, Modal, Paper } from "@mui/material";
+import { Divider, Grid, Modal, Paper, Container } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TableModalTitle from "../../molecules/TableModalTitle";
 import TableModalDetails from "../../molecules/TableModalDetails";
-import TableModalBenefi from "../../molecules/TableModalBenefi";
-import TableModalControl from "../../molecules/TableModalControl";
-import TableModalBenefiDetails from "../../molecules/TableModalBenefiDetails";
-import TableModalControlDetails from "../../molecules/TableModalControlDetails";
-import { Registro } from "../../organisms/SinaTable";
-import TableModalHistoricoDetails from "../../molecules/TableModalHistoricoDetails";
-import TableModalHistorico from "../../molecules/TableModalHistorico";
+import TableModalAccordion from "../../molecules/TableModalAccordion";
 import TableModalCloseButton from "../../atoms/TableModalCloseButton";
+import { Registro } from "../../organisms/SinaTable";
+import TableModalFooter from "@/components/molecules/TableModalFooter";
 
 const theme = createTheme({
   palette: {
@@ -44,16 +40,22 @@ const SinaTableModal: React.FC<ItemModalProps & { registro: Registro }> = ({
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            p: 3,
             borderRadius: 2,
-            overflow: "scroll",
             height: "90vh",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
           <Grid
             container
-            spacing={3}
-            sx={{ p: "2vh 3vw", alignItems: "stretch" }}
+            spacing={2}
+            sx={{
+              p: "2vh 3vw",
+              overflowY: "auto",
+              flex: "1",
+              marginTop: "11vh",
+              marginBottom: "10vh",
+            }}
           >
             <Grid item xs={11}>
               <TableModalTitle registro={registro} />
@@ -62,26 +64,27 @@ const SinaTableModal: React.FC<ItemModalProps & { registro: Registro }> = ({
               item
               xs={1}
               container
-              alignItems="start"
-              justifyContent="end"
+              alignItems="center"
+              justifyContent="flex-end"
             >
               <TableModalCloseButton
                 isOpen={isOpen}
                 handleClose={handleClose}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={3}>
               <TableModalDetails />
             </Grid>
-            <Grid item xs={6} container spacing={2}>
-              <TableModalBenefi />
-              <TableModalBenefiDetails />
-              <TableModalControl />
-              <TableModalControlDetails />
-              <TableModalHistorico />
-              <TableModalHistoricoDetails />
+            <Grid item xs={1}>
+              <Divider orientation="vertical" sx={{ height: "100%" }} />
+            </Grid>
+            <Grid item xs={8}>
+              <TableModalAccordion type="beneficiarios" />
+              <TableModalAccordion type="control" />
+              <TableModalAccordion type="historico" />
             </Grid>
           </Grid>
+          <TableModalFooter />
         </Paper>
       </Modal>
     </ThemeProvider>
