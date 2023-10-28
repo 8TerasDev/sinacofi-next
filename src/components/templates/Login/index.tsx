@@ -9,8 +9,6 @@ import {
   Box,
   Grid,
   Paper,
-  Alert,
-  Typography,
   FormControl,
 } from "@mui/material";
 
@@ -59,13 +57,14 @@ const LoginTemplate = () => {
         elevation={1}
         sx={{
           display: "grid",
-          gridTemplateRows: "auto auto auto 1fr",
+          gridTemplateRows: "auto auto auto 1fr auto",
           padding: "10px 60px",
           width: "35vw",
           gap: 0.5,
           borderRadius: "10px",
           minHeight: "70vh",
           maxHeight: "85vh",
+          maxWidth: "50vh",
           overflowY: "auto",
         }}
       >
@@ -135,30 +134,32 @@ const LoginTemplate = () => {
               ),
             }}
           />
-        </FormControl>
-        <Box>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ backgroundColor: "#449BA7" }}
+          <Box
+            sx={{ mt: "auto" }} // Asegura que el botón y el texto estén al fondo
           >
-            Login
-          </Button>
-          <SinaText size="xsWide" color="var(--gray-text)">
-            Necesitas ayuda? Contáctate con{" "}
-            <a
-              style={{
-                color: "#449BA7",
-                textDecoration: "none",
-                fontWeight: 600,
-              }}
-              href="mailto:helpme@sinacofi.com"
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ backgroundColor: "#449BA7" }}
             >
-              helpme@sinacofi.com
-            </a>
-          </SinaText>
-        </Box>
+              Login
+            </Button>
+            <SinaText size="xsWide" color="var(--gray-text)">
+              Necesitas ayuda? Contáctate con{" "}
+              <a
+                style={{
+                  color: "#449BA7",
+                  textDecoration: "none",
+                  fontWeight: 600,
+                }}
+                href="mailto:helpme@sinacofi.com"
+              >
+                helpme@sinacofi.com
+              </a>
+            </SinaText>
+          </Box>
+        </FormControl>
       </Paper>
     </Box>
   );
