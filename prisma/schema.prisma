@@ -7,18 +7,76 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Empresa {
-  id        Int        @id @default(autoincrement()) @map("id")
-  nombre    String     @map("nombre")
-  empleados Empleado[]
+model beneficiarios_finales {
+  id                 Int         @id @default(autoincrement())
+  nombre_completo    String
+  rut_identificacion String
+  participacion      String
+  declaracion_id     Int
+  declaracion        declaracion @relation(fields: [declaracion_id], references: [id])
 }
 
-model Empleado {
-  id        Int     @id @default(autoincrement()) @map("id")
-  rut       String  @map("rut")
-  nombre    String  @map("nombre")
-  correo    String  @unique @map("correo")
-  password  String  @map("password")
-  empresaId Int     @map("empresa_id")
-  empresa   Empresa @relation(fields: [empresaId], references: [id])
+model control_efectivo {
+  id                 Int         @id @default(autoincrement())
+  nombre_completo    String
+  rut_identificacion String
+  participacion      String
+  declaracion_id     Int
+  declaracion        declaracion @relation(fields: [declaracion_id], references: [id])
+}
+
+model declaracion {
+  id                      Int                     @id @default(autoincrement())
+  folio                   String
+  fecha_declaracion       DateTime
+  fecha_carga_declaracion DateTime
+  empresa_id              Int
+  beneficiarios_finales   beneficiarios_finales[]
+  control_efectivo        control_efectivo[]
+  empresa                 empresa                 @relation(fields: [empresa_id], references: [id])
+  persona_juridica        persona_juridica?
+}
+
+model empleado {
+  id         Int     @id @default(autoincrement())
+  rut        String
+  nombre     String
+  correo     String
+  password   String
+  telefono   String
+  empresa_id Int
+  empresa    empresa @relation(fields: [empresa_id], references: [id])
+}
+
+model empresa {
+  id          Int           @id @default(autoincrement())
+  rut         String
+  nombre      String
+  declaracion declaracion[]
+  empleado    empleado[]
+}
+
+model persona_juridica {
+  id                  Int                   @id @default(autoincrement())
+  rut                 String
+  nombre              String
+  domicilio           String
+  comuna              String
+  ciudad              String
+  constitucion        String
+  telefono            String
+  tipo_sociedad       String
+  declaracion_id      Int                   @unique
+  declaracion         declaracion           @relation(fields: [declaracion_id], references: [id])
+  representante_legal representante_legal[]
+}
+
+model representante_legal {
+  id                  Int              @id @default(autoincrement())
+  rut                 String
+  nombre              String
+  telefono            String
+  correo              String
+  persona_juridica_id Int
+  persona_juridica    persona_juridica @relation(fields: [persona_juridica_id], references: [id])
 }

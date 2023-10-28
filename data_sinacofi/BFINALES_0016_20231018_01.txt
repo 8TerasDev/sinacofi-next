@@ -1,0 +1,5 @@
+001620231018
+1;100545594;Julia Antonia Villar Monje;Av. Vicuña Mackenna 1234, Santiago;Santiago;Chile;01;45.00;886116004;0016;00160002298456
+2;84122092;Maria Alejandra Olivares Vera;Av. Recoleta 5678, Recoleta;Santiago;Chile;01;15.00;886116004;0016;00160002298456
+3;150352487;Ester Sepúlveda Castroviejo;Salvador Gutierrez 1234, Quinta Normal;Santiago;Chile;01;10.00;886116004;0016;00160002298456
+4;132137587;Monica María de las Mercedes Osorio Muñoz;Av. Jose Joaquin Perez 5678, Depto 1234, Santiago;Santiago;Chile;02;8.00;886116004;0016;00160002298456

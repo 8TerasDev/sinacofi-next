@@ -1,0 +1,7 @@
+000120231018
+1;100545594;Julia Antonia Villar Monje;Av. Vicuña Mackenna 1234, Santiago;Santiago;Chile;01;15.00;886116004;0001;00010000123456
+2;84122092;Maria Alejandra Olivares Vera;Av. Recoleta 5678, Recoleta;Santiago;Chile;01;25.00;886116004;0001;00010000123456
+3;236057895;Sol Astudillo Palacios;Pasaje Lapizlazuli 2169, Cerro Navia;Santiago;Chile;01;15.00;886116004;0001;00010000123456
+4;150352487;Ester Sepúlveda Castroviejo;Salvador Gutierrez 1234, Quinta Normal;Santiago;Chile;01;15.00;886116004;0001;00010000123456
+5;126380771;Ines del Carmen Sandoval Perez;Av. Gran Avenida 0987, Cerrillos;Santiago;Chile;01;20.00;886116004;0001;00010000123456
+6;132137587;Monica María de las Mercedes Osorio Muñoz;Av. Jose Joaquin Perez 5678, Depto 1234, Santiago;Santiago;Chile;02;6.00;886116004;0001;00010000123456
