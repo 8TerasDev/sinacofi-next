@@ -9,13 +9,11 @@ import {
   Box,
   Grid,
   Paper,
-  Alert,
-  Typography,
   FormControl,
 } from "@mui/material";
 
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
 import SinaText from "../../atoms/SinaText";
 import Imagen from "./4ed03bd6967cee4556fe322c59b7a87d.png";
 import Image from "next/image";
@@ -23,15 +21,13 @@ import styles from "./login.module.css";
 import useLoginHook from "./login.hook";
 import SinaAlert from "@/components/molecules/SinaAlert";
 
-
-
 const Cargando = () => {
   return (
     <div>
       <h1>...cargando</h1>
     </div>
-  )
-}
+  );
+};
 
 const LoginTemplate = () => {
   const {
@@ -43,42 +39,41 @@ const LoginTemplate = () => {
     handleSubmit,
     showPassword,
     handleClickShowPassword,
-  } = useLoginHook()
+  } = useLoginHook();
 
   return (
     <Box
-      sx={
-        {
-          display: "grid",
-          width: "100vw",
-          height: "100vh",
-          background: "linear-gradient(295deg, rgba(226, 51, 106, 0.70) -17.18%, rgba(255, 200, 67, 0.70) 3.8%, rgba(70, 185, 120, 0.70) 73.19%, rgba(0, 179, 226, 0.70) 112.7%)",
-          placeItems: "center",
-          overflow: "hidden",
-        }
-      }
+      sx={{
+        display: "grid",
+        width: "100vw",
+        height: "100vh",
+        background:
+          "linear-gradient(295deg, rgba(226, 51, 106, 0.70) -17.18%, rgba(255, 200, 67, 0.70) 3.8%, rgba(70, 185, 120, 0.70) 73.19%, rgba(0, 179, 226, 0.70) 112.7%)",
+        placeItems: "center",
+        overflow: "hidden",
+      }}
     >
       <Paper
         elevation={1}
-        sx={
-          {
-            display: "grid",
-            gridTemplateRows: "auto auto auto 1fr",
-            padding: "10px 60px",
-            width: "35vw",
-            gap: .5,
-            borderRadius: "10px",
-            maxHeight: "85vh",
-            overflowY: "auto",
-          }
-        }
+        sx={{
+          display: "grid",
+          gridTemplateRows: "auto auto auto 1fr auto",
+          padding: "10px 60px",
+          width: "35vw",
+          gap: 0.5,
+          borderRadius: "10px",
+          minHeight: "70vh",
+          maxHeight: "85vh",
+          maxWidth: "50vh",
+          overflowY: "auto",
+        }}
       >
         <Grid
           container
           sx={{
             justifyContent: "center",
-            backgroundColor: '#ffffff',
-            borderRadius: '8px',
+            backgroundColor: "#ffffff",
+            borderRadius: "8px",
           }}
         >
           <Image src={Imagen} alt="Logo" />
@@ -139,22 +134,20 @@ const LoginTemplate = () => {
               ),
             }}
           />
-
-          <Box>
+          <Box
+            sx={{ mt: "auto" }} // Asegura que el botón y el texto estén al fondo
+          >
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              //TODO: mover todo esto a un archivo css
               sx={{ backgroundColor: "#449BA7" }}
             >
               Login
             </Button>
-
             <SinaText size="xsWide" color="var(--gray-text)">
               Necesitas ayuda? Contáctate con{" "}
               <a
-                //TODO: mover todo esto a un archivo css
                 style={{
                   color: "#449BA7",
                   textDecoration: "none",
@@ -168,7 +161,7 @@ const LoginTemplate = () => {
           </Box>
         </FormControl>
       </Paper>
-    </Box >
+    </Box>
   );
 };
 
