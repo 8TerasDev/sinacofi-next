@@ -53,7 +53,7 @@ const SinaTableModal: React.FC<ItemModalProps & { registro: Registro }> = ({
               p: "2vh 3vw",
               overflowY: "auto",
               flex: "1",
-              marginTop: "11vh",
+              marginTop: "14vh",
               marginBottom: "10vh",
             }}
           >
