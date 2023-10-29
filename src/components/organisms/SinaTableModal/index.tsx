@@ -5,8 +5,8 @@ import TableModalTitle from "../../molecules/TableModalTitle";
 import TableModalDetails from "../../molecules/TableModalDetails";
 import TableModalAccordion from "../../molecules/TableModalAccordion";
 import TableModalCloseButton from "../../atoms/TableModalCloseButton";
-import { Registro } from "../../organisms/SinaTable";
 import TableModalFooter from "@/components/molecules/TableModalFooter";
+import { Declaracion } from "@/application";
 
 const theme = createTheme({
   palette: {
@@ -23,15 +23,18 @@ interface ItemModalProps {
   isOpen: boolean;
   handleClose: () => void;
 }
+interface SinaTableModalProps {
+  declaracion: Declaracion;
+  open?: boolean;
+  onClose?: () => void;
+}
 
-const SinaTableModal: React.FC<ItemModalProps & { registro: Registro }> = ({
-  isOpen,
-  handleClose,
-  registro,
-}) => {
+export const SinaTableModal = ({ declaracion, open = false, onClose }: SinaTableModalProps) => {
+  const [isOpen, isOpenSetter] = React.useState(open);
+
   return (
     <ThemeProvider theme={theme}>
-      <Modal open={isOpen} onClose={handleClose} aria-labelledby="modal-title">
+      <Modal open={isOpen} aria-labelledby="modal-title" onClose={onClose}>
         <Paper
           elevation={3}
           sx={{
@@ -58,7 +61,7 @@ const SinaTableModal: React.FC<ItemModalProps & { registro: Registro }> = ({
             }}
           >
             <Grid item xs={11}>
-              <TableModalTitle registro={registro} />
+              <TableModalTitle declaracion={declaracion} />
             </Grid>
             <Grid
               item
@@ -69,7 +72,7 @@ const SinaTableModal: React.FC<ItemModalProps & { registro: Registro }> = ({
             >
               <TableModalCloseButton
                 isOpen={isOpen}
-                handleClose={handleClose}
+                handleClose={() => { isOpenSetter(false) }}
               />
             </Grid>
             <Grid item xs={3}>
@@ -88,7 +91,5 @@ const SinaTableModal: React.FC<ItemModalProps & { registro: Registro }> = ({
         </Paper>
       </Modal>
     </ThemeProvider>
-  );
-};
-
-export default SinaTableModal;
+  )
+}

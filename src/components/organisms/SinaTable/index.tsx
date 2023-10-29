@@ -70,7 +70,7 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
                         onClick2={() => handleSort('fecha')}
                         name2={'fecha'}
                     />
-                    <SinaTableBody registros={rowsPerPageData} />
+                    <SinaTableBody declaraciones={rowsPerPageData} />
                     <TableFooter>
                         <TableRow>
                             <TableCell colSpan={4} style={{ padding: '16px 0' }}>
