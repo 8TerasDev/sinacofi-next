@@ -15,72 +15,21 @@ import {
 import styles from './sinatable.module.css'
 import SinaTableHead from '../../molecules/SinaTableHead';
 import SinaTableBody from '../../molecules/SinaTableBody';
+import { Declaracion } from '@/application';
 
-export interface Registro {
-    folio: number;
-    razonSocial: string;
-    fecha: Date;
-    miInstitucion: boolean;
-}
 const listOfHeaders = [
     "Acción",
     "Folio",
     "Razón Social",
-    "Fecha y hora de carga"
+    "Fecha de declaración",
+    "Fecha de carga",
 ]
 
-const registros: Registro[] = [
-    {
-        folio: 1000,
-        razonSocial: "Agricola los claveles",
-        fecha: new Date(Date.now() + 1000),
-        miInstitucion: false,
-    },
-    {
-        folio: 1001,
-        razonSocial: "WOM chile",
-        fecha: new Date(Date.now() + 2000),
-        miInstitucion: false,
-    },
-    {
-        folio: 1002,
-        razonSocial: "Savory Ltda",
-        fecha: new Date(Date.now() + 3000),
-        miInstitucion: true,
-    },
-    {
-        folio: 1003,
-        razonSocial: "Mintlab Co S.A.",
-        fecha: new Date(Date.now() + 4000),
-        miInstitucion: true,
-    },
-    {
-        folio: 1004,
-        razonSocial: "Agricola los claveles",
-        fecha: new Date(Date.now() + 1000),
-        miInstitucion: false,
-    },
-    {
-        folio: 1005,
-        razonSocial: "WOM chile",
-        fecha: new Date(Date.now() + 2000),
-        miInstitucion: false,
-    },
-    {
-        folio: 1006,
-        razonSocial: "Savory Ltda",
-        fecha: new Date(Date.now() + 3000),
-        miInstitucion: true,
-    },
-    {
-        folio: 1007,
-        razonSocial: "Mintlab Co S.A.",
-        fecha: new Date(Date.now() + 4000),
-        miInstitucion: true,
-    },
-];
+interface SinaTableProps {
+    declaraciones: Declaracion[]
+}
 
-const SinaTable = () => {
+const SinaTable = ({ declaraciones }: SinaTableProps) => {
 
     const [order, setOrder] = useState<any>('asc');
     const [orderBy, setOrderBy] = useState<any>('razonSocial');
@@ -95,7 +44,7 @@ const SinaTable = () => {
         setOrderBy(property);
     };
 
-    const sortedData = [...registros].sort((a: any, b: any) => {
+    const sortedData = [...declaraciones].sort((a: any, b: any) => {
         if (order === 'asc') {
             return a[orderBy] < b[orderBy] ? -1 : 1;
         } else {

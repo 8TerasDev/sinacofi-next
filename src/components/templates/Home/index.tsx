@@ -8,8 +8,13 @@ import DrawerBody from '../../organisms/DrawerBody';
 import SinaAppBar from '../../molecules/SinaAppBar';
 import SinaMainCard from '../../organisms/SinaMainCard';
 import SinaTable from '../../organisms/SinaTable';
+import { Declaracion } from '@/application';
 
-const HomeTemplate = () => {
+interface HomeTemplateProps {
+    declaraciones: Declaracion[]
+}
+
+const HomeTemplate = ({ declaraciones }: HomeTemplateProps) => {
     const [isOpen, isOpenSetter] = useState(true)
     return (
         <ContainerFull>
@@ -18,7 +23,7 @@ const HomeTemplate = () => {
                 <DrawerBody isOpen={isOpen} isOpenSetter={isOpenSetter} />
             </SinaDrawer>
             <SinaMainCard>
-                <SinaTable />
+                <SinaTable declaraciones={declaraciones} />
             </SinaMainCard>
         </ContainerFull>
     )

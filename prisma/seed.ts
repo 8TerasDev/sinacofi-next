@@ -5,97 +5,71 @@ const prisma = new PrismaClient();
 
 async function main() {
   // Datos de prueba para la entidad empresa
-  const empresas = [];
-  for (let i = 1; i <= 10; i++) {
-    const empresa = await prisma.empresa.create({
+  for (let i = 0; i < 10; i++) {
+    await prisma.persona_juridica.create({
       data: {
-        rut: `1${i}2345678-9`,
-        nombre: `Empresa ${i}`,
-      },
-    });
-    empresas.push(empresa);
-  }
-
-  // Datos de prueba para la entidad empleado
-  for (let i = 1; i <= 10; i++) {
-    await prisma.empleado.create({
-      data: {
-        rut: `1${i}2345678-0`,
-        nombre: `Empleado ${i}`,
-        correo: `empleado${i}@empresa.com`,
-        password: `password${i}`, // Nota: En un escenario real, es crucial encriptar las contraseñas.
-        telefono: `+56912345${i}0`,
-        empresa_id: empresas[i - 1].id,
+        rut: `rut-pj-${i}`,
+        nombre: `Persona Jurídica ${i}`,
+        telefono: `+5600000000${i}`,
+        // Añade más campos si son necesarios
       },
     });
   }
 
-  // Datos de prueba para la entidad declaracion
-  const declaraciones = [];
-  for (let i = 1; i <= 10; i++) {
-    const declaracion = await prisma.declaracion.create({
+  // Crear declaraciones
+  for (let i = 0; i < 10; i++) {
+    await prisma.declaracion.create({
       data: {
-        folio: `001${i}20231017`,
+        folio: `folio-${i}`,
         fecha_declaracion: new Date(),
         fecha_carga_declaracion: new Date(),
-        empresa_id: empresas[i - 1].id,
+        is_active: true,
+        persona_juridica_id: i + 1, // Asumiendo que los IDs de personas jurídicas empiezan en 1
       },
     });
-    declaraciones.push(declaracion);
   }
 
-  // Datos de prueba para la entidad beneficiarios_finales
-  for (let i = 1; i <= 10; i++) {
+  // Crear beneficiarios finales y control efectivo para cada declaración
+  for (let i = 0; i < 10; i++) {
     await prisma.beneficiarios_finales.create({
       data: {
         nombre_completo: `Beneficiario Final ${i}`,
-        rut_identificacion: `1${i}2345678-1`,
-        participacion: `${i}0%`,
-        declaracion_id: declaraciones[i - 1].id,
+        rut_identificacion: `rut-bf-${i}`,
+        participacion: `Participación ${i}`,
+        declaracion_id: i + 1,
       },
     });
-  }
 
-  // Datos de prueba para la entidad control_efectivo
-  for (let i = 1; i <= 10; i++) {
     await prisma.control_efectivo.create({
       data: {
         nombre_completo: `Control Efectivo ${i}`,
-        rut_identificacion: `1${i}2345678-2`,
-        participacion: `${100 - i}0%`,
-        declaracion_id: declaraciones[i - 1].id,
+        rut_identificacion: `rut-ce-${i}`,
+        participacion: `Participación ${i}`,
+        declaracion_id: i + 1,
       },
     });
   }
 
-  // Datos de prueba para la entidad persona_juridica
-  const personasJuridicas = [];
-  for (let i = 1; i <= 10; i++) {
-    const personaJuridica = await prisma.persona_juridica.create({
+  // Crear empleados y representantes legales para cada persona jurídica
+  for (let i = 0; i < 10; i++) {
+    await prisma.empleado.create({
       data: {
-        rut: `1${i}2345678-3`,
-        nombre: `Persona Jurídica ${i}`,
-        domicilio: `Calle Falsa 12${i}`,
-        comuna: `Comuna ${i}`,
-        ciudad: `Ciudad ${i}`,
-        constitucion: `Constitución ${i}`,
-        telefono: `+56912345${i}1`,
-        tipo_sociedad: `Tipo Sociedad ${i}`,
-        declaracion_id: declaraciones[i - 1].id,
+        rut: `rut-empleado-${i}`,
+        nombre: `Empleado ${i}`,
+        correo: `empleado${i}@empresa.com`,
+        password: `password${i}`,
+        telefono: `+5600000000${i}`,
+        persona_juridica_id: i + 1,
       },
     });
-    personasJuridicas.push(personaJuridica);
-  }
 
-  // Datos de prueba para la entidad representante_legal
-  for (let i = 1; i <= 10; i++) {
     await prisma.representante_legal.create({
       data: {
-        rut: `1${i}2345678-4`,
+        rut: `rut-rl-${i}`,
         nombre: `Representante Legal ${i}`,
-        telefono: `+56912345${i}2`,
-        correo: `representante${i}@legal.com`,
-        persona_juridica_id: personasJuridicas[i - 1].id,
+        telefono: `+5600000000${i}`,
+        correo: `rl${i}@empresa.com`,
+        persona_juridica_id: i + 1,
       },
     });
   }

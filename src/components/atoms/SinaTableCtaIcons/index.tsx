@@ -8,10 +8,10 @@ import useModalHandle from "../../../custom-hooks/useModalHandle";
 import InfoIcon from "@mui/icons-material/Info";
 import { Registro } from '../../organisms/SinaTable';
 
-const SinaTableCtaIcons = ({ registro }: { registro: Registro }) => {
+const SinaTableCtaIcons = () => {
   //Boton De Abrir
   const { isModalOpen, handleClick } = useModalHandle();
-  
+
   return (
     <TableCell>
       <IconButton>
@@ -24,7 +24,7 @@ const SinaTableCtaIcons = ({ registro }: { registro: Registro }) => {
       <IconButton onClick={handleClick}>
         <InfoIcon />
       </IconButton>
-      <SinaTableModal registro={registro} isOpen={isModalOpen} handleClose={handleClick} />
+      {/* <SinaTableModal registro={registro} isOpen={isModalOpen} handleClose={handleClick} /> */}
       {/* ELIMINAR LUEGO */}
     </TableCell>
   );

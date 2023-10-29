@@ -30,30 +30,22 @@ model declaracion {
   folio                   String
   fecha_declaracion       DateTime
   fecha_carga_declaracion DateTime
-  empresa_id              Int
+  is_active               Boolean                 @default(true)
+  persona_juridica_id     Int
   beneficiarios_finales   beneficiarios_finales[]
   control_efectivo        control_efectivo[]
-  empresa                 empresa                 @relation(fields: [empresa_id], references: [id])
-  persona_juridica        persona_juridica?
+  persona_juridica        persona_juridica        @relation(fields: [persona_juridica_id], references: [id])
 }
 
 model empleado {
-  id         Int     @id @default(autoincrement())
-  rut        String
-  nombre     String
-  correo     String
-  password   String
-  telefono   String
-  empresa_id Int
-  empresa    empresa @relation(fields: [empresa_id], references: [id])
-}
-
-model empresa {
-  id          Int           @id @default(autoincrement())
-  rut         String
-  nombre      String
-  declaracion declaracion[]
-  empleado    empleado[]
+  id                  Int              @id @default(autoincrement())
+  rut                 String
+  nombre              String
+  correo              String
+  password            String
+  telefono            String
+  persona_juridica_id Int
+  persona_juridica    persona_juridica @relation(fields: [persona_juridica_id], references: [id])
 }
 
 model persona_juridica {
@@ -66,8 +58,8 @@ model persona_juridica {
   constitucion        String
   telefono            String
   tipo_sociedad       String
-  declaracion_id      Int                   @unique
-  declaracion         declaracion           @relation(fields: [declaracion_id], references: [id])
+  declaraciones       declaracion[]
+  empleados           empleado[]
   representante_legal representante_legal[]
 }
 

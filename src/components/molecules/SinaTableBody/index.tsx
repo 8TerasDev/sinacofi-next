@@ -1,16 +1,10 @@
 import React from 'react'
 import { TableBody, TableRow, TableCell } from '@mui/material'
 import SinaTableCtaIcons from '../../atoms/SinaTableCtaIcons';
-
-interface Registro {
-    folio: number;
-    razonSocial: string;
-    fecha: Date;
-    miInstitucion: boolean;
-}
+import { Declaracion } from '@/application';
 
 type SinaTableBodyProps = {
-    registros: Registro[]
+    registros: Declaracion[]
 }
 
 const SinaTableBody = ({ registros }: SinaTableBodyProps) => {
@@ -18,13 +12,14 @@ const SinaTableBody = ({ registros }: SinaTableBodyProps) => {
         <TableBody>
             {
                 React.Children.toArray(registros.map(
-                    (registro: Registro) => {
+                    (registro: Declaracion) => {
                         return (
                             <TableRow>
-                                <SinaTableCtaIcons registro={registro} />
+                                <SinaTableCtaIcons />
                                 <TableCell>{registro.folio}</TableCell>
-                                <TableCell>{registro.razonSocial}</TableCell>
-                                <TableCell>{registro.fecha.toISOString()}</TableCell>
+                                <TableCell>{registro.persona_juridica.nombre}</TableCell>
+                                <TableCell>{new Date(registro.fecha_declaracion).toISOString()}</TableCell>
+                                <TableCell>{new Date(registro.fecha_carga_declaracion).toISOString()}</TableCell>
                             </TableRow>
                         )
                     }
