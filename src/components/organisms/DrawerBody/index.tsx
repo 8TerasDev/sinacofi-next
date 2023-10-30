@@ -17,7 +17,6 @@ const DrawerBody = ({ isOpen, isOpenSetter }: any) => {
                     label="Folio"
                     placeholder='Folio de la declaración'
                     fullWidth
-                    InputProps={{ disableUnderline: true }}
                 />}
             {isOpen && <Button variant="contained" fullWidth>Buscar</Button>}
 

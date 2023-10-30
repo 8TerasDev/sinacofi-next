@@ -25,16 +25,14 @@ interface ItemModalProps {
 }
 interface SinaTableModalProps {
   declaracion: Declaracion;
-  open?: boolean;
-  onClose?: () => void;
 }
 
-export const SinaTableModal = ({ declaracion, open = false, onClose }: SinaTableModalProps) => {
-  const [isOpen, isOpenSetter] = React.useState(open);
+export const SinaTableModal = ({ declaracion }: SinaTableModalProps) => {
+  const [isOpen, isOpenSetter] = React.useState(true);
 
   return (
     <ThemeProvider theme={theme}>
-      <Modal open={isOpen} aria-labelledby="modal-title" onClose={onClose}>
+      <Modal open={isOpen} aria-labelledby="modal-title" onClose={() => { isOpenSetter(false) }}>
         <Paper
           elevation={3}
           sx={{

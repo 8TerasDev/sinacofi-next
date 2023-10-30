@@ -10,26 +10,15 @@ type SinaTableBodyProps = {
 }
 
 const SinaTableBody = ({ declaraciones }: SinaTableBodyProps) => {
-    const [openModal, setOpenModal] = useState(false);
-    const [declaracionModal, setDeclaracionModal] = useState(false);
-
     return (
         <TableBody>
             {
                 declaraciones.map((declaracion) => (
                     <TableRow
-                        key={`${declaracion.id}`} // Asegúrate de que cada fila tenga una clave única
-                        onClick={() => setDeclaracionModal(true)} // Configura la declaración actual al hacer clic
+                        key={`${declaracion.id}`}
                         className='hover-effect active-effect clickable-effect'
                     >
                         <SinaTableCtaIcons />
-                        {declaracionModal && (
-                            <SinaTableModal
-                                open={Boolean(declaracionModal)} // El modal está abierto si hay una declaración seleccionada
-                                onClose={() => setDeclaracionModal(true)} // Cierra el modal limpiando el estado
-                                declaracion={declaracion} // Pasa la declaración actual al modal
-                            />
-                        )}
                         <TableCell>{declaracion.folio}</TableCell>
                         <TableCell>{declaracion.persona_juridica.nombre}</TableCell>
                         <TableCell>{new Date(declaracion.fecha_declaracion).toISOString()}</TableCell>
@@ -37,9 +26,6 @@ const SinaTableBody = ({ declaraciones }: SinaTableBodyProps) => {
                     </TableRow>
                 ))
             }
-
-
-
         </TableBody>
     )
 }
