@@ -4,6 +4,7 @@ import styles from "./modalappbar.module.css";
 import LogoutIcon from "@mui/icons-material/Logout";
 import CloseIcon from "@mui/icons-material/Close";
 import SinaText from "../../atoms/SinaText";
+import { useRouter } from "next/navigation";
 
 interface UserModalProps {
   isOpen: boolean;
@@ -11,6 +12,11 @@ interface UserModalProps {
 }
 
 const UserModal: React.FC<UserModalProps> = ({ isOpen, handleClick }) => {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    router.push('/');
+  };
   return (
     <Modal open={isOpen} onClose={handleClick}>
       <div className={styles.modalWrapper}>
@@ -18,14 +24,15 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, handleClick }) => {
           <IconButton onClick={handleClick} className={styles.closeButton}>
             <CloseIcon style={{ fill: "#D9D9D9" }} />
           </IconButton>
-          <Button
-            startIcon={<LogoutIcon style={{ fill: "#D9D9D9" }} />}
-            className={styles.logOutButton}
-          >
-            <SinaText color="white" size="xs">
-              Salir
-            </SinaText>
-          </Button>
+            <Button
+              startIcon={<LogoutIcon style={{ fill: "#D9D9D9" }} />}
+              className={styles.logOutButton}
+              onClick={handleLogout}
+            >
+              <SinaText color="white" size="xs">
+                Salir
+              </SinaText>
+            </Button>
         </div>
         <div className={styles.modal_content}>
           <div className={styles.profileSection}>
@@ -45,21 +52,53 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, handleClick }) => {
           </div>
           <SinaText size="xsWide">Datos Personales</SinaText>
           <form className={styles.formData}>
-            <TextField label="Nombre(s)" variant="standard" />
-            <TextField label="Apellido(s)" variant="standard" />
-            <TextField label="Email" variant="standard" />
+            <TextField
+              label="Nombre(s)"
+              variant="standard"
+              value="Juan Pablo"
+              disabled
+            />
+            <TextField
+              label="Apellido(s)"
+              variant="standard"
+              value="Peres S."
+              disabled
+            />
+            <TextField
+              label="Email"
+              variant="standard"
+              value="jpperez@santander.cl"
+              disabled
+            />
             <TextField
               label="Número de Teléfono"
               variant="standard"
               placeholder="+56 9 XXXX XXXX"
+              value="+54 9 123456789"
+              disabled
               //TODO: Add input mask for formatting (needs an additional library or custom code)
             />
           </form>
           <SinaText size="xsWide">Institución</SinaText>
           <form className={styles.formData}>
-            <TextField label="Banco" variant="standard" />
-            <TextField label="Código del Banco" variant="standard" />
-            <TextField label="Teléfono Sucursal" variant="standard" />
+            <TextField
+              label="Banco"
+              variant="standard"
+              value="Santander"
+              disabled
+            />
+            <TextField
+              label="Código del Banco"
+              variant="standard"
+              value="0026"
+              disabled
+            />
+            <TextField
+              label="Teléfono Sucursal"
+              variant="standard"
+              value="123456789"
+              disabled
+            />
           </form>
         </div>
         <div className={styles.footerText}>

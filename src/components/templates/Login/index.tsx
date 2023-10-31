@@ -58,13 +58,14 @@ const LoginTemplate = () => {
         sx={{
           display: "grid",
           gridTemplateRows: "auto auto auto 1fr auto",
-          padding: "10px 60px",
-          width: "35vw",
+          padding: "10px 2em",
+          width: "38vw",
           gap: 0.5,
           borderRadius: "10px",
           minHeight: "70vh",
           maxHeight: "85vh",
-          maxWidth: "50vh",
+          // maxWidth: "50vh",
+          boxSizing: "border-box",
           overflowY: "auto",
         }}
       >
@@ -78,7 +79,7 @@ const LoginTemplate = () => {
         >
           <Image src={Imagen} alt="Logo" />
         </Grid>
-        <Box>
+        <Box sx={{ textAlign: "left", width: "100%" }}>
           <SinaText size="xl" lineHeight="off" font="Gilbert">
             Login
           </SinaText>
