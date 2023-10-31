@@ -2,7 +2,7 @@ import { Declaracion } from '@/application';
 import HomeTemplate from '@/components/templates/Home';
 import { useQuery } from '@tanstack/react-query'
 import React from 'react'
-
+import { base_pruebas } from '../../../../data_sinacofi/bbdd';
 
 
 
@@ -13,21 +13,22 @@ async function getDeclaraciones() {
 }
 
 const HomeView = () => {
-    const {
-        data: declaracionesRaw,
-        isLoading,
-        isError,
-    } = useQuery({
-        queryKey: ['declaraciones'],
-        queryFn: async () => { return getDeclaraciones() }
-    })
-    if (isLoading) return <div>Loading...</div>
-    if (isError) return <div>Error</div>
-    const { declaraciones } = declaracionesRaw
-    // return (<div>{JSON.stringify(declaraciones)}</div>)
+    // const {
+    //     data: declaracionesRaw,
+    //     isLoading,
+    //     isError,
+    // } = useQuery({
+    //     queryKey: ['declaraciones'],
+    //     queryFn: async () => { return getDeclaraciones() }
+    // })
+    // if (isLoading) return <div>Loading...</div>
+    // if (isError) return <div>Error</div>
+    // const { declaraciones } = declaracionesRaw
+
+    // return (<div>{JSON.stringify(declaraciones[0])}</div>)
     return (
         <HomeTemplate
-            declaraciones={declaraciones}
+            declaraciones={base_pruebas}
         />
     )
 }

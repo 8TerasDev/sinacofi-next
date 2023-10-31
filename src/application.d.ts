@@ -24,9 +24,9 @@ export interface PersonaJuridica {
   domicilio: String | null;
   comuna: String | null;
   ciudad: String | null;
-  constitucion: Number;
+  constitucion: String;
   telefono: String;
-  tipo_sociedad: Number;
+  tipo_sociedad: String;
   empleados: Empleado[];
   representante_legal: RepresentanteLegal[];
 }

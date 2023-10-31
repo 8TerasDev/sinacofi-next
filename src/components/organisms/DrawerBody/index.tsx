@@ -4,23 +4,17 @@ import SinaDrawerIcons from '../../molecules/SinaDrawerIcons'
 import style from './drawerbody.module.css'
 import { Button, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import SinaDrawerButtons from '@/components/molecules/SinaDrawerButtons';
+import { useTypeSearch } from '@/custom-hooks/typeSearchHook';
 
 const DrawerBody = ({ isOpen, isOpenSetter }: any) => {
+
     return (
         <div className={style.drawer_body_container}>
             {isOpen && <SinaText>Realiza una búsqueda</SinaText>}
             <SinaDrawerIcons isOpen={isOpen} />
-            {isOpen && <SinaText>Busca una declaración</SinaText>}
-            {/* {//TODO: MEJORAR ACA} */}
-            {isOpen &&
-                <TextField
-                    label="Folio"
-                    placeholder='Folio de la declaración'
-                    fullWidth
-                />}
-            {isOpen && <Button variant="contained" fullWidth>Buscar</Button>}
+            <SinaDrawerButtons isOpen={isOpen} isOpenSetter={isOpenSetter} />
 
-            {!isOpen && <Button variant="contained" onClick={() => { isOpenSetter(true) }}><SearchIcon /></Button>}
 
         </div>
     )
