@@ -7,8 +7,9 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import { Declaracion } from "@/application";
 
-const TableModalTitle: React.FC<{ declaracion: Declaracion }> = ({ declaracion }) => {
-
+const TableModalTitle: React.FC<{ declaracion: Declaracion }> = ({
+  declaracion,
+}) => {
   return (
     <Box
       component="header"
@@ -45,7 +46,9 @@ const TableModalTitle: React.FC<{ declaracion: Declaracion }> = ({ declaracion }
             <Box display="flex" alignItems="center">
               <CalendarMonthIcon fontSize="small" />
               <SinaText size="xs" color="var(--gray-text)">
-                Declaración de {new Date(declaracion.fecha_declaracion).toISOString()}
+                Declaración de{" "}
+                {declaracion &&
+                  new Date(declaracion.fecha_declaracion).toISOString()}
               </SinaText>
             </Box>
           </Grid>
@@ -58,14 +61,14 @@ const TableModalTitle: React.FC<{ declaracion: Declaracion }> = ({ declaracion }
             <Box display="flex" alignItems="center">
               <AttachFileIcon fontSize="small" />
               <SinaText size="xs" color="var(--gray-text)">
-                Folio : {declaracion.folio}
+                Folio : {declaracion && declaracion.folio}
               </SinaText>
             </Box>
           </Grid>
         </Grid>
         <Grid item>
           <SinaText size="sl" lineHeight="off">
-            {declaracion.persona_juridica.nombre}
+            {declaracion && declaracion.persona_juridica.nombre}
           </SinaText>
         </Grid>
       </Grid>

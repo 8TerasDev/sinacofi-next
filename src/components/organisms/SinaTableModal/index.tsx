@@ -19,20 +19,26 @@ const theme = createTheme({
   },
 });
 
-interface ItemModalProps {
+interface SinaTableModalProps {
+  declaracion: Declaracion;
   isOpen: boolean;
   handleClose: () => void;
 }
-interface SinaTableModalProps {
-  declaracion: Declaracion;
-}
 
-export const SinaTableModal = ({ declaracion }: SinaTableModalProps) => {
-  const [isOpen, isOpenSetter] = React.useState(true);
+export const SinaTableModal = ({
+  declaracion,
+  isOpen,
+  handleClose,
+}: SinaTableModalProps) => {
+  // const [isModalOpen, isOpenSetter] = React.useState(false); // No necesitas esto
 
   return (
     <ThemeProvider theme={theme}>
-      <Modal open={isOpen} aria-labelledby="modal-title" onClose={() => { isOpenSetter(false) }}>
+      <Modal
+        open={isOpen} // Usa la prop directamente
+        aria-labelledby="modal-title"
+        onClose={handleClose} // Usa la prop directamente
+      >
         <Paper
           elevation={3}
           sx={{
@@ -70,7 +76,7 @@ export const SinaTableModal = ({ declaracion }: SinaTableModalProps) => {
             >
               <TableModalCloseButton
                 isOpen={isOpen}
-                handleClose={() => { isOpenSetter(false) }}
+                handleClose={handleClose} // Usa la prop directamente
               />
             </Grid>
             <Grid item xs={3}>
@@ -89,5 +95,5 @@ export const SinaTableModal = ({ declaracion }: SinaTableModalProps) => {
         </Paper>
       </Modal>
     </ThemeProvider>
-  )
-}
+  );
+};
