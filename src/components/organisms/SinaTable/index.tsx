@@ -36,8 +36,6 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [page, setPage] = useState(0);
 
-
-
     const handleSort = (property: any) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -73,7 +71,7 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
                     <SinaTableBody declaraciones={rowsPerPageData} />
                     <TableFooter>
                         <TableRow>
-                            <TableCell colSpan={4} style={{ padding: '16px 0' }}>
+                            <TableCell colSpan={5} style={{ padding: '16px 0' }}>
                                 <Grid container justifyContent="end" alignItems="center" spacing={2}>
                                     <Grid item>
                                         <FormControl variant="outlined">
