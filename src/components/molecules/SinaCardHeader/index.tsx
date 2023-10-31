@@ -8,7 +8,7 @@ import SinaText from "../../atoms/SinaText";
 
 
 const SinCardHeader = () => {
-  const [orden, setOrden] = React.useState(10);
+  const [orden, setOrden] = React.useState<any>(10);
 
   const handleChange = (event: SelectChangeEvent) => {
     setOrden(event.target.value);
@@ -21,22 +21,22 @@ const SinCardHeader = () => {
         </SinaText>
       </div>
       <div className={types.calendar_container}>
-      <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Age</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={orden}
-          label="Age"
-          onChange={handleChange}
-        >
-          <MenuItem value={10}>Totalidad</MenuItem>
-          <MenuItem value={20}>Última Actualización</MenuItem>
-          <MenuItem value={30}>Última Declaración</MenuItem>
-        </Select>
-      </FormControl>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Mostrar</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={`${orden}`}
+            label="Mostrar"
+            onChange={handleChange}
+          >
+            <MenuItem value={10}>Totalidad</MenuItem>
+            <MenuItem value={20}>Última Actualización</MenuItem>
+            <MenuItem value={30}>Última Declaración</MenuItem>
+          </Select>
+        </FormControl>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker label="Rango de Fecha" disableFuture/>
+          <DatePicker label="Rango de Fecha" disableFuture />
         </LocalizationProvider>
         <Button
           variant="contained"
