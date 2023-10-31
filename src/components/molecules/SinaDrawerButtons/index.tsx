@@ -1,17 +1,17 @@
 "use client";
-import React from 'react'
+import React, { useContext } from 'react'
 import SearchIcon from '@mui/icons-material/Search';
 import { TextField, Button } from '@mui/material';
 import { useTypeSearch } from '../../../custom-hooks/typeSearchHook';
 import SinaText from '@/components/atoms/SinaText';
+import { TypeSearchContext } from '@/contexts/typesearch.context';
 
 
 const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
     const {
         typeOfSearch,
         TypeOfSearch,
-    } = useTypeSearch()
-
+    } = useContext(TypeSearchContext)
 
     return (
         <>

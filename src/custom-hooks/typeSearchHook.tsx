@@ -8,7 +8,7 @@ enum TypeOfSearch {
 
 type ActiveColor = 'primary' | 'inherit'
 export const useTypeSearch = () => {
-    const [typeOfSearch, typeOfSearchSetter] = useState<TypeOfSearch>(TypeOfSearch.RUT)
+    const [typeOfSearch, typeOfSearchSetter] = useState<TypeOfSearch>(TypeOfSearch.BENEFICIARIO)
 
     function onSelectFolioType() {
         typeOfSearchSetter(x => {

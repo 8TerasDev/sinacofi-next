@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import ReactQueryProvider from '@/providers/reactQuery.provider'
+import { TypeSearchProvider } from '@/contexts/typesearch.context'
 
 export const metadata: Metadata = {
   title: 'Sinacofi',
@@ -16,7 +17,9 @@ export default function RootLayout({
     <html lang="es">
       <body>
         <ReactQueryProvider>
-          {children}
+          <TypeSearchProvider>
+            {children}
+          </TypeSearchProvider>
         </ReactQueryProvider>
       </body>
     </html>
