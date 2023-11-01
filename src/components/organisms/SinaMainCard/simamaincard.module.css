@@ -1,6 +1,6 @@
 .declaraciones_container{
     box-sizing: border-box;
-    margin:10px;
+    margin:.5rem;
     grid-row: 2/3;
     grid-column: 2/3;
     display: grid;

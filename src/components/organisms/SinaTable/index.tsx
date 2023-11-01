@@ -86,45 +86,43 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
     };
     return (
         <div className={styles.sinatable_container}>
-            <TableContainer>
-                <Table>
-                    <SinaTableHead listOfHeaders={listOfHeaders} />
-                    <SinaTableBody declaraciones={rowsPerPageData} />
-                    <TableFooter >
-                        <TableRow sx={{ boxSizing: "border-box" }}>
-                            <TableCell colSpan={5} >
-                                <Grid container justifyContent="end" alignItems="center" >
-                                    <Grid item>
-                                        <FormControl variant="outlined">
-                                            <InputLabel>Rows Per Page</InputLabel>
-                                            <Select
-                                                value={rowsPerPage}
-                                                onChange={(e: any) => setRowsPerPage(e.target.value)}
-                                                label="Rows Per Page"
-                                            >
-                                                <MenuItem value={5}>5</MenuItem>
-                                                <MenuItem value={10}>1</MenuItem>
-                                                <MenuItem value={15}>1</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item>
-                                        <TablePagination
-                                            rowsPerPageOptions={[]} // We hide this because we've provided a custom rows per page dropdown
-                                            component="div"
-                                            count={sortedData.length}
-                                            rowsPerPage={rowsPerPage}
-                                            page={page}
-                                            onPageChange={handleChangePage}
-                                            onRowsPerPageChange={() => { }} // We handle this with our custom dropdown
-                                        />
-                                    </Grid>
+            <Table size='small'>
+                <SinaTableHead listOfHeaders={listOfHeaders} />
+                <SinaTableBody declaraciones={rowsPerPageData} />
+                <TableFooter >
+                    <TableRow sx={{ boxSizing: "border-box" }}>
+                        <TableCell colSpan={5} >
+                            <Grid container justifyContent="end" alignItems="center" >
+                                <Grid item>
+                                    <FormControl variant="outlined">
+                                        <InputLabel>Rows</InputLabel>
+                                        <Select
+                                            value={rowsPerPage}
+                                            onChange={(e: any) => setRowsPerPage(e.target.value)}
+                                            label="Rows Per Page"
+                                        >
+                                            <MenuItem value={5}>5</MenuItem>
+                                            <MenuItem value={10}>10</MenuItem>
+                                            <MenuItem value={15}>10</MenuItem>
+                                        </Select>
+                                    </FormControl>
                                 </Grid>
-                            </TableCell>
-                        </TableRow>
-                    </TableFooter>
-                </Table>
-            </TableContainer>
+                                <Grid item>
+                                    <TablePagination
+                                        rowsPerPageOptions={[]} // We hide this because we've provided a custom rows per page dropdown
+                                        component="div"
+                                        count={sortedData.length}
+                                        rowsPerPage={rowsPerPage}
+                                        page={page}
+                                        onPageChange={handleChangePage}
+                                        onRowsPerPageChange={() => { }} // We handle this with our custom dropdown
+                                    />
+                                </Grid>
+                            </Grid>
+                        </TableCell>
+                    </TableRow>
+                </TableFooter>
+            </Table>
         </div>
     )
 }

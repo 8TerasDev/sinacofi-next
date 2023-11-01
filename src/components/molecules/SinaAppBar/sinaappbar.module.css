@@ -1,6 +1,6 @@
 .sinappbar_container {
     box-sizing: border-box;
-    width: 100vw;
+    width: 100%;
     height: 10vh;
     padding: 5px 0;
     grid-row: 1/2;

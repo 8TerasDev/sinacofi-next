@@ -5,4 +5,5 @@
     display: grid;
     grid-template-columns: auto 1fr;
     grid-template-rows: 10vh 1fr;
+    overflow-x: hidden;
 }
