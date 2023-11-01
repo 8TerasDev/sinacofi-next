@@ -15,15 +15,22 @@ export const DeclaracionesProvider = ({ children }: any) => {
     const [declaraciones, declaracionesSetter] = useState(base_pruebas)
 
     function declaracionesByFolio(folio: string) {
+        // Crear una expresión regular dinámica desde el folio
+        // Escapa caracteres especiales en el folio para la regex
         const escapedFolio = folio.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-        const folioRegex = new RegExp(escapedFolio, 'i');
+        const folioRegex = new RegExp(`^${escapedFolio}$`);
+      
+        // Filtrar declaraciones que coincidan con el folio usando la regex
         const filterDeclaracions = base_pruebas.filter(declaracion => folioRegex.test(declaracion.folio as string));
+      
+        // Si hay declaraciones que coinciden, actualiza el estado
         if (filterDeclaracions.length > 0) {
-            declaracionesSetter(filterDeclaracions);
-        } else {
-            console.log('No se encontraron coincidencias.');
+          declaracionesSetter(filterDeclaracions);
         }
-    }
+        else{
+            declaracionesSetter([])
+        }
+      }
 
     const contextValue = {
         declaraciones,
