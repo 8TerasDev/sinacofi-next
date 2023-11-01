@@ -1,9 +1,8 @@
 .container_open {
     box-sizing: border-box;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
+    grid-column: 1/2;
+    grid-row: 1/3;
+    height: 100vh;
     width: 20vw;
     border-radius: var(--borderRadius, 4px);
     background: var(--background-paper-elevation-1, #FFF);
@@ -14,7 +13,6 @@
     justify-items: center;
     gap: 10px;
     transition: 0.3s ease-in-out;
-    padding: 10px;
 }
 
 .top_brand {
@@ -25,6 +23,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
     box-sizing: border-box;
 }
@@ -51,6 +50,7 @@
 }
 
 .button {
+    margin:0 10px 10px 0;
     width: 41px;
     height: 41px;
     display: grid;
@@ -63,9 +63,8 @@
 
 .container_close {
     box-sizing: border-box;
-    position: absolute;
-    top: 0;
-    left: 0;
+    grid-column: 1/2;
+    grid-row: 1/3;
     height: 100%;
     width: 10vw;
     border-radius: var(--borderRadius, 4px);

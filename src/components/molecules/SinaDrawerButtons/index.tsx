@@ -15,9 +15,7 @@ const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
 
     return (
         <>
-            {isOpen && typeOfSearch === TypeOfSearch.FOLIO && < SinaText > Busca una declaración por Folio</SinaText >}
-            {isOpen && typeOfSearch === TypeOfSearch.RUT && < SinaText > Busca una declaración por Rut</SinaText >}
-            {isOpen && typeOfSearch === TypeOfSearch.BENEFICIARIO && < SinaText > Busca una declaración por Beneficiario</SinaText >}
+            {isOpen && < SinaText > Busca una declaración por:</SinaText >}
             {/* {//TODO: MEJORAR ACA} */}
             {
                 isOpen &&

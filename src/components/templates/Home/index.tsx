@@ -9,6 +9,7 @@ import SinaAppBar from '../../molecules/SinaAppBar';
 import SinaMainCard from '../../organisms/SinaMainCard';
 import SinaTable from '../../organisms/SinaTable';
 import { Declaracion } from '@/application';
+import { MainLayout } from '@/components/atoms/MainLayout';
 
 interface HomeTemplateProps {
     declaraciones: Declaracion[]
@@ -17,7 +18,7 @@ interface HomeTemplateProps {
 const HomeTemplate = ({ declaraciones }: HomeTemplateProps) => {
     const [isOpen, isOpenSetter] = useState(true)
     return (
-        <ContainerFull>
+        <MainLayout>
             <SinaAppBar />
             <SinaDrawer isOpen={isOpen} isOpenSetter={isOpenSetter}>
                 <DrawerBody isOpen={isOpen} isOpenSetter={isOpenSetter} />
@@ -25,7 +26,7 @@ const HomeTemplate = ({ declaraciones }: HomeTemplateProps) => {
             <SinaMainCard>
                 <SinaTable declaraciones={declaraciones} />
             </SinaMainCard>
-        </ContainerFull>
+        </MainLayout>
     )
 }
 

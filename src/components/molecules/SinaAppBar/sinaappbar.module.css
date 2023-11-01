@@ -1,12 +1,13 @@
 .sinappbar_container {
+    box-sizing: border-box;
     width: 100vw;
     height: 10vh;
     padding: 5px 0;
-    z-index: -1;
+    grid-row: 1/2;
+    grid-column: 1/3;
     display: flex;
     justify-content: flex-end;
     align-items: center;
     border-radius: var(--none, 0px);
-    background: #FFF;
     box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.05);
 }

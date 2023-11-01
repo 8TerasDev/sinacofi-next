@@ -4,11 +4,14 @@ import {
     Grid,
     InputLabel,
     MenuItem,
+    Paper,
     Select,
     Table,
+    TableBody,
     TableCell,
     TableContainer,
     TableFooter,
+    TableHead,
     TablePagination,
     TableRow,
 } from '@mui/material';
@@ -16,6 +19,8 @@ import styles from './sinatable.module.css'
 import SinaTableHead from '../../molecules/SinaTableHead';
 import SinaTableBody from '../../molecules/SinaTableBody';
 import { Declaracion } from '@/application';
+import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+
 
 const listOfHeaders = [
     "Acción",
@@ -25,9 +30,34 @@ const listOfHeaders = [
     "Fecha de carga",
 ]
 
+const columns: GridColDef[] = [
+    { field: 'Acción', headerName: 'Acción', width: 100 },
+    { field: 'folio', headerName: 'Folio', width: 150 },
+    { field: 'persona_juridica', headerName: 'Razón Social', width: 150 },
+    { field: 'fecha_declaracion', headerName: 'Fecha de declaración', width: 150 },
+    { field: 'fecha_carga_declaracion', headerName: 'Fecha de carga', width: 150 },
+]
+
 interface SinaTableProps {
     declaraciones: Declaracion[]
 }
+function createData(
+    name: string,
+    calories: number,
+    fat: number,
+    carbs: number,
+    protein: number,
+) {
+    return { name, calories, fat, carbs, protein };
+}
+
+const rows = [
+    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+    createData('Eclair', 262, 16.0, 24, 6.0),
+    createData('Cupcake', 305, 3.7, 67, 4.3),
+    createData('Gingerbread', 356, 16.0, 49, 3.9),
+];
 
 const SinaTable = ({ declaraciones }: SinaTableProps) => {
 
@@ -54,25 +84,16 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
     const handleChangePage = (event: any, newPage: any) => {
         setPage(newPage);
     };
-
     return (
         <div className={styles.sinatable_container}>
             <TableContainer>
                 <Table>
-                    <SinaTableHead
-                        listOfHeaders={listOfHeaders}
-                        orderBy={orderBy}
-                        onClick={() => handleSort('razonSocial')}
-                        order={order}
-                        name={'razonSocial'}
-                        onClick2={() => handleSort('fecha')}
-                        name2={'fecha'}
-                    />
+                    <SinaTableHead listOfHeaders={listOfHeaders} />
                     <SinaTableBody declaraciones={rowsPerPageData} />
-                    <TableFooter>
-                        <TableRow>
-                            <TableCell colSpan={5} style={{ padding: '16px 0' }}>
-                                <Grid container justifyContent="end" alignItems="center" spacing={2}>
+                    <TableFooter >
+                        <TableRow sx={{ boxSizing: "border-box" }}>
+                            <TableCell colSpan={5} >
+                                <Grid container justifyContent="end" alignItems="center" >
                                     <Grid item>
                                         <FormControl variant="outlined">
                                             <InputLabel>Rows Per Page</InputLabel>
@@ -82,8 +103,8 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
                                                 label="Rows Per Page"
                                             >
                                                 <MenuItem value={5}>5</MenuItem>
-                                                <MenuItem value={10}>10</MenuItem>
-                                                <MenuItem value={15}>15</MenuItem>
+                                                <MenuItem value={10}>1</MenuItem>
+                                                <MenuItem value={15}>1</MenuItem>
                                             </Select>
                                         </FormControl>
                                     </Grid>

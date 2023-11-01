@@ -16,7 +16,7 @@ const SinaTableBody = (
   const { isModalOpen, handleClick } = useModalHandle();
 
   return (
-    <TableBody>
+    <TableBody sx={{overflowY:"scroll"}}>
       {declaraciones.map((declaracion) => (
         <TableRow
           key={`${declaracion.id}`}

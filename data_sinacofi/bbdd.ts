@@ -4,7 +4,7 @@ export const base_pruebas: Declaracion[] = [
   {
     id: 1,
     folio: "000120231017",
-    fecha_declaracion: new Date("2023-10-29T14:53:15.347Z"),
+    fecha_declaracion: new Date("2023-10-01T14:53:15.347Z"),
     fecha_carga_declaracion: new Date("2023-10-28T14:53:15.347Z"),
     is_active: true,
     persona_juridica_id: 1,
@@ -62,7 +62,7 @@ export const base_pruebas: Declaracion[] = [
   {
     id: 2,
     folio: "000120231018",
-    fecha_declaracion: new Date("2023-10-29T14:53:15.347Z"),
+    fecha_declaracion: new Date("2023-10-02T14:53:15.347Z"),
     fecha_carga_declaracion: new Date("2023-10-28T14:53:15.347Z"),
     is_active: true,
     persona_juridica_id: 1,
@@ -120,7 +120,7 @@ export const base_pruebas: Declaracion[] = [
   {
     id: 2,
     folio: "000120231018",
-    fecha_declaracion: new Date("2023-10-29T14:53:15.347Z"),
+    fecha_declaracion: new Date("2023-10-03T14:53:15.347Z"),
     fecha_carga_declaracion: new Date("2023-10-28T14:53:15.347Z"),
     is_active: true,
     persona_juridica_id: 1,
@@ -178,7 +178,7 @@ export const base_pruebas: Declaracion[] = [
   {
     id: 2,
     folio: "000120231018",
-    fecha_declaracion: new Date("2023-10-29T14:53:15.347Z"),
+    fecha_declaracion: new Date("2023-10-04T14:53:15.347Z"),
     fecha_carga_declaracion: new Date("2023-10-28T14:53:15.347Z"),
     is_active: true,
     persona_juridica_id: 1,
@@ -236,7 +236,7 @@ export const base_pruebas: Declaracion[] = [
   {
     id: 2,
     folio: "000120231018",
-    fecha_declaracion: new Date("2023-10-29T14:53:15.347Z"),
+    fecha_declaracion: new Date("2023-10-05T14:53:15.347Z"),
     fecha_carga_declaracion: new Date("2023-10-28T14:53:15.347Z"),
     is_active: true,
     persona_juridica_id: 1,
@@ -294,7 +294,7 @@ export const base_pruebas: Declaracion[] = [
   {
     id: 2,
     folio: "000120231018",
-    fecha_declaracion: new Date("2023-10-29T14:53:15.347Z"),
+    fecha_declaracion: new Date("2023-10-06T14:53:15.347Z"),
     fecha_carga_declaracion: new Date("2023-10-28T14:53:15.347Z"),
     is_active: true,
     persona_juridica_id: 1,
@@ -352,7 +352,7 @@ export const base_pruebas: Declaracion[] = [
   {
     id: 2,
     folio: "000120231018",
-    fecha_declaracion: new Date("2023-10-29T14:53:15.347Z"),
+    fecha_declaracion: new Date("2023-10-07T14:53:15.347Z"),
     fecha_carga_declaracion: new Date("2023-10-28T14:53:15.347Z"),
     is_active: true,
     persona_juridica_id: 1,
@@ -410,7 +410,7 @@ export const base_pruebas: Declaracion[] = [
   {
     id: 2,
     folio: "000120231018",
-    fecha_declaracion: new Date("2023-10-29T14:53:15.347Z"),
+    fecha_declaracion: new Date("2023-10-08T14:53:15.347Z"),
     fecha_carga_declaracion: new Date("2023-10-28T14:53:15.347Z"),
     is_active: true,
     persona_juridica_id: 1,
