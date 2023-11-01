@@ -20,6 +20,8 @@ import Image from "next/image";
 import styles from "./login.module.css";
 import useLoginHook from "./login.hook";
 import SinaAlert from "@/components/molecules/SinaAlert";
+import BackgroundSinacofi from "@/components/atoms/BackgroundSinacofi";
+import ContainerLogin from "@/components/atoms/ContainerLogin";
 
 const Cargando = () => {
   return (
@@ -42,43 +44,11 @@ const LoginTemplate = () => {
   } = useLoginHook();
 
   return (
-    <Box
-      sx={{
-        display: "grid",
-        width: "100vw",
-        height: "100vh",
-        background:
-          "linear-gradient(295deg, rgba(226, 51, 106, 0.70) -17.18%, rgba(255, 200, 67, 0.70) 3.8%, rgba(70, 185, 120, 0.70) 73.19%, rgba(0, 179, 226, 0.70) 112.7%)",
-        placeItems: "center",
-        overflow: "hidden",
-      }}
-    >
-      <Paper
-        elevation={1}
-        sx={{
-          display: "grid",
-          gridTemplateRows: "auto auto auto 1fr auto",
-          padding: "10px 2em",
-          width: "38vw",
-          gap: 0.5,
-          borderRadius: "10px",
-          minHeight: "70vh",
-          maxHeight: "85vh",
-          // maxWidth: "50vh",
-          boxSizing: "border-box",
-          overflowY: "auto",
-        }}
-      >
-        <Grid
-          container
-          sx={{
-            justifyContent: "center",
-            backgroundColor: "#ffffff",
-            borderRadius: "8px",
-          }}
-        >
+    <BackgroundSinacofi>
+      <ContainerLogin>
+        <Box sx={{ justifySelf: "center" }}>
           <Image src={Imagen} alt="Logo" />
-        </Grid>
+        </Box>
         <Box sx={{ textAlign: "left", width: "100%" }}>
           <SinaText size="xl" lineHeight="off" font="Gilbert">
             Login
@@ -146,23 +116,23 @@ const LoginTemplate = () => {
             >
               Login
             </Button>
-            <SinaText size="xsWide" color="var(--gray-text)">
-              Necesitas ayuda? Contáctate con{" "}
-              <a
-                style={{
-                  color: "#449BA7",
-                  textDecoration: "none",
-                  fontWeight: 600,
-                }}
-                href="mailto:helpme@sinacofi.com"
-              >
-                helpme@sinacofi.com
-              </a>
-            </SinaText>
           </Box>
         </FormControl>
-      </Paper>
-    </Box>
+        <SinaText size="xsWide" color="var(--gray-text)">
+          Necesitas ayuda? Contáctate con{" "}
+          <a
+            style={{
+              color: "#449BA7",
+              textDecoration: "none",
+              fontWeight: 600,
+            }}
+            href="mailto:helpme@sinacofi.com"
+          >
+            helpme@sinacofi.com
+          </a>
+        </SinaText>
+      </ContainerLogin>
+    </BackgroundSinacofi>
   );
 };
 

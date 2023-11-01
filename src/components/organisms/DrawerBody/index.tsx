@@ -14,8 +14,6 @@ const DrawerBody = ({ isOpen, isOpenSetter }: any) => {
             {isOpen && <SinaText>Realiza una búsqueda</SinaText>}
             <SinaDrawerIcons isOpen={isOpen} />
             <SinaDrawerButtons isOpen={isOpen} isOpenSetter={isOpenSetter} />
-
-
         </div>
     )
 }

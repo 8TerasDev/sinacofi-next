@@ -1,8 +1,6 @@
-import { Declaracion } from '@/application';
 import HomeTemplate from '@/components/templates/Home';
-import { useQuery } from '@tanstack/react-query'
-import React from 'react'
-import { base_pruebas } from '../../../../data_sinacofi/bbdd';
+import React, { useContext } from 'react'
+import { DeclaracionesContext } from '@/contexts/declaraciones.context';
 
 
 
@@ -26,9 +24,11 @@ const HomeView = () => {
     // const { declaraciones } = declaracionesRaw
 
     // return (<div>{JSON.stringify(declaraciones[0])}</div>)
+
+    const { declaraciones } = useContext(DeclaracionesContext)
     return (
         <HomeTemplate
-            declaraciones={base_pruebas}
+            declaraciones={declaraciones}
         />
     )
 }

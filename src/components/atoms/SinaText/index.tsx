@@ -58,8 +58,8 @@ const SinaText = ({
         ...sizeStyles[size],
         color: color,
         fontFamily: font,
-        lineHeight: lineHeight === "on" ? "133.4%" : "0",
-        spacing: spacing === "on" ? "0.17px" : "0" 
+        lineHeight: lineHeight === "on" && "133.4%",
+        spacing: spacing === "on" && "0.17px" 
     };
 
     return (

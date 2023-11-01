@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import ReactQueryProvider from '@/providers/reactQuery.provider'
 import { TypeSearchProvider } from '@/contexts/typesearch.context'
+import { DeclaracionesProvider } from '@/contexts/declaraciones.context'
 
 export const metadata: Metadata = {
   title: 'Sinacofi',
@@ -17,9 +18,11 @@ export default function RootLayout({
     <html lang="es">
       <body>
         <ReactQueryProvider>
-          <TypeSearchProvider>
-            {children}
-          </TypeSearchProvider>
+          <DeclaracionesProvider>
+            <TypeSearchProvider>
+              {children}
+            </TypeSearchProvider>
+          </DeclaracionesProvider>
         </ReactQueryProvider>
       </body>
     </html>
