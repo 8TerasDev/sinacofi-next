@@ -21,7 +21,7 @@ export const DeclaracionesProvider = ({ children }: any) => {
         const folioRegex = new RegExp(`^${escapedFolio}$`);
       
         // Filtrar declaraciones que coincidan con el folio usando la regex
-        const filterDeclaracions = base_pruebas.filter(declaracion => folioRegex.test(declaracion.folio));
+        const filterDeclaracions = base_pruebas.filter(declaracion => folioRegex.test(declaracion.folio as string));
         console.log({ filterDeclaracions });
       
         // Si hay declaraciones que coinciden, actualiza el estado
