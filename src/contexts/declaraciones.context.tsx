@@ -15,10 +15,13 @@ export const DeclaracionesProvider = ({ children }: any) => {
     const [declaraciones, declaracionesSetter] = useState(base_pruebas)
 
     function declaracionesByFolio(folio: string) {
-        const filterDeclaracions = base_pruebas.filter(declaracion => declaracion.folio === folio)
-        console.log({ filterDeclaracions })
+        const escapedFolio = folio.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+        const folioRegex = new RegExp(escapedFolio, 'i');
+        const filterDeclaracions = base_pruebas.filter(declaracion => folioRegex.test(declaracion.folio as string));
         if (filterDeclaracions.length > 0) {
-            declaracionesSetter(filterDeclaracions)
+            declaracionesSetter(filterDeclaracions);
+        } else {
+            console.log('No se encontraron coincidencias.');
         }
     }
 

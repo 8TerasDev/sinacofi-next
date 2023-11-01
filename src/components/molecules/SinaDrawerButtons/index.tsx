@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import SearchIcon from '@mui/icons-material/Search';
 import { TextField, Button } from '@mui/material';
 import { useTypeSearch } from '../../../custom-hooks/typeSearchHook';
@@ -13,10 +13,10 @@ const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
         typeOfSearch,
     } = useContext(TypeSearchContext)
     const { declaracionesByFolio } = useContext(DeclaracionesContext)
+    const [filter, filterSetter] = useState("")
 
-    function handleSearchByFolio({target}: any) {
-        const value = target.value
-        declaracionesByFolio(value)
+    function handleSearchByFolio() {
+        declaracionesByFolio(filter)
     }
     return (
         <>
@@ -27,11 +27,11 @@ const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
                 <TextField
                     label={typeOfSearch}
                     placeholder={`busqueda por ${typeOfSearch}`}
-                    onChange={handleSearchByFolio}
+                    onChange={(e) => { filterSetter(e.target.value) }}
                     fullWidth
                 />
             }
-            {isOpen && <Button variant="contained" fullWidth>Buscar</Button>}
+            {isOpen && <Button variant="contained" fullWidth onClick={handleSearchByFolio}>Buscar</Button>}
 
             {!isOpen && <Button variant="contained" onClick={() => { isOpenSetter(true) }}><SearchIcon /></Button>}
         </>

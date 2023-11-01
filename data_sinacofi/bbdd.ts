@@ -351,7 +351,7 @@ export const base_pruebas: Declaracion[] = [
   },
   {
     id: 2,
-    folio: "000120231018",
+    folio: "000122001018",
     fecha_declaracion: new Date("2023-10-07T14:53:15.347Z"),
     fecha_carga_declaracion: new Date("2023-10-28T14:53:15.347Z"),
     is_active: true,
@@ -409,7 +409,7 @@ export const base_pruebas: Declaracion[] = [
   },
   {
     id: 2,
-    folio: "000120231018",
+    folio: "000122001018",
     fecha_declaracion: new Date("2023-10-08T14:53:15.347Z"),
     fecha_carga_declaracion: new Date("2023-10-28T14:53:15.347Z"),
     is_active: true,
@@ -467,7 +467,7 @@ export const base_pruebas: Declaracion[] = [
   },
   {
     id: 2,
-    folio: "000120231018",
+    folio: "000122001018",
     fecha_declaracion: new Date("2023-10-29T14:53:15.347Z"),
     fecha_carga_declaracion: new Date("2023-10-28T14:53:15.347Z"),
     is_active: true,
