@@ -61,7 +61,7 @@ export const base_pruebas: Declaracion[] = [
   },
   {
     id: 2,
-    folio: "000120231018",
+    folio: "111",
     fecha_declaracion: new Date("2023-10-02T14:53:15.347Z"),
     fecha_carga_declaracion: new Date("2023-10-28T14:53:15.347Z"),
     is_active: true,
@@ -119,7 +119,7 @@ export const base_pruebas: Declaracion[] = [
   },
   {
     id: 2,
-    folio: "000120231018",
+    folio: "111",
     fecha_declaracion: new Date("2023-10-03T14:53:15.347Z"),
     fecha_carga_declaracion: new Date("2023-10-28T14:53:15.347Z"),
     is_active: true,
@@ -177,7 +177,7 @@ export const base_pruebas: Declaracion[] = [
   },
   {
     id: 2,
-    folio: "000120231018",
+    folio: "111",
     fecha_declaracion: new Date("2023-10-04T14:53:15.347Z"),
     fecha_carga_declaracion: new Date("2023-10-28T14:53:15.347Z"),
     is_active: true,
@@ -203,7 +203,7 @@ export const base_pruebas: Declaracion[] = [
     persona_juridica: {
       id: 1,
       rut: "23605789-5",
-      nombre: "Agrícola Los Claveles S.A.",
+      nombre: "Agrícola Los ",
       domicilio: "Pasaje Lapizlazuli 2169",
       comuna: "Cerro Navia",
       ciudad: "Santiago",
@@ -261,7 +261,7 @@ export const base_pruebas: Declaracion[] = [
     persona_juridica: {
       id: 1,
       rut: "23605789-5",
-      nombre: "Agrícola Los Claveles S.A.",
+      nombre: "Agrícola Los ",
       domicilio: "Pasaje Lapizlazuli 2169",
       comuna: "Cerro Navia",
       ciudad: "Santiago",
@@ -319,7 +319,7 @@ export const base_pruebas: Declaracion[] = [
     persona_juridica: {
       id: 1,
       rut: "23605789-5",
-      nombre: "Agrícola Los Claveles S.A.",
+      nombre: "Agrícola Los ",
       domicilio: "Pasaje Lapizlazuli 2169",
       comuna: "Cerro Navia",
       ciudad: "Santiago",

@@ -9,32 +9,27 @@ type SinaTableBodyProps = {
   declaraciones: Declaracion[];
 };
 
-const SinaTableBody = (
-  { declaraciones }: SinaTableBodyProps,
-  { declaracion }: { declaracion: Declaracion }
-) => {
+const SinaTableBody = ({ declaraciones }: SinaTableBodyProps) => {
   const { isModalOpen, handleClick } = useModalHandle();
 
   return (
-    <TableBody sx={{overflowY:"scroll"}}>
-      {declaraciones.map((declaracion) => (
-        <TableRow
-          key={`${declaracion.id}`}
-          className="hover-effect active-effect clickable-effect"
-          onClick={handleClick}
-        >
-          <SinaTableCtaIcons />
+    <TableBody>
+      {React.Children.toArray(
+        declaraciones.map((declaracion) => (
+          <TableRow>
+            <SinaTableCtaIcons />
+            <TableCell>{declaracion.folio}</TableCell>
+            <TableCell>{declaracion.persona_juridica.nombre}</TableCell>
+            <TableCell>
+              {new Date(declaracion.fecha_declaracion).toISOString()}
+            </TableCell>
+            <TableCell>
+              {new Date(declaracion.fecha_carga_declaracion).toISOString()}
+            </TableCell>
+          </TableRow>
+        ))
+      )}
 
-          <TableCell>{declaracion.folio}</TableCell>
-          <TableCell>{declaracion.persona_juridica.nombre}</TableCell>
-          <TableCell>
-            {new Date(declaracion.fecha_declaracion).toISOString()}
-          </TableCell>
-          <TableCell>
-            {new Date(declaracion.fecha_carga_declaracion).toISOString()}
-          </TableCell>
-        </TableRow>
-      ))}
       <SinaTableModal
         //TODO: DECLARACIONES ESTA HARDCODEADO
         declaracion={declaraciones[0]}

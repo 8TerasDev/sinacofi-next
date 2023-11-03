@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import SearchIcon from '@mui/icons-material/Search';
 import { TextField, Button } from '@mui/material';
 import { useTypeSearch } from '../../../custom-hooks/typeSearchHook';
@@ -12,12 +12,16 @@ const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
     const {
         typeOfSearch,
     } = useContext(TypeSearchContext)
-    const { declaracionesByFolio } = useContext(DeclaracionesContext)
+    const { dispatch } = useContext(DeclaracionesContext)
     const [filter, filterSetter] = useState("")
 
     function handleSearchByFolio() {
-        declaracionesByFolio(filter)
+        dispatch({ type: 'FILTER_BY_FOLIO', payload: filter });
     }
+
+    useEffect(() => {
+        if (filter === "") return dispatch({ type: 'RESET' })
+    }, [filter])
     return (
         <>
             {isOpen && < SinaText > Busca una declaración por:</SinaText >}

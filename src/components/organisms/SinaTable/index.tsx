@@ -18,8 +18,8 @@ import {
 import styles from './sinatable.module.css'
 import SinaTableHead from '../../molecules/SinaTableHead';
 import SinaTableBody from '../../molecules/SinaTableBody';
+
 import { Declaracion } from '@/application';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 
 
 const listOfHeaders = [
@@ -30,34 +30,9 @@ const listOfHeaders = [
     "Fecha de carga",
 ]
 
-const columns: GridColDef[] = [
-    { field: 'Acción', headerName: 'Acción', width: 100 },
-    { field: 'folio', headerName: 'Folio', width: 150 },
-    { field: 'persona_juridica', headerName: 'Razón Social', width: 150 },
-    { field: 'fecha_declaracion', headerName: 'Fecha de declaración', width: 150 },
-    { field: 'fecha_carga_declaracion', headerName: 'Fecha de carga', width: 150 },
-]
-
 interface SinaTableProps {
     declaraciones: Declaracion[]
 }
-function createData(
-    name: string,
-    calories: number,
-    fat: number,
-    carbs: number,
-    protein: number,
-) {
-    return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
 
 const SinaTable = ({ declaraciones }: SinaTableProps) => {
 
@@ -89,7 +64,7 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
                                             >
                                                 <MenuItem value={5}>5</MenuItem>
                                                 <MenuItem value={10}>10</MenuItem>
-                                                <MenuItem value={15}>10</MenuItem>
+                                                <MenuItem value={15}>15</MenuItem>
                                             </Select>
                                         </FormControl>
                                     </Grid>
