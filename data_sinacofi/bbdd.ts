@@ -3,7 +3,7 @@ import { Declaracion } from "@/application";
 export const base_pruebas: Declaracion[] = [
   {
     id: 1,
-    folio: "000120231017",
+    folio: "666",
     fecha_declaracion: new Date("2023-10-01T14:53:15.347Z"),
     fecha_carga_declaracion: new Date("2023-10-28T14:53:15.347Z"),
     is_active: true,
@@ -70,7 +70,7 @@ export const base_pruebas: Declaracion[] = [
       {
         id: 2,
         nombre_completo: "Andres Ignacio Astudillo Palacios",
-        rut_identificacion: "16873654-0",
+        rut_identificacion: "16873654-1",
         participacion: "50",
         declaracion_id: 2,
       },
@@ -128,7 +128,7 @@ export const base_pruebas: Declaracion[] = [
       {
         id: 2,
         nombre_completo: "Andres Ignacio Astudillo Palacios",
-        rut_identificacion: "16873654-0",
+        rut_identificacion: "16873654-1",
         participacion: "50",
         declaracion_id: 2,
       },
@@ -186,7 +186,7 @@ export const base_pruebas: Declaracion[] = [
       {
         id: 2,
         nombre_completo: "Andres Ignacio Astudillo Palacios",
-        rut_identificacion: "16873654-0",
+        rut_identificacion: "16873654-1",
         participacion: "50",
         declaracion_id: 2,
       },
@@ -244,7 +244,7 @@ export const base_pruebas: Declaracion[] = [
       {
         id: 2,
         nombre_completo: "Andres Ignacio Astudillo Palacios",
-        rut_identificacion: "16873654-0",
+        rut_identificacion: "16873654-1",
         participacion: "50",
         declaracion_id: 2,
       },
@@ -302,7 +302,7 @@ export const base_pruebas: Declaracion[] = [
       {
         id: 2,
         nombre_completo: "Andres Ignacio Astudillo Palacios",
-        rut_identificacion: "16873654-0",
+        rut_identificacion: "16873654-1",
         participacion: "50",
         declaracion_id: 2,
       },
@@ -360,7 +360,7 @@ export const base_pruebas: Declaracion[] = [
       {
         id: 2,
         nombre_completo: "Andres Ignacio Astudillo Palacios",
-        rut_identificacion: "16873654-0",
+        rut_identificacion: "16873654-1",
         participacion: "50",
         declaracion_id: 2,
       },
@@ -418,7 +418,7 @@ export const base_pruebas: Declaracion[] = [
       {
         id: 2,
         nombre_completo: "Andres Ignacio Astudillo Palacios",
-        rut_identificacion: "16873654-0",
+        rut_identificacion: "16873654-1",
         participacion: "50",
         declaracion_id: 2,
       },
@@ -476,7 +476,7 @@ export const base_pruebas: Declaracion[] = [
       {
         id: 2,
         nombre_completo: "Andres Ignacio Astudillo Palacios",
-        rut_identificacion: "16873654-0",
+        rut_identificacion: "16873654-1",
         participacion: "50",
         declaracion_id: 2,
       },
@@ -534,7 +534,7 @@ export const base_pruebas: Declaracion[] = [
       {
         id: 2,
         nombre_completo: "Andres Ignacio Astudillo Palacios",
-        rut_identificacion: "16873654-0",
+        rut_identificacion: "16873654-1",
         participacion: "50",
         declaracion_id: 2,
       },
@@ -592,7 +592,7 @@ export const base_pruebas: Declaracion[] = [
       {
         id: 2,
         nombre_completo: "Andres Ignacio Astudillo Palacios",
-        rut_identificacion: "16873654-0",
+        rut_identificacion: "16873654-1",
         participacion: "50",
         declaracion_id: 2,
       },
