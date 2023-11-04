@@ -1,8 +1,8 @@
 "use client"
-import { useTypeSearch } from '@/custom-hooks/typeSearchHook';
+import { TypeOfSearch, useTypeSearch } from '@/custom-hooks/typeSearchHook';
 import React, { createContext } from 'react';
 
-interface TypeSearchContextProps {
+type TypeSearchContextProps = {
     typeOfSearch?: any;
     onSelectFolioType?: any;
     onSelectRutType?: any;
@@ -10,7 +10,7 @@ interface TypeSearchContextProps {
     activeColorFolio?: any;
     activeColorRut?: any;
     activeColorBeneficiario?: any;
-    TypeOfSearch?: any;
+    TypeOfSearch?: TypeOfSearch;
 }
 
 export const TypeSearchContext = createContext<TypeSearchContextProps>({});

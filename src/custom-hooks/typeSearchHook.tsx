@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-enum TypeOfSearch {
+export enum TypeOfSearch {
     FOLIO = 'FOLIO',
     RUT = 'RUT',
     BENEFICIARIO = 'BENEFICIARIO',
@@ -8,7 +8,7 @@ enum TypeOfSearch {
 
 type ActiveColor = 'primary' | 'inherit'
 export const useTypeSearch = () => {
-    const [typeOfSearch, typeOfSearchSetter] = useState<TypeOfSearch>(TypeOfSearch.BENEFICIARIO)
+    const [typeOfSearch, typeOfSearchSetter] = useState<TypeOfSearch>(TypeOfSearch.FOLIO)
 
     function onSelectFolioType() {
         typeOfSearchSetter(x => {

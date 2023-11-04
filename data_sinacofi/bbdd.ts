@@ -28,7 +28,7 @@ export const base_pruebas: Declaracion[] = [
     ],
     persona_juridica: {
       id: 1,
-      rut: "23605789-5",
+      rut: "23605789-6",
       nombre: "WOM Chile",
       domicilio: "Pasaje Lapizlazuli 2169",
       comuna: "Cerro Navia",
@@ -61,7 +61,7 @@ export const base_pruebas: Declaracion[] = [
   },
   {
     id: 2,
-    folio: "111",
+    folio: "222",
     fecha_declaracion: new Date("2023-10-02T14:53:15.347Z"),
     fecha_carga_declaracion: new Date("2023-10-28T14:53:15.347Z"),
     is_active: true,
@@ -202,7 +202,7 @@ export const base_pruebas: Declaracion[] = [
     ],
     persona_juridica: {
       id: 1,
-      rut: "23605789-5",
+      rut: "23605789-6",
       nombre: "Agrícola Los ",
       domicilio: "Pasaje Lapizlazuli 2169",
       comuna: "Cerro Navia",
@@ -260,7 +260,7 @@ export const base_pruebas: Declaracion[] = [
     ],
     persona_juridica: {
       id: 1,
-      rut: "23605789-5",
+      rut: "23605789-6",
       nombre: "Agrícola Los ",
       domicilio: "Pasaje Lapizlazuli 2169",
       comuna: "Cerro Navia",
@@ -318,7 +318,7 @@ export const base_pruebas: Declaracion[] = [
     ],
     persona_juridica: {
       id: 1,
-      rut: "23605789-5",
+      rut: "23605789-6",
       nombre: "Agrícola Los ",
       domicilio: "Pasaje Lapizlazuli 2169",
       comuna: "Cerro Navia",
@@ -376,7 +376,7 @@ export const base_pruebas: Declaracion[] = [
     ],
     persona_juridica: {
       id: 1,
-      rut: "23605789-5",
+      rut: "23605789-6",
       nombre: "Agrícola Los Claveles S.A.",
       domicilio: "Pasaje Lapizlazuli 2169",
       comuna: "Cerro Navia",
@@ -434,7 +434,7 @@ export const base_pruebas: Declaracion[] = [
     ],
     persona_juridica: {
       id: 1,
-      rut: "23605789-5",
+      rut: "23605789-6",
       nombre: "Agrícola Los Claveles S.A.",
       domicilio: "Pasaje Lapizlazuli 2169",
       comuna: "Cerro Navia",
@@ -492,7 +492,7 @@ export const base_pruebas: Declaracion[] = [
     ],
     persona_juridica: {
       id: 1,
-      rut: "23605789-5",
+      rut: "23605789-6",
       nombre: "Agrícola Los Claveles S.A.",
       domicilio: "Pasaje Lapizlazuli 2169",
       comuna: "Cerro Navia",
@@ -550,7 +550,7 @@ export const base_pruebas: Declaracion[] = [
     ],
     persona_juridica: {
       id: 1,
-      rut: "23605789-5",
+      rut: "23605789-6",
       nombre: "Agrícola Los Claveles S.A.",
       domicilio: "Pasaje Lapizlazuli 2169",
       comuna: "Cerro Navia",
@@ -608,7 +608,7 @@ export const base_pruebas: Declaracion[] = [
     ],
     persona_juridica: {
       id: 1,
-      rut: "23605789-5",
+      rut: "23605789-6",
       nombre: "Agrícola Los Claveles S.A.",
       domicilio: "Pasaje Lapizlazuli 2169",
       comuna: "Cerro Navia",
