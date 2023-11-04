@@ -7,9 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "cypress:open": "cypress open"
   },
   "dependencies": {
+    "@cypress/react": "^8.0.0",
     "@edge-runtime/cookies": "^4.0.2",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
@@ -20,9 +22,11 @@
     "@prisma/client": "^5.5.0",
     "@tanstack/react-query": "^5.0.0",
     "@tanstack/react-query-devtools": "^5.0.3",
+    "@testing-library/cypress": "^10.0.1",
     "@types/cookie": "^0.5.3",
     "axios": "^1.5.1",
     "cookie": "^0.5.0",
+    "cypress": "^13.4.0",
     "dayjs": "^1.11.10",
     "jsonwebtoken": "^9.0.2",
     "next": "13.5.6",
