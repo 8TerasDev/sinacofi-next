@@ -58,3 +58,26 @@ export interface Declaracion {
   control_efectivo: ControlEfectivo[] | null;
   persona_juridica: PersonaJuridica;
 }
+
+export interface PJuridicas {
+  registro_id: number;
+  id?: string | undefined;
+  rut_no?: string | undefined;
+  razon_social?: string | undefined;
+  domicilio?: string | undefined;
+  ciudad?: string | undefined;
+  lugar_de_constitucion?: string | undefined;
+  telefono?: string | undefined;
+  cni_no?: string | undefined;
+  nombre_rep_legal?: string | undefined;
+  tipo_sociedad?: string | undefined;
+  codigo_banco?: string | undefined;
+  correlativo_declaracion?: string | undefined;
+  codigo_institucion?: string | undefined;
+  fecha_envio_archivo?: string | undefined;
+  correlativo?: string | undefined;
+  archivo_fuente?: string | undefined;
+  tipo_archivo?: string | undefined;
+  fechahora_transformacion?: string | undefined;
+  fechahora_creacion?: Date | undefined;
+}

@@ -7,68 +7,47 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model beneficiarios_finales {
-  id                 Int         @id @default(autoincrement())
-  nombre_completo    String
-  rut_identificacion String
-  participacion      String
-  declaracion_id     Int
-  declaracion        declaracion @relation(fields: [declaracion_id], references: [id])
+model p_finales {
+  registro_id                 Int       @id @default(autoincrement())
+  id                          String?   @db.VarChar(30)
+  cni_id_rut_benef_final      String?   @db.VarChar(50)
+  nombre_completo             String?   @db.VarChar(200)
+  domicilio                   String?   @db.VarChar(200)
+  ciudad                      String?   @db.VarChar(50)
+  pais                        String?   @db.VarChar(50)
+  tipo_beneficiario_final     String?   @db.VarChar(20)
+  porc_participacion          String?   @db.VarChar(20)
+  cni_id_rut_persona_juridica String?   @db.VarChar(50)
+  codigo_banco                String?   @db.VarChar(50)
+  correlativo_declaracion     String?   @db.VarChar(50)
+  codigo_institucion          String?   @db.VarChar(50)
+  fecha_envio_archivo         String?   @db.VarChar(50)
+  correlativo                 String?   @db.VarChar(30)
+  archivo_fuente              String?   @db.VarChar(50)
+  tipo_archivo                String?   @db.VarChar(50)
+  fechahora_transformacion    String?   @db.VarChar(50)
+  fechahora_creacion          DateTime? @default(now()) @db.Timestamp(6)
 }
 
-model control_efectivo {
-  id                 Int         @id @default(autoincrement())
-  nombre_completo    String
-  rut_identificacion String
-  participacion      String
-  declaracion_id     Int
-  declaracion        declaracion @relation(fields: [declaracion_id], references: [id])
-}
-
-model declaracion {
-  id                      Int                     @id @default(autoincrement())
-  folio                   String
-  fecha_declaracion       DateTime
-  fecha_carga_declaracion DateTime
-  is_active               Boolean                 @default(true)
-  persona_juridica_id     Int
-  beneficiarios_finales   beneficiarios_finales[]
-  control_efectivo        control_efectivo[]
-  persona_juridica        persona_juridica        @relation(fields: [persona_juridica_id], references: [id])
-}
-
-model empleado {
-  id                  Int              @id @default(autoincrement())
-  rut                 String
-  nombre              String
-  correo              String
-  password            String
-  telefono            String
-  persona_juridica_id Int
-  persona_juridica    persona_juridica @relation(fields: [persona_juridica_id], references: [id])
-}
-
-model persona_juridica {
-  id                  Int                   @id @default(autoincrement())
-  rut                 String
-  nombre              String
-  domicilio           String
-  comuna              String
-  ciudad              String
-  constitucion        String
-  telefono            String
-  tipo_sociedad       String
-  declaraciones       declaracion[]
-  empleados           empleado[]
-  representante_legal representante_legal[]
-}
-
-model representante_legal {
-  id                  Int              @id @default(autoincrement())
-  rut                 String
-  nombre              String
-  telefono            String
-  correo              String
-  persona_juridica_id Int
-  persona_juridica    persona_juridica @relation(fields: [persona_juridica_id], references: [id])
+model p_juridicas {
+  registro_id              Int       @id @default(autoincrement())
+  id                       String?   @db.VarChar(30)
+  rut_no                   String?   @db.VarChar(50)
+  razon_social             String?   @db.VarChar(200)
+  domicilio                String?   @db.VarChar(200)
+  ciudad                   String?   @db.VarChar(50)
+  lugar_de_constitucion    String?   @db.VarChar(50)
+  telefono                 String?   @db.VarChar(50)
+  cni_no                   String?   @db.VarChar(50)
+  nombre_rep_legal         String?   @db.VarChar(200)
+  tipo_sociedad            String?   @db.VarChar(50)
+  codigo_banco             String?   @db.VarChar(50)
+  correlativo_declaracion  String?   @db.VarChar(50)
+  codigo_institucion       String?   @db.VarChar(50)
+  fecha_envio_archivo      String?   @db.VarChar(50)
+  correlativo              String?   @db.VarChar(30)
+  archivo_fuente           String?   @db.VarChar(50)
+  tipo_archivo             String?   @db.VarChar(50)
+  fechahora_transformacion String?   @db.VarChar(50)
+  fechahora_creacion       DateTime? @default(now()) @db.Timestamp(6)
 }

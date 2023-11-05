@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { verify } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
 import { serialize } from "cookie";
 import { cookies } from "next/headers";
@@ -6,44 +7,32 @@ import { verifyCredentials } from "@/lib/queries.prisma";
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const { username, password } = body;
-    console.log("body", body);
+    const getCookies = req.cookies;
+    const auth = getCookies.get("auth")
 
-    if (!username || !password || username !== "admin" || password !== "admin") {
-      console.log("username vacio");
-      return new Response(
-        JSON.stringify({ error: "Missing username or password" }),
-        {
-          status: 400,
-        }
-      );
+    if (!auth) {
+      return new Response(JSON.stringify({ error: "no token" }), {
+        status: 401,
+      });
     }
-    // if (!(await verifyCredentials(username, password))) {
-    //   console.log("usuario no existe");
-    //   return new Response(
-    //     JSON.stringify({ error: "Invalid username or password" }),
-    //     {
-    //       status: 400,
-    //     }
-    //   );
-    // }
+    const user = await verify(`${auth?.value}`, "secret") as any
     const token = jwt.sign(
       {
-        username,
-        password,
+        username: user.username,
+        password: user.password,
       },
       "secret",
       {
         expiresIn: "1h",
       }
     );
+
     const serializedToken = serialize("auth", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV !== "development",
       sameSite: "strict",
       path: "/",
-      maxAge: 3600,
+      maxAge: 0,
     });
     const cookieStore = cookies();
     cookieStore.set("auth", serializedToken);
