@@ -51,3 +51,14 @@ model p_juridicas {
   fechahora_transformacion String?   @db.VarChar(50)
   fechahora_creacion       DateTime? @default(now()) @db.Timestamp(6)
 }
+
+model empleado {
+  id            Int      @id @default(autoincrement())
+  email         String
+  password      String
+  nombre        String?
+  telefono      String?
+  codigo_banco  String?
+  url_profile   String?
+  creation_time DateTime @default(now())
+}

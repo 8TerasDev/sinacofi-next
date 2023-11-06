@@ -9,7 +9,7 @@ export async function verifyCredentials(
   try {
     const empleado = await prisma.empleado.findFirst({
       where: {
-        correo: correoInput,
+        email: correoInput,
         password: passwordInput,
       },
     });
