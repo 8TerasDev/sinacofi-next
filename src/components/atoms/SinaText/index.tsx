@@ -42,24 +42,24 @@ type SinaTextProps = {
     size?: Size;
     lineHeight?: "on" | "off";
     spacing?: "on" | "off";
-    font?: "Montserrat" | "Gilbert" | "Roboto" ; 
+    font?: "Montserrat" | "Gilbert" | "Roboto";
 }
-type Size = "xxs" | "xs" | "xsWide" | "sm" | "mWide" | "sl" | "l" | "xl" ;
+type Size = "xxs" | "xs" | "xsWide" | "sm" | "mWide" | "sl" | "l" | "xl";
 
-const SinaText = ({ 
+const SinaText = ({
     children,
     color = "var(--main-color)",
     size = "sm",
     lineHeight = "on",
     spacing = "off",
-    font = "Montserrat"}: SinaTextProps) => {
+    font = "Montserrat" }: SinaTextProps) => {
 
-    const style = {
+    const style: any = {
         ...sizeStyles[size],
         color: color,
         fontFamily: font,
         lineHeight: lineHeight === "on" && "133.4%",
-        spacing: spacing === "on" && "0.17px" 
+        spacing: spacing === "on" && "0.17px"
     };
 
     return (

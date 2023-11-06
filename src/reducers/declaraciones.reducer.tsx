@@ -25,7 +25,7 @@ export const declaracionesReducer = (state: DeclaracionesState, action: Declarac
         case 'FILTER_BY_PERSONA_JURIDICA':
             return state.filter(item => item.persona_juridica.rut === action.payload);
         case 'FILTER_BY_BENEFICIARIO_OR_CONTROL':
-            return state.filter(item => item.beneficiarios_finales.some(beneficiario => beneficiario.rut_identificacion === action.payload));
+            return state.filter(item => item.beneficiarios_finales && item.beneficiarios_finales.some(beneficiario => beneficiario.rut_identificacion === action.payload));
         default:
             return state;
     }

@@ -29,7 +29,7 @@ export const TypeSearchProvider = ({ children }: any) => {
 
     // El valor que se pasa al proveedor debe ser un objeto
     // si quieres pasar múltiples valores o funciones
-    const contextValue = {
+    const contextValue: any = {
         typeOfSearch,
         onSelectFolioType,
         onSelectRutType,
