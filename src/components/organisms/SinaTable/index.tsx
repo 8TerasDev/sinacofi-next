@@ -14,12 +14,15 @@ import {
     TableHead,
     TablePagination,
     TableRow,
+    TableSortLabel,
 } from '@mui/material';
 import styles from './sinatable.module.css'
 import SinaTableHead from '../../molecules/SinaTableHead';
 import SinaTableBody from '../../molecules/SinaTableBody';
 
-import { Declaracion } from '@/application';
+import { Declaracion, PJuridicas } from '@/application';
+import SinaTypography from '@/components/atoms/SinaTypography';
+import SinaTableCtaIcons from '@/components/atoms/SinaTableCtaIcons';
 
 
 const listOfHeaders = [
@@ -31,59 +34,129 @@ const listOfHeaders = [
 ]
 
 interface SinaTableProps {
-    declaraciones: Declaracion[]
+    declaraciones: PJuridicas[]
 }
+const compareFechaHoraCreacion = (a: PJuridicas, b: PJuridicas, direction: 'asc' | 'desc') => {
+    if (a.fechahora_creacion! < b.fechahora_creacion!) {
+        return direction === 'asc' ? -1 : 1;
+    }
+    if (a.fechahora_creacion! > b.fechahora_creacion!) {
+        return direction === 'asc' ? 1 : -1;
+    }
+    return 0;
+};
+
+const compareFechaEnvioArchivo = (a: PJuridicas, b: PJuridicas, direction: 'asc' | 'desc') => {
+    if (a.fecha_envio_archivo! < b.fecha_envio_archivo!) {
+        return direction === 'asc' ? -1 : 1;
+    }
+    if (a.fecha_envio_archivo! > b.fecha_envio_archivo!) {
+        return direction === 'asc' ? 1 : -1;
+    }
+    return 0;
+};
 
 const SinaTable = ({ declaraciones }: SinaTableProps) => {
-
-    const [rowsPerPage, setRowsPerPage] = useState(5);
     const [page, setPage] = useState(0);
-
-
-    const handleChangePage = (event: any, newPage: any) => {
+    const [rowsPerPage, setRowsPerPage] = useState(3);
+    const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
+    };
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0); // Reiniciar a la primera página cuando cambie el número de filas por página
+    };
+    const [orderDirectionFecha, setorderDirectionFecha] = useState<'asc' | 'desc'>('asc');
+    const [orderDirection, setOrderDirection] = useState<'asc' | 'desc'>('asc');
+    const [innerDeclaraciones, setDeclaraciones] = useState<PJuridicas[]>([...declaraciones]);
+
+    const handleSortClickFechaHora = () => {
+        const isAsc = orderDirectionFecha === 'asc';
+        const sortedDeclaraciones = [...declaraciones].sort((a, b) => compareFechaHoraCreacion(a, b, isAsc ? 'asc' : 'desc'));
+        setorderDirectionFecha(isAsc ? 'desc' : 'asc');
+        setDeclaraciones(sortedDeclaraciones);
+    };
+    const handleSortClickCarga = () => {
+        const isAsc = orderDirection === 'asc';
+        const sortedDeclaraciones = [...declaraciones].sort((a, b) => compareFechaEnvioArchivo(a, b, isAsc ? 'asc' : 'desc'));
+        setOrderDirection(isAsc ? 'desc' : 'asc');
+        setDeclaraciones(sortedDeclaraciones);
     };
 
     return (
         <div className={styles.sinatable_container}>
-            <TableContainer>
-                <Table>
-                    <SinaTableHead listOfHeaders={listOfHeaders} />
-                    <SinaTableBody declaraciones={declaraciones} />
-                    <TableFooter >
-                        <TableRow sx={{ boxSizing: "border-box" }}>
-                            <TableCell colSpan={5} >
-                                <Grid container justifyContent="end" alignItems="center" >
-                                    <Grid item>
-                                        <FormControl variant="outlined">
-                                            <InputLabel>Rows</InputLabel>
-                                            <Select
-                                                value={rowsPerPage}
-                                                onChange={(e: any) => setRowsPerPage(e.target.value)}
-                                                label="Rows Per Page"
-                                            >
-                                                <MenuItem value={5}>5</MenuItem>
-                                                <MenuItem value={10}>10</MenuItem>
-                                                <MenuItem value={15}>15</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item>
-                                        <TablePagination
-                                            rowsPerPageOptions={[]} // We hide this because we've provided a custom rows per page dropdown
-                                            component="div"
-                                            count={declaraciones.length}
-                                            rowsPerPage={rowsPerPage}
-                                            page={page}
-                                            onPageChange={handleChangePage}
-                                            onRowsPerPageChange={() => { }} // We handle this with our custom dropdown
-                                        />
-                                    </Grid>
-                                </Grid>
+            <TableContainer component={Paper}>
+                <Table aria-label="tabla de personas jurídicas">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>
+                                <SinaTypography>
+                                    Acción
+                                </SinaTypography>
+                            </TableCell>
+                            <TableCell>
+                                <SinaTypography>
+                                    Folio
+                                </SinaTypography>
+                            </TableCell>
+                            <TableCell>
+                                <SinaTypography>
+                                    Razón Social
+                                </SinaTypography>
+                            </TableCell>
+                            <TableCell >
+                                <TableSortLabel
+                                    active={true}
+                                    direction={orderDirectionFecha}
+                                    onClick={handleSortClickFechaHora}
+                                >
+                                    <SinaTypography>
+                                        Fecha de declaración
+                                    </SinaTypography>
+                                </TableSortLabel>
+                            </TableCell>
+                            <TableCell>
+                                <TableSortLabel
+                                    active={true}
+                                    direction={orderDirection}
+                                    onClick={handleSortClickCarga}
+                                >
+                                    <SinaTypography>
+                                        Fecha de carga
+                                    </SinaTypography>
+                                </TableSortLabel>
                             </TableCell>
                         </TableRow>
-                    </TableFooter>
+                    </TableHead >
+                    <TableBody>
+                        {React.Children.toArray(
+                            innerDeclaraciones
+                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                .map((declaracion) => (
+                                    <TableRow>
+                                        <SinaTableCtaIcons />
+                                        <TableCell>{declaracion.correlativo_declaracion}</TableCell>
+                                        <TableCell>{`${declaracion.nombre_rep_legal}`.toUpperCase()}</TableCell>
+                                        <TableCell>
+                                            {`${declaracion.fechahora_creacion}`}
+                                        </TableCell>
+                                        <TableCell>
+                                            {`${declaracion.fecha_envio_archivo}`}
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                        )}
+                    </TableBody>
                 </Table>
+                <TablePagination
+                    rowsPerPageOptions={[3, 5, 10]}
+                    component="div"
+                    count={innerDeclaraciones.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
             </TableContainer>
         </div>
     )

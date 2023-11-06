@@ -6,7 +6,7 @@ import TableModalDetails from "../../molecules/TableModalDetails";
 import TableModalAccordion from "../../molecules/TableModalAccordion";
 import TableModalCloseButton from "../../atoms/TableModalCloseButton";
 import TableModalFooter from "@/components/molecules/TableModalFooter";
-import { Declaracion } from "@/application";
+import { Declaracion, PJuridicas } from "@/application";
 
 const theme = createTheme({
   palette: {
@@ -20,7 +20,7 @@ const theme = createTheme({
 });
 
 interface SinaTableModalProps {
-  declaracion: Declaracion;
+  declaracion: PJuridicas;
   isOpen: boolean;
   handleClose: () => void;
 }
@@ -65,7 +65,7 @@ export const SinaTableModal = ({
             }}
           >
             <Grid item xs={11}>
-              <TableModalTitle declaracion={declaracion} />
+              {/* <TableModalTitle declaracion={declaracion} /> */}
             </Grid>
             <Grid
               item

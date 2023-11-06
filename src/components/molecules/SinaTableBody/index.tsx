@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { TableBody, TableRow, TableCell } from "@mui/material";
 import SinaTableCtaIcons from "../../atoms/SinaTableCtaIcons";
-import { Declaracion } from "@/application";
+import { Declaracion, PJuridicas } from "@/application";
 import "./sinatablebody.css";
 import { SinaTableModal } from "@/components/organisms/SinaTableModal";
 import useModalHandle from "@/custom-hooks/useModalHandle";
 type SinaTableBodyProps = {
-  declaraciones: Declaracion[];
+  declaraciones: PJuridicas[];
 };
 
 const SinaTableBody = ({ declaraciones }: SinaTableBodyProps) => {
@@ -18,13 +18,13 @@ const SinaTableBody = ({ declaraciones }: SinaTableBodyProps) => {
         declaraciones.map((declaracion) => (
           <TableRow>
             <SinaTableCtaIcons />
-            <TableCell>{declaracion.folio}</TableCell>
-            <TableCell>{declaracion.persona_juridica.nombre}</TableCell>
+            <TableCell>{declaracion.correlativo_declaracion}</TableCell>
+            <TableCell>{declaracion.nombre_rep_legal}</TableCell>
             <TableCell>
-              {new Date(declaracion.fecha_declaracion).toISOString()}
+              {`${declaracion.fechahora_creacion}`}
             </TableCell>
             <TableCell>
-              {new Date(declaracion.fecha_carga_declaracion).toISOString()}
+              {`${declaracion.fecha_envio_archivo}`}
             </TableCell>
           </TableRow>
         ))

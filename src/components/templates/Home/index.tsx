@@ -8,14 +8,15 @@ import DrawerBody from '../../organisms/DrawerBody';
 import SinaAppBar from '../../molecules/SinaAppBar';
 import SinaMainCard from '../../organisms/SinaMainCard';
 import SinaTable from '../../organisms/SinaTable';
-import { Declaracion } from '@/application';
+import { Declaracion, PJuridicas } from '@/application';
 import { MainLayout } from '@/components/atoms/MainLayout';
 
 interface HomeTemplateProps {
-    declaraciones: Declaracion[]
+    declaraciones: PJuridicas[],
+    isLoading: boolean,
 }
 
-const HomeTemplate = ({ declaraciones }: HomeTemplateProps) => {
+const HomeTemplate = ({ declaraciones, isLoading }: HomeTemplateProps) => {
     const [isOpen, isOpenSetter] = useState(true)
     return (
         <MainLayout>
@@ -24,7 +25,8 @@ const HomeTemplate = ({ declaraciones }: HomeTemplateProps) => {
                 <DrawerBody isOpen={isOpen} isOpenSetter={isOpenSetter} />
             </SinaDrawer>
             <SinaMainCard>
-                <SinaTable declaraciones={declaraciones} />
+                {isLoading && <h1>Cargando...</h1>}
+                {!isLoading && <SinaTable declaraciones={declaraciones} />}
             </SinaMainCard>
         </MainLayout>
     )

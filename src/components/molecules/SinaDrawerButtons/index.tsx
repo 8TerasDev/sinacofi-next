@@ -39,9 +39,7 @@ const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
         }
     }
 
-    useEffect(() => {
-        if (filter === "") return dispatch({ type: 'RESET' })
-    }, [filter])
+
     return (
         <>
             {isOpen && < SinaText > Busca una declaración por:</SinaText >}
