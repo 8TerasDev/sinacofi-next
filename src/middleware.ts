@@ -11,7 +11,7 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/', request.url))
     }
     try {
-        const user = await verify(`${auth?.value}`, "secret") as any
+        // const user = await verify(`${auth?.value}`, "secret") as any
     } catch (error) {
         return NextResponse.redirect(new URL('/', request.url))
     }

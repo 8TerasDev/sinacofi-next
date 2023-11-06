@@ -26,13 +26,11 @@ async function fetcher(valueForm: valueForm) {
     }
 }
 const useLoginHook = () => {
-    const route = useRouter()
 
     const { mutate: onSubmit, isPending, isError, isSuccess } = useMutation({
         mutationFn: async (valueForm: valueForm) => await fetcher(valueForm),
         onSuccess: () => {
             console.log('success login')
-            route.push('/home')
         },
         onError: (error) => {
             console.log("error login", { error })

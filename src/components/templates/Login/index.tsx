@@ -22,14 +22,8 @@ import useLoginHook from "./login.hook";
 import SinaAlert from "@/components/molecules/SinaAlert";
 import BackgroundSinacofi from "@/components/atoms/BackgroundSinacofi";
 import ContainerLogin from "@/components/atoms/ContainerLogin";
+import { useRouter } from "next/navigation";
 
-const Cargando = () => {
-  return (
-    <div>
-      <h1>...cargando</h1>
-    </div>
-  );
-};
 
 const LoginTemplate = () => {
   const {
@@ -42,6 +36,12 @@ const LoginTemplate = () => {
     showPassword,
     handleClickShowPassword,
   } = useLoginHook();
+  const route = useRouter()
+
+  async function redirect(e: any) {
+    await handleSubmit(e)
+    route.push('/home')
+  }
 
   return (
     <BackgroundSinacofi>
@@ -65,7 +65,7 @@ const LoginTemplate = () => {
         <FormControl
           component="form"
           noValidate
-          onSubmit={handleSubmit}
+          onSubmit={redirect}
           sx={{ width: "100%" }}
         >
           <TextField
