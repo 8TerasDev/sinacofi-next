@@ -1,4 +1,16 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Comandos para Dockerfile
+
+```bash
+docker build --build-arg ENV_FILE=dev -t nextjs-app-dev .
+```
+
+```bash
+docker build --build-arg ENV_FILE=qas -t nextjs-app-qas .
+```
+
+```bash
+docker build --build-arg ENV_FILE=prd -t nextjs-app-prd .
+```
 
 ## Getting Started
 
