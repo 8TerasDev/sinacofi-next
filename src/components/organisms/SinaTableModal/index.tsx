@@ -65,7 +65,7 @@ export const SinaTableModal = ({
             }}
           >
             <Grid item xs={11}>
-              {/* <TableModalTitle declaracion={declaracion} /> */}
+              <TableModalTitle declaracion={declaracion} />
             </Grid>
             <Grid
               item
@@ -80,7 +80,7 @@ export const SinaTableModal = ({
               />
             </Grid>
             <Grid item xs={3}>
-              <TableModalDetails />
+              <TableModalDetails declaracion={declaracion} />
             </Grid>
             <Grid item xs={1}>
               <Divider orientation="vertical" sx={{ height: "100%" }} />

@@ -5,9 +5,9 @@ import SinaText from "../../atoms/SinaText";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import { Declaracion } from "@/application";
+import { Declaracion, PJuridicas } from "@/application";
 
-const TableModalTitle: React.FC<{ declaracion: Declaracion }> = ({
+const TableModalTitle: React.FC<{ declaracion: PJuridicas }> = ({
   declaracion,
 }) => {
   return (
@@ -48,7 +48,7 @@ const TableModalTitle: React.FC<{ declaracion: Declaracion }> = ({
               <SinaText size="xs" color="var(--gray-text)">
                 Declaración de{" "}
                 {declaracion &&
-                  new Date(declaracion.fecha_declaracion).toISOString()}
+                  `${declaracion.fechahora_creacion}`}
               </SinaText>
             </Box>
           </Grid>
@@ -61,14 +61,14 @@ const TableModalTitle: React.FC<{ declaracion: Declaracion }> = ({
             <Box display="flex" alignItems="center">
               <AttachFileIcon fontSize="small" />
               <SinaText size="xs" color="var(--gray-text)">
-                Folio : {declaracion && declaracion.folio}
+                Folio : {declaracion && declaracion.correlativo_declaracion}
               </SinaText>
             </Box>
           </Grid>
         </Grid>
         <Grid item>
           <SinaText size="sl" lineHeight="off">
-            {declaracion && declaracion.persona_juridica.nombre}
+            {declaracion && declaracion.razon_social}
           </SinaText>
         </Grid>
       </Grid>

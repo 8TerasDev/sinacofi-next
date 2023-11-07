@@ -25,10 +25,10 @@ const HomeView = () => {
 
     // return (<div>{JSON.stringify(declaraciones[0])}</div>)
 
-    const { declaraciones, isLoading } = useContext(DeclaracionesContext)
+    const { state, isLoading } = useContext(DeclaracionesContext)
     return (
         <HomeTemplate
-            declaraciones={declaraciones}
+            declaraciones={state.declaraciones}
             isLoading={isLoading}
         />
     )

@@ -1,7 +1,8 @@
 import React, { useReducer } from 'react';
 import { base_pruebas } from '../../data_sinacofi/bbdd';
+import { PJuridicas } from '@/application';
 // Define the shape of your state and action if necessary
-type DeclaracionesState = typeof base_pruebas; // Assuming base_pruebas is defined elsewhere
+type DeclaracionesState = PJuridicas[]; // Assuming base_pruebas is defined elsewhere
 type DeclaracionesAction = { type: 'ADD'; payload: any } |
 { type: 'REMOVE'; payload: any } |
 { type: 'FILTER_BY_FOLIO'; payload: any } |
@@ -10,10 +11,32 @@ type DeclaracionesAction = { type: 'ADD'; payload: any } |
 { type: 'RESET'; }
 
 // Define the reducer function
-export const declaracionesReducer = (state: DeclaracionesState, action: DeclaracionesAction): DeclaracionesState => {
+export const declaracionesReducer = (state: any, action: any) => {
     switch (action.type) {
+        case "INIT":
+            return {
+                ...state,
+                declaraciones: action.payload
+            }
+        case "FILTER_BY_FOLIO":
+            const newDeclaraciones = state.declaraciones.filter((item: PJuridicas) => item.correlativo_declaracion === action.payload)
+            console.log({ newDeclaraciones })
+            return {
+                ...state,
+                declaraciones: newDeclaraciones
+            };
+
+        default:
+            return state;
+    }
+};
+
+export const declaracionesReducer1 = (state: DeclaracionesState, action: any): PJuridicas[] => {
+    switch (action.type) {
+        case 'INIT_DATA':
+            return state;
         case 'RESET':
-            return [...base_pruebas];
+            return state;
         case 'ADD':
             // Implement the logic for adding an item
             return [...state, action.payload];
@@ -21,11 +44,9 @@ export const declaracionesReducer = (state: DeclaracionesState, action: Declarac
             // Implement the logic for removing an item
             return state.filter(item => item !== action.payload);
         case 'FILTER_BY_FOLIO':
-            return state.filter(item => item.folio === action.payload);
+            return state.filter(item => item.correlativo_declaracion === action.payload);
         case 'FILTER_BY_PERSONA_JURIDICA':
-            return state.filter(item => item.persona_juridica.rut === action.payload);
-        case 'FILTER_BY_BENEFICIARIO_OR_CONTROL':
-            return state.filter(item => item.beneficiarios_finales && item.beneficiarios_finales.some(beneficiario => beneficiario.rut_identificacion === action.payload));
+            return state.filter(item => item.rut_no === action.payload);
         default:
             return state;
     }

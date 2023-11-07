@@ -1,16 +1,10 @@
 "use client"
-import { useTypeSearch } from '@/custom-hooks/typeSearchHook';
-import React, { createContext, useReducer, useState } from 'react';
-import { base_pruebas } from '../../data_sinacofi/bbdd';
-import { Declaracion, PJuridicas } from '@/application';
-import { declaracionesReducer } from '@/reducers/declaraciones.reducer';
+import React, { createContext, useEffect, useReducer, useState } from 'react';
+import { PJuridicas } from '@/application';
 import axios from 'axios';
 import { QueryClient, useQuery } from '@tanstack/react-query';
+import { declaracionesReducer } from '@/reducers/declaraciones.reducer';
 
-interface DeclaracionesContextProps {
-    declaraciones: PJuridicas[],
-    dispatch: any
-}
 
 export const DeclaracionesContext = createContext<any>({});
 
@@ -32,16 +26,40 @@ async function fetchDeclaraciones() {
 }
 const queryClient = new QueryClient();
 
+function filtrarPorRegistroId(declaraciones: PJuridicas[], correlativo_declaracion: string) {
+    if (!Array.isArray(declaraciones) || !correlativo_declaracion) {
+        return null;
+    }
+
+    const resultado = declaraciones.find(declaracion => declaracion.correlativo_declaracion === correlativo_declaracion);
+
+    return resultado || null;
+}
+
+
 
 export const DeclaracionesProvider = ({ children }: any) => {
-    const { data: declaraciones, isLoading, isError, error } = useQuery({
-        queryKey: ['declaraciones'],
-        queryFn: fetchDeclaraciones
-    });
-    const value = { declaraciones, isLoading, isError, error };
+
+    const [isLoading, isLoadingSetter] = useState<boolean>(false)
+    const [state, dispatch] = useReducer(declaracionesReducer, { declaraciones: [] });
+    
+    useEffect(() => {
+        isLoadingSetter(true)
+        fetchDeclaraciones()
+            .then(
+                declaraciones => dispatch({ type: "INIT", payload: declaraciones })
+            )
+            .finally(() => {
+                isLoadingSetter(false)
+            })
+    }, [])
 
     return (
-        <DeclaracionesContext.Provider value={value}>
+        <DeclaracionesContext.Provider value={{
+            state,
+            isLoading,
+            dispatch
+        }}>
             {children}
         </DeclaracionesContext.Provider>
     );
