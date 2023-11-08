@@ -12,7 +12,7 @@ const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
     const {
         typeOfSearch,
     } = useContext(TypeSearchContext)
-    const { dispatch } = useContext(DeclaracionesContext)
+    const { dispatch, reloadDeclaraciones } = useContext(DeclaracionesContext)
     const [filter, filterSetter] = useState("")
 
     function handleSearchByParams() {
@@ -38,6 +38,12 @@ const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
             return "Persona Jurídica";
         }
     }
+
+    useEffect(() => {
+        if (filter.length == 0) {
+            reloadDeclaraciones()
+        }
+    }, [filter])
 
 
     return (

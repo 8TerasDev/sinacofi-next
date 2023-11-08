@@ -10,9 +10,11 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import TableModalAccordionDetails from "../TableModalAccordionDetails";
 import SinaText from "@/components/atoms/SinaText";
+import { PFinales } from "@/application";
 
 type AcordeonProps = {
   type: "beneficiarios" | "control" | "historico";
+  registros: PFinales[];
 };
 
 const getTitleFromType = (type: AcordeonProps["type"]) => {
@@ -28,7 +30,7 @@ const getTitleFromType = (type: AcordeonProps["type"]) => {
   }
 };
 
-const TableModalAcordeon: React.FC<AcordeonProps> = ({ type }) => {
+const TableModalAcordeon: React.FC<AcordeonProps> = ({ type, registros }) => {
   const [expanded, setExpanded] = useState(false);
 
   const handleToggle = (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
@@ -45,10 +47,10 @@ const TableModalAcordeon: React.FC<AcordeonProps> = ({ type }) => {
       expanded={expanded}
       onChange={handleToggle}
       disableGutters
-      sx={{ "&:before": { display: "none" }, boxShadow: "none", mb:'2vh'}}
+      sx={{ "&:before": { display: "none" }, boxShadow: "none", mb: '2vh' }}
     >
       <AccordionSummary
-        expandIcon={<ExpandMoreIcon />} 
+        expandIcon={<ExpandMoreIcon />}
         aria-controls="panel-content"
         id="panel-header"
         sx={{ bgcolor: "rgba(0, 179, 226, 0.1)", p: "0 1vw" }}
@@ -64,7 +66,7 @@ const TableModalAcordeon: React.FC<AcordeonProps> = ({ type }) => {
               endIcon={<DownloadOutlinedIcon />}
               variant="outlined"
               onClick={handleDownload}
-              sx={{ mr:'2vw' }}
+              sx={{ mr: '2vw' }}
             >
               Descargar Lista
             </Button>
@@ -72,7 +74,7 @@ const TableModalAcordeon: React.FC<AcordeonProps> = ({ type }) => {
         </Grid>
       </AccordionSummary>
       <AccordionDetails>
-        <TableModalAccordionDetails />
+        <TableModalAccordionDetails registros={registros} />
       </AccordionDetails>
     </Accordion>
   );

@@ -5,6 +5,7 @@ import { PJuridicas } from '@/application';
 type DeclaracionesState = PJuridicas[]; // Assuming base_pruebas is defined elsewhere
 type DeclaracionesAction = { type: 'ADD'; payload: any } |
 { type: 'REMOVE'; payload: any } |
+{ type: 'SORT_BY_FOLIO'; payload: any } |
 { type: 'FILTER_BY_FOLIO'; payload: any } |
 { type: 'FILTER_BY_PERSONA_JURIDICA'; payload: any } |
 { type: 'FILTER_BY_BENEFICIARIO_OR_CONTROL'; payload: any } |
@@ -19,13 +20,27 @@ export const declaracionesReducer = (state: any, action: any) => {
                 declaraciones: action.payload
             }
         case "FILTER_BY_FOLIO":
-            const newDeclaraciones = state.declaraciones.filter((item: PJuridicas) => item.correlativo_declaracion === action.payload)
-            console.log({ newDeclaraciones })
             return {
                 ...state,
-                declaraciones: newDeclaraciones
+                declaraciones: state.declaraciones.filter((item: PJuridicas) => item.correlativo_declaracion === action.payload)
             };
-
+        case "FILTER_BY_PERSONA_JURIDICA":
+            return {
+                ...state,
+                declaraciones: state.declaraciones.filter((item: PJuridicas) => item.rut_no === action.payload)
+            };
+        case "SORT_BY_FECHA_CREACION":
+            return {
+                ...state,
+                declaraciones: action.payload
+            };
+        case "SORT_BY_FECHA_CARGA":
+            return {
+                ...state,
+                declaraciones: action.payload
+            };
+        case "RESET":
+            return state;
         default:
             return state;
     }

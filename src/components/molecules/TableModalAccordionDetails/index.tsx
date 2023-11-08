@@ -1,38 +1,22 @@
 import React from 'react';
 import { Grid, Divider } from '@mui/material';
 import SinaText from '../../atoms/SinaText';
+import { PFinales } from '@/application';
 
-const TableModalAccordionDetails: React.FC = () => {
-  const registros = [
-    {
-      nombre: 'Amelia Javiera Martinez Salgado',
-      rut: '15.384.123-4',
-      participacion: '50%',
-    },
-    {
-      nombre: 'Amelia Javiera Martinez Salgado',
-      rut: '15.384.123-4',
-      participacion: '50%',
-    },
-    {
-      nombre: 'Amelia Javiera Martinez Salgado',
-      rut: '15.384.123-4',
-      participacion: '50%',
-    },
-  ];
+const TableModalAccordionDetails = ({ registros }: { registros: PFinales[] }) => {
 
   return (
     <>
       {registros.map((registro, index) => (
         <React.Fragment key={index}>
-          <Grid container spacing={2} sx={{p:'0 1vw'}}>
+          <Grid container spacing={2} sx={{ p: '0 1vw' }}>
             {/* Primera fila */}
             <Grid item xs={5}>
               <SinaText color='var(--gray-text)' size="xxs">
                 Nombre Completo
               </SinaText>
               <SinaText size="xs">
-                {registro.nombre}
+                {registro.nombre_completo}
               </SinaText>
             </Grid>
 
@@ -41,7 +25,7 @@ const TableModalAccordionDetails: React.FC = () => {
                 RUT / Identificación
               </SinaText>
               <SinaText size="xs">
-                {registro.rut}
+                {registro.cni_id_rut_benef_final}
               </SinaText>
             </Grid>
 
@@ -50,7 +34,7 @@ const TableModalAccordionDetails: React.FC = () => {
                 Participación
               </SinaText>
               <SinaText size="xs">
-                {registro.participacion}
+                {registro.porc_participacion}
               </SinaText>
             </Grid>
           </Grid>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Divider, Grid, Modal, Paper, Container } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TableModalTitle from "../../molecules/TableModalTitle";
@@ -7,6 +7,7 @@ import TableModalAccordion from "../../molecules/TableModalAccordion";
 import TableModalCloseButton from "../../atoms/TableModalCloseButton";
 import TableModalFooter from "@/components/molecules/TableModalFooter";
 import { Declaracion, PJuridicas } from "@/application";
+import axios from "axios";
 
 const theme = createTheme({
   palette: {
@@ -24,14 +25,41 @@ interface SinaTableModalProps {
   isOpen: boolean;
   handleClose: () => void;
 }
+export async function fetchPFinales(correlativo_declaracion: string) {
+  try {
+    const { data } = await axios.get('/api/pfinales', {
+      params: {
+        correlativo_declaracion
+      }
+    });
+    console.log({ data })
+    const pfinales = data.pfinales;
+
+    return pfinales;
+  } catch (error) {
+    console.error('Hubo un error al obtener las pfinales:', error);
+    throw error;
+  }
+}
 
 export const SinaTableModal = ({
   declaracion,
   isOpen,
   handleClose,
 }: SinaTableModalProps) => {
-  // const [isModalOpen, isOpenSetter] = React.useState(false); // No necesitas esto
 
+  const [beneficiarios, beneficiariosSetter] = useState<any[]>([]);
+  const [controlEfectivo, controlEfectivoSetter] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetchPFinales(declaracion?.correlativo_declaracion!)
+      .then(pfinales => {
+        const control = pfinales.filter((item: any) => item.tipo_beneficiario_final === "02")
+        const finales = pfinales.filter((item: any) => item.tipo_beneficiario_final === "01")
+        controlEfectivoSetter(control)
+        beneficiariosSetter(finales)
+      })
+  }, [isOpen])
   return (
     <ThemeProvider theme={theme}>
       <Modal
@@ -86,9 +114,10 @@ export const SinaTableModal = ({
               <Divider orientation="vertical" sx={{ height: "100%" }} />
             </Grid>
             <Grid item xs={8}>
-              <TableModalAccordion type="beneficiarios" />
-              <TableModalAccordion type="control" />
-              <TableModalAccordion type="historico" />
+              {/* {JSON.stringify(beneficiarios)} */}
+              <TableModalAccordion type="beneficiarios" registros={beneficiarios} />
+              <TableModalAccordion type="control" registros={controlEfectivo} />
+              {/* <TableModalAccordion type="historico" /> */}
             </Grid>
           </Grid>
           <TableModalFooter />

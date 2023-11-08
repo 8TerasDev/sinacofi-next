@@ -11,19 +11,6 @@ async function getDeclaraciones() {
 }
 
 const HomeView = () => {
-    // const {
-    //     data: declaracionesRaw,
-    //     isLoading,
-    //     isError,
-    // } = useQuery({
-    //     queryKey: ['declaraciones'],
-    //     queryFn: async () => { return getDeclaraciones() }
-    // })
-    // if (isLoading) return <div>Loading...</div>
-    // if (isError) return <div>Error</div>
-    // const { declaraciones } = declaracionesRaw
-
-    // return (<div>{JSON.stringify(declaraciones[0])}</div>)
 
     const { state, isLoading } = useContext(DeclaracionesContext)
     return (

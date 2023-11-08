@@ -8,12 +8,12 @@ import { declaracionesReducer } from '@/reducers/declaraciones.reducer';
 
 export const DeclaracionesContext = createContext<any>({});
 
-const API_URL = '/api/pjuridica';
+const API_URL_PJ = '/api/pjuridica';
 
 async function fetchDeclaraciones() {
     try {
         // Hacer la solicitud GET con Axios
-        const { data } = await axios.get(API_URL);
+        const { data } = await axios.get(API_URL_PJ);
         // Acceder al campo 'declaraciones' de la respuesta JSON
         const declaraciones = data.declaraciones;
         return declaraciones;
@@ -24,27 +24,13 @@ async function fetchDeclaraciones() {
         throw error;
     }
 }
-const queryClient = new QueryClient();
-
-function filtrarPorRegistroId(declaraciones: PJuridicas[], correlativo_declaracion: string) {
-    if (!Array.isArray(declaraciones) || !correlativo_declaracion) {
-        return null;
-    }
-
-    const resultado = declaraciones.find(declaracion => declaracion.correlativo_declaracion === correlativo_declaracion);
-
-    return resultado || null;
-}
-
-
 
 export const DeclaracionesProvider = ({ children }: any) => {
 
     const [isLoading, isLoadingSetter] = useState<boolean>(false)
     const [state, dispatch] = useReducer(declaracionesReducer, { declaraciones: [] });
-    
-    useEffect(() => {
-        isLoadingSetter(true)
+
+    function reloadDeclaraciones() {
         fetchDeclaraciones()
             .then(
                 declaraciones => dispatch({ type: "INIT", payload: declaraciones })
@@ -52,13 +38,28 @@ export const DeclaracionesProvider = ({ children }: any) => {
             .finally(() => {
                 isLoadingSetter(false)
             })
+    }
+
+    useEffect(() => {
+        isLoadingSetter(true)
+        if (state.declaraciones.length == 0) {
+            console.log("cargo de nuevo el state")
+            fetchDeclaraciones()
+                .then(
+                    declaraciones => dispatch({ type: "INIT", payload: declaraciones })
+                )
+                .finally(() => {
+                    isLoadingSetter(false)
+                })
+        }
     }, [])
 
     return (
         <DeclaracionesContext.Provider value={{
             state,
             isLoading,
-            dispatch
+            dispatch,
+            reloadDeclaraciones
         }}>
             {children}
         </DeclaracionesContext.Provider>

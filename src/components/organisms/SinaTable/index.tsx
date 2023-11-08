@@ -71,20 +71,19 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
     };
     const [orderDirectionFecha, setorderDirectionFecha] = useState<'asc' | 'desc'>('asc');
     const [orderDirection, setOrderDirection] = useState<'asc' | 'desc'>('asc');
-    const { state } = useContext(DeclaracionesContext)
-    const [innerDeclaraciones, setDeclaraciones] = useState<PJuridicas[]>(state.declaraciones);
+    const { state, dispatch } = useContext(DeclaracionesContext)
 
     const handleSortClickFechaHora = () => {
         const isAsc = orderDirectionFecha === 'asc';
-        const sortedDeclaraciones = [...innerDeclaraciones].sort((a, b) => compareFechaHoraCreacion(a, b, isAsc ? 'asc' : 'desc'));
+        const sortedDeclaraciones = [...state.declaraciones].sort((a, b) => compareFechaHoraCreacion(a, b, isAsc ? 'asc' : 'desc'));
         setorderDirectionFecha(isAsc ? 'desc' : 'asc');
-        setDeclaraciones(sortedDeclaraciones);
+        dispatch({ type: "SORT_BY_FECHA_CREACION", payload: sortedDeclaraciones });
     };
     const handleSortClickCarga = () => {
         const isAsc = orderDirection === 'asc';
-        const sortedDeclaraciones = [...innerDeclaraciones].sort((a, b) => compareFechaEnvioArchivo(a, b, isAsc ? 'asc' : 'desc'));
+        const sortedDeclaraciones = [...state.declaraciones].sort((a, b) => compareFechaEnvioArchivo(a, b, isAsc ? 'asc' : 'desc'));
         setOrderDirection(isAsc ? 'desc' : 'asc');
-        setDeclaraciones(sortedDeclaraciones);
+        dispatch({ type: "SORT_BY_FECHA_CARGA", payload: sortedDeclaraciones });
     };
 
     const [activeDeclaracion, activeDeclaracionSetter] = useState<PJuridicas>();
@@ -144,9 +143,9 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
                         </TableHead >
                         <TableBody>
                             {React.Children.toArray(
-                                innerDeclaraciones
+                                state.declaraciones
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map((declaracion) => (
+                                    .map((declaracion: PJuridicas) => (
                                         <TableRow>
                                             <SinaTableCtaIcons />
                                             <TableCell>{declaracion.correlativo_declaracion}</TableCell>
@@ -172,7 +171,7 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
                     <TablePagination
                         rowsPerPageOptions={[3, 5, 10]}
                         component="div"
-                        count={innerDeclaraciones.length}
+                        count={state.declaraciones.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
@@ -182,7 +181,7 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
             </div >
             {
                 <SinaTableModal
-                    declaracion={activeDeclaracion ? activeDeclaracion : innerDeclaraciones[0]}
+                    declaracion={activeDeclaracion ? activeDeclaracion : state.declaraciones[0]}
                     isOpen={openModal}
                     handleClose={() => { openModalSetter(false) }}
                 />
