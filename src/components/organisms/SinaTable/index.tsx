@@ -26,6 +26,7 @@ import SinaTypography from '@/components/atoms/SinaTypography';
 import SinaTableCtaIcons from '@/components/atoms/SinaTableCtaIcons';
 import { SinaTableModal } from '../SinaTableModal';
 import { DeclaracionesContext } from '@/contexts/declaraciones.context';
+import { disablePJuridicasAxios } from '@/lib/pjuridica.prisma';
 
 
 const listOfHeaders = [
@@ -71,7 +72,7 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
     };
     const [orderDirectionFecha, setorderDirectionFecha] = useState<'asc' | 'desc'>('asc');
     const [orderDirection, setOrderDirection] = useState<'asc' | 'desc'>('asc');
-    const { state, dispatch } = useContext(DeclaracionesContext)
+    const { state, dispatch, reloadDeclaraciones } = useContext(DeclaracionesContext)
 
     const handleSortClickFechaHora = () => {
         const isAsc = orderDirectionFecha === 'asc';
@@ -93,6 +94,11 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
     const openModalWithDeclaracion = (declaracion: any) => {
         openModalSetter(true)
         activeDeclaracionSetter(declaracion)
+    }
+    const disableDeclaracion = (declaracion: any) => {
+        console.log(declaracion.correlativo_declaracion)
+        disablePJuridicasAxios(declaracion.correlativo_declaracion)
+        reloadDeclaraciones()
     }
 
     return (
@@ -147,7 +153,9 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((declaracion: PJuridicas) => (
                                         <TableRow>
-                                            <SinaTableCtaIcons />
+                                            <SinaTableCtaIcons
+                                                onClick={() => { disableDeclaracion(declaracion) }}
+                                            />
                                             <TableCell>{declaracion.correlativo_declaracion}</TableCell>
                                             <TableCell>
                                                 <Button
