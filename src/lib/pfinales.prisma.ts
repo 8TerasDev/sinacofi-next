@@ -50,8 +50,8 @@ export async function getUniqueCorrelativoDeclaracion(
     throw error;
   }
 }
-function transformArray(arrayOfObjects) {
-  return arrayOfObjects.map((item) => item.correlativo_declaracion);
+function transformArray(arrayOfObjects:any) {
+  return arrayOfObjects.map((item:any) => item.correlativo_declaracion);
 }
 export async function getDelcaracionesByRutBeneficiario(
   rut_beneficiario: string

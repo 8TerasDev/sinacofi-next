@@ -24,11 +24,8 @@ export const DeclaracionesProvider = ({ children }: any) => {
 
     async function getDeclaracionesByBeneficiario(rut: string) {
         try {
-            console.log(rut)
             const correlativos = await getDelcaracionesByRutBeneficiario(rut)
-            console.log(correlativos)
             const declaraciones = await getDelcaracionesByCorrelativos(correlativos)
-            console.log(declaraciones)
             dispatch({ type: "INIT", payload: declaraciones })
         } catch (error) {
 
