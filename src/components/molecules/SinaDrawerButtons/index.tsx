@@ -12,15 +12,15 @@ const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
     const {
         typeOfSearch,
     } = useContext(TypeSearchContext)
-    const { dispatch, reloadDeclaraciones } = useContext(DeclaracionesContext)
+    const { dispatch, reloadDeclaraciones, getDeclaracionesByBeneficiario } = useContext(DeclaracionesContext)
     const [filter, filterSetter] = useState("")
 
-    function handleSearchByParams() {
+    async function handleSearchByParams() {
         if (typeOfSearch == TypeOfSearch.FOLIO) {
             dispatch({ type: 'FILTER_BY_FOLIO', payload: filter });
         }
         if (typeOfSearch == TypeOfSearch.BENEFICIARIO) {
-            dispatch({ type: 'FILTER_BY_BENEFICIARIO_OR_CONTROL', payload: filter });
+            await getDeclaracionesByBeneficiario(filter)
         }
         if (typeOfSearch == TypeOfSearch.RUT) {
             dispatch({ type: 'FILTER_BY_PERSONA_JURIDICA', payload: filter });
