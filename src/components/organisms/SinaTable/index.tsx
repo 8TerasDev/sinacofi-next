@@ -129,6 +129,32 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
         reloadDeclaraciones()
     }
 
+    const renderTableRows = () => {
+        return state.declaraciones
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((declaracion: PJuridicas) => (
+                <TableRow key={declaracion.correlativo_declaracion}>
+                    <SinaTableCtaIcons
+                        onClick={() => disableDeclaracion(declaracion)}
+                    />
+                    <TableCell>{declaracion.correlativo_declaracion}</TableCell>
+                    <TableCell>
+                        <Button
+                            onClick={() => openModalWithDeclaracion(declaracion)}
+                        >
+                            {`${declaracion.nombre_rep_legal}`.toUpperCase()}
+                        </Button>
+                    </TableCell>
+                    <TableCell>
+                        {`${declaracion.fechahora_creacion}`}
+                    </TableCell>
+                    <TableCell>
+                        {`${declaracion.fecha_envio_archivo}`}
+                    </TableCell>
+                </TableRow>
+            ));
+    };
+
     return (
         <>
             <div className={styles.sinatable_container}>
@@ -176,32 +202,7 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
                             </TableRow>
                         </TableHead >
                         <TableBody>
-                            {React.Children.toArray(
-                                state.declaraciones
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map((declaracion: PJuridicas) => (
-                                        <TableRow>
-                                            <SinaTableCtaIcons
-                                                onClick={() => { disableDeclaracion(declaracion) }}
-                                            />
-                                            <TableCell>{declaracion.correlativo_declaracion}</TableCell>
-                                            <TableCell>
-                                                <Button
-                                                    onClick={() => { openModalWithDeclaracion(declaracion) }}
-                                                >
-                                                    {`${declaracion.nombre_rep_legal}`.toUpperCase()}
-                                                </Button>
-
-                                            </TableCell>
-                                            <TableCell>
-                                                {`${declaracion.fechahora_creacion}`}
-                                            </TableCell>
-                                            <TableCell>
-                                                {`${declaracion.fecha_envio_archivo}`}
-                                            </TableCell>
-                                        </TableRow>
-                                    ))
-                            )}
+                            {renderTableRows()}
                         </TableBody>
                     </Table>
                     <TablePagination
