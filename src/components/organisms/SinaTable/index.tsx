@@ -93,33 +93,34 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
     const [openModal, openModalSetter] = useState<boolean>(false);
 
 
+    const getDeclaraciones = (declaracion: PJuridicas) => {
+        const index = state.declaraciones.findIndex((item: any) => item.correlativo_declaracion === declaracion.correlativo_declaracion);
+        const nextDeclaracion = index + 1 >= state.declaraciones.length ? state.declaraciones[index] : state.declaraciones[index + 1];
+        const prevDeclaracion = index - 1 >= 0 ? state.declaraciones[index - 1] : state.declaraciones[index];
+        return { nextDeclaracion, prevDeclaracion };
+    };
+
     const openModalWithDeclaracion = (declaracion: PJuridicas) => {
-        openModalSetter(true)
-        const index = state.declaraciones.findIndex((item: any) => item.correlativo_declaracion === declaracion.correlativo_declaracion)
-        const nextDeclaracion = index + 1 >= state.declaraciones.length ? state.declaraciones[index] : state.declaraciones[index + 1]
-        const prevDeclaracion = (index - 1) >= 0 ? state.declaraciones[index - 1] : state.declaraciones[index]
-        nextDeclaracionSetter(nextDeclaracion)
-        prevDeclaracionSetter(prevDeclaracion)
-        activeDeclaracionSetter(declaracion)
-    }
+        openModalSetter(true);
+        const { nextDeclaracion, prevDeclaracion } = getDeclaraciones(declaracion);
+        nextDeclaracionSetter(nextDeclaracion);
+        prevDeclaracionSetter(prevDeclaracion);
+        activeDeclaracionSetter(declaracion);
+    };
 
     const handleNextDeclaracion = (declaracion: PJuridicas) => {
-        const index = state.declaraciones.findIndex((item: any) => item.correlativo_declaracion === declaracion.correlativo_declaracion)
-        const nextDeclaracion = index + 1 >= state.declaraciones.length ? state.declaraciones[index] : state.declaraciones[index + 1]
-        const prevDeclaracion = (index - 1) >= 0 ? state.declaraciones[index - 1] : state.declaraciones[index]
-        nextDeclaracionSetter(nextDeclaracion)
-        prevDeclaracionSetter(prevDeclaracion)
-        activeDeclaracionSetter(declaracion)
-    }
+        const { nextDeclaracion, prevDeclaracion } = getDeclaraciones(declaracion);
+        nextDeclaracionSetter(nextDeclaracion);
+        prevDeclaracionSetter(prevDeclaracion);
+        activeDeclaracionSetter(declaracion);
+    };
 
     const handlePrevDeclaracion = (declaracion: PJuridicas) => {
-        const index = state.declaraciones.findIndex((item: any) => item.correlativo_declaracion === declaracion.correlativo_declaracion)
-        const nextDeclaracion = index + 1 >= state.declaraciones.length ? state.declaraciones[index] : state.declaraciones[index + 1]
-        const prevDeclaracion = (index - 1) >= 0 ? state.declaraciones[index - 1] : state.declaraciones[index]
-        nextDeclaracionSetter(nextDeclaracion)
-        prevDeclaracionSetter(prevDeclaracion)
-        activeDeclaracionSetter(declaracion)
-    }
+        const { nextDeclaracion, prevDeclaracion } = getDeclaraciones(declaracion);
+        nextDeclaracionSetter(nextDeclaracion);
+        prevDeclaracionSetter(prevDeclaracion);
+        activeDeclaracionSetter(declaracion);
+    };
 
 
     const disableDeclaracion = (declaracion: any) => {
