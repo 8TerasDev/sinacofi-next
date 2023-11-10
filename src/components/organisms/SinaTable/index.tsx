@@ -88,13 +88,40 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
     };
 
     const [activeDeclaracion, activeDeclaracionSetter] = useState<PJuridicas>();
+    const [nextDeclaracion, nextDeclaracionSetter] = useState<PJuridicas>();
+    const [prevDeclaracion, prevDeclaracionSetter] = useState<PJuridicas>();
     const [openModal, openModalSetter] = useState<boolean>(false);
 
 
-    const openModalWithDeclaracion = (declaracion: any) => {
+    const openModalWithDeclaracion = (declaracion: PJuridicas) => {
         openModalSetter(true)
+        const index = state.declaraciones.findIndex((item: any) => item.correlativo_declaracion === declaracion.correlativo_declaracion)
+        const nextDeclaracion = index + 1 >= state.declaraciones.length ? state.declaraciones[index] : state.declaraciones[index + 1]
+        const prevDeclaracion = (index - 1) >= 0 ? state.declaraciones[index - 1] : state.declaraciones[index]
+        nextDeclaracionSetter(nextDeclaracion)
+        prevDeclaracionSetter(prevDeclaracion)
         activeDeclaracionSetter(declaracion)
     }
+
+    const handleNextDeclaracion = (declaracion: PJuridicas) => {
+        const index = state.declaraciones.findIndex((item: any) => item.correlativo_declaracion === declaracion.correlativo_declaracion)
+        const nextDeclaracion = index + 1 >= state.declaraciones.length ? state.declaraciones[index] : state.declaraciones[index + 1]
+        const prevDeclaracion = (index - 1) >= 0 ? state.declaraciones[index - 1] : state.declaraciones[index]
+        nextDeclaracionSetter(nextDeclaracion)
+        prevDeclaracionSetter(prevDeclaracion)
+        activeDeclaracionSetter(declaracion)
+    }
+
+    const handlePrevDeclaracion = (declaracion: PJuridicas) => {
+        const index = state.declaraciones.findIndex((item: any) => item.correlativo_declaracion === declaracion.correlativo_declaracion)
+        const nextDeclaracion = index + 1 >= state.declaraciones.length ? state.declaraciones[index] : state.declaraciones[index + 1]
+        const prevDeclaracion = (index - 1) >= 0 ? state.declaraciones[index - 1] : state.declaraciones[index]
+        nextDeclaracionSetter(nextDeclaracion)
+        prevDeclaracionSetter(prevDeclaracion)
+        activeDeclaracionSetter(declaracion)
+    }
+
+
     const disableDeclaracion = (declaracion: any) => {
         console.log(declaracion.correlativo_declaracion)
         disablePJuridicasAxios(declaracion.correlativo_declaracion)
@@ -191,6 +218,8 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
                 <SinaTableModal
                     declaracion={activeDeclaracion ? activeDeclaracion : state.declaraciones[0]}
                     isOpen={openModal}
+                    onNextDeclaracion={() => { handleNextDeclaracion(nextDeclaracion!) }}
+                    onPrevDeclaracion={() => { handlePrevDeclaracion(prevDeclaracion!) }}
                     handleClose={() => { openModalSetter(false) }}
                 />
             }</>

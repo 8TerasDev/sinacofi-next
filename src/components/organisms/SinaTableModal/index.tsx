@@ -24,6 +24,8 @@ interface SinaTableModalProps {
   declaracion: PJuridicas;
   isOpen: boolean;
   handleClose: () => void;
+  onNextDeclaracion: () => void;
+  onPrevDeclaracion: () => void;
 }
 export async function fetchPFinales(correlativo_declaracion: string) {
   try {
@@ -46,6 +48,8 @@ export const SinaTableModal = ({
   declaracion,
   isOpen,
   handleClose,
+  onNextDeclaracion,
+  onPrevDeclaracion
 }: SinaTableModalProps) => {
 
   const [beneficiarios, beneficiariosSetter] = useState<any[]>([]);
@@ -120,7 +124,10 @@ export const SinaTableModal = ({
               {/* <TableModalAccordion type="historico" /> */}
             </Grid>
           </Grid>
-          <TableModalFooter />
+          <TableModalFooter
+            onNextDeclaracion={onNextDeclaracion}
+            onPrevDeclaracion={onPrevDeclaracion}
+          />
         </Paper>
       </Modal>
     </ThemeProvider>

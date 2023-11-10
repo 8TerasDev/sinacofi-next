@@ -15,7 +15,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import SinaText from "@/components/atoms/SinaText";
 
-const TableModalFooter: React.FC = () => {
+const TableModalFooter = ({ onNextDeclaracion, onPrevDeclaracion }: any) => {
   return (
     <Box
       component="footer"
@@ -38,6 +38,7 @@ const TableModalFooter: React.FC = () => {
             startIcon={<ArrowBackIosNewIcon fontSize="small" />}
             sx={{ height: "5vh" }}
             aria-label="anterior"
+            onClick={onPrevDeclaracion}
           >
             <SinaText size="xs">Anterior</SinaText>
           </Button>
@@ -45,6 +46,7 @@ const TableModalFooter: React.FC = () => {
             endIcon={<ArrowForwardIosIcon fontSize="small" />}
             sx={{ height: "5vh" }}
             aria-label="siguiente"
+            onClick={onNextDeclaracion}
           >
             <SinaText size="xs">Siguiente</SinaText>
           </Button>
