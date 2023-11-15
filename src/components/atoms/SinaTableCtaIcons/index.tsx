@@ -6,7 +6,7 @@ import Download from "@mui/icons-material/Download";
 const SinaTableCtaIcons = ({ handleDownload, handleDelete }: any) => {
   return (
     <TableCell>
-      <IconButton onClick={handleDelete}>
+      <IconButton onClick={handleDownload}>
         <Download />
       </IconButton>
       <IconButton onClick={handleDelete}>
