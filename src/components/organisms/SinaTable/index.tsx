@@ -143,7 +143,7 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
             .map((declaracion: PJuridicas) => (
                 <TableRow key={declaracion.correlativo_declaracion}>
                     <SinaTableCtaIcons
-                        handleDelete={()=>openDeleteModalSetter(true)}
+                        handleDelete={()=>handleDeleteModal(declaracion)}
                         handleDownload={() => {}}
                     />
                     <TableCell>{declaracion.correlativo_declaracion}</TableCell>

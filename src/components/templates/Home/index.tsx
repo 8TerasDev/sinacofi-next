@@ -10,6 +10,7 @@ import SinaMainCard from '../../organisms/SinaMainCard';
 import SinaTable from '../../organisms/SinaTable';
 import { Declaracion, PJuridicas } from '@/application';
 import { MainLayout } from '@/components/atoms/MainLayout';
+import { CircularProgress, Stack } from '@mui/material';
 
 interface HomeTemplateProps {
     declaraciones: PJuridicas[],
@@ -25,8 +26,12 @@ const HomeTemplate = ({ declaraciones, isLoading }: HomeTemplateProps) => {
                 <DrawerBody isOpen={isOpen} isOpenSetter={isOpenSetter} />
             </SinaDrawer>
             <SinaMainCard>
-                {isLoading && <h1>Cargando...</h1>}
-                {!isLoading && <SinaTable declaraciones={declaraciones} />}
+                {isLoading ? 
+                    <Stack justifyContent={'center'} alignItems={'center'}>
+                        <CircularProgress/>
+                    </Stack> :
+                    <SinaTable declaraciones={declaraciones} />
+                }
             </SinaMainCard>
         </MainLayout>
     )
