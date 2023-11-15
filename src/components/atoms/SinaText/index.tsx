@@ -1,8 +1,17 @@
 import React from 'react'
+import localFont from 'next/font/local';
+
+// export const gilbertFont = localFont({ src: './GilbertBold.woff'});
+
+// TODO: Sacar fontWeight del size para hacerlo mas versatil.
 
 const sizeStyles = {
-    xxs: {
+    xxxs: {
         fontSize: "10px",
+        fontWeight: 400
+    },
+    xxs: {
+        fontSize: "12px",
         fontWeight: 400
     },
     xs: {
@@ -35,7 +44,6 @@ const sizeStyles = {
     }
 };
 
-
 type SinaTextProps = {
     children: React.ReactNode
     color?: string;
@@ -43,30 +51,33 @@ type SinaTextProps = {
     lineHeight?: "on" | "off";
     spacing?: "on" | "off";
     font?: "Montserrat" | "Gilbert" | "Roboto";
+    fontWeight?: 400 | 500 | 700;
 }
-type Size = "xxs" | "xs" | "xsWide" | "sm" | "mWide" | "sl" | "l" | "xl";
-
+type Size = "xxxs" | "xxs" | "xs" | "xsWide" | "sm" | "mWide" | "sl" | "l" | "xl";
+ 
 const SinaText = ({
     children,
     color = "var(--main-color)",
     size = "sm",
     lineHeight = "on",
     spacing = "off",
-    font = "Montserrat" }: SinaTextProps) => {
-
+    font = "Montserrat",
+    fontWeight,
+  }: SinaTextProps) => {
+    
+    //const fontWithGilbert = font === 'Gilbert' ? gilbertFont.style.fontFamily : font;
+    const fontWithGilbert = font === 'Gilbert' ? font : font;
+    
     const style: any = {
         ...sizeStyles[size],
-        color: color,
-        fontFamily: font,
+        fontWeight,
+        color,
+        fontFamily: fontWithGilbert,
         lineHeight: lineHeight === "on" && "133.4%",
-        spacing: spacing === "on" && "0.17px"
+        letterSpacing: spacing === "on" && "1.17px"
     };
 
-    return (
-        <>
-            <p style={style}>{children}</p>
-        </>
-    )
+    return <p style={style}>{children}</p>;
 }
 
 export default SinaText

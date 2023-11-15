@@ -27,6 +27,7 @@ import SinaTableCtaIcons from '@/components/atoms/SinaTableCtaIcons';
 import { SinaTableModal } from '../SinaTableModal';
 import { DeclaracionesContext } from '@/contexts/declaraciones.context';
 import { disablePJuridicasAxios } from '@/lib/pjuridica.prisma';
+import { DeleteModal } from '../DeleteModal';
 
 
 const listOfHeaders = [
@@ -91,7 +92,13 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
     const [nextDeclaracion, nextDeclaracionSetter] = useState<PJuridicas>();
     const [prevDeclaracion, prevDeclaracionSetter] = useState<PJuridicas>();
     const [openModal, openModalSetter] = useState<boolean>(false);
+    const [currentDeclaracion, setCurrentDeclaracion] = useState();
+    const [openDeleteModal, openDeleteModalSetter] = useState<boolean>(false);
 
+    const handleDeleteModal = (declaracion: PJuridicas) => {
+        openDeleteModalSetter(openDeleteModal => !openDeleteModal);
+        setCurrentDeclaracion(declaracion);
+    }
 
     const getDeclaraciones = (declaracion: PJuridicas) => {
         const index = state.declaraciones.findIndex((item: any) => item.correlativo_declaracion === declaracion.correlativo_declaracion);
@@ -128,6 +135,7 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
         disablePJuridicasAxios(declaracion.correlativo_declaracion)
         reloadDeclaraciones()
     }
+    
 
     const renderTableRows = () => {
         return state.declaraciones
@@ -135,7 +143,8 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
             .map((declaracion: PJuridicas) => (
                 <TableRow key={declaracion.correlativo_declaracion}>
                     <SinaTableCtaIcons
-                        onClick={() => disableDeclaracion(declaracion)}
+                        handleDelete={()=>openDeleteModalSetter(true)}
+                        handleDownload={() => {}}
                     />
                     <TableCell>{declaracion.correlativo_declaracion}</TableCell>
                     <TableCell>
@@ -224,7 +233,16 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
                     onPrevDeclaracion={() => { handlePrevDeclaracion(prevDeclaracion!) }}
                     handleClose={() => { openModalSetter(false) }}
                 />
-            }</>
+            }
+            <DeleteModal 
+              open={openDeleteModal} 
+              handleClose={()=>openDeleteModalSetter(false)}
+              handleDelete={()=>{
+                //console.log(currentDeclaracion);
+                currentDeclaracion && disableDeclaracion(currentDeclaracion)
+              }}
+            />
+            </>
     )
 }
 
