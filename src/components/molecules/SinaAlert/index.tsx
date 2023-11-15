@@ -30,7 +30,7 @@ const SinaAlert = ({ isError, isPending, isSuccess }: any) => {
         )
 
     }
-    if (true) {
+    if (isSuccess) {
         return (
             <Alert
                 severity="success"
