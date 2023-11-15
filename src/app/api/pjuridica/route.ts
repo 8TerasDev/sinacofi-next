@@ -1,8 +1,23 @@
 import { NextRequest } from "next/server";
-import { disablePJuridicas, getAllPJuridicas } from "@/lib/pjuridica.prisma";
+import {
+  disablePJuridicas,
+  getAllPJuridicas,
+  getAllPJuridicasByDates,
+} from "@/lib/pjuridica.prisma";
+import { PJuridicas } from "@/application";
 
 export async function GET(req: NextRequest) {
   try {
+    const url = req.nextUrl;
+    const startDate = url.searchParams.get("startdate");
+    const endDate = url.searchParams.get("enddate");
+
+    // Asegúrate de que startDate y endDate estén definidos
+    if (startDate && endDate) {
+      const declaraciones = await getAllPJuridicasByDates(startDate, endDate);
+      console.log({ declaraciones });
+      return Response.json({ declaraciones });
+    }
     const declaraciones = await getAllPJuridicas();
     return Response.json({ declaraciones });
   } catch (error) {
