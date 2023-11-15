@@ -1,13 +1,13 @@
 import React from "react";
 import { TableCell, IconButton } from "@mui/material";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Download from "@mui/icons-material/Download";
 
 const SinaTableCtaIcons = ({ handleDownload, handleDelete }: any) => {
   return (
     <TableCell>
       <IconButton onClick={handleDelete}>
-        <ArrowDownwardIcon />
+        <Download />
       </IconButton>
       <IconButton onClick={handleDelete}>
         <DeleteIcon />
