@@ -12,7 +12,7 @@ const DrawerBody = ({ isOpen, isOpenSetter }: any) => {
     return (
         <div className={style.drawer_body_container}>
             {isOpen && <SinaText>Realiza una búsqueda</SinaText>}
-            <SinaDrawerIcons isOpen={isOpen} />
+            {isOpen && <SinaDrawerIcons isOpen={isOpen} />}
             <SinaDrawerButtons isOpen={isOpen} isOpenSetter={isOpenSetter} />
         </div>
     )
