@@ -1,15 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import types from "./sinacardheader.module.css";
 import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import SinaText from "../../atoms/SinaText";
+import { handleDownloadCSV } from "@/lib/utils";
+import { DeclaracionesContext } from "@/contexts/declaraciones.context";
 
 
 const SinCardHeader = () => {
   const [orden, setOrden] = React.useState<any>(10);
-
+  const { state } = useContext(DeclaracionesContext);
   const handleChange = (event: SelectChangeEvent) => {
     setOrden(event.target.value);
   };
@@ -41,6 +43,7 @@ const SinCardHeader = () => {
         <Button
           variant="contained"
           className={types.downloadButton}
+          onClick={()=>handleDownloadCSV(state.declaraciones)}
         >
           descargar
         </Button>
