@@ -155,10 +155,10 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
                         </Button>
                     </TableCell>
                     <TableCell>
-                        {`${declaracion.fechahora_creacion}`}
+                        {`${declaracion.fechahora_creacion}`.slice(0,10).replace(/-/g,"/")}
                     </TableCell>
                     <TableCell>
-                        {`${declaracion.fecha_envio_archivo}`}
+                        {`${declaracion.fecha_envio_archivo}`.replace(/-/g,"/")}
                     </TableCell>
                 </TableRow>
             ));
