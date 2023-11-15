@@ -95,7 +95,7 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
     const [currentDeclaracion, setCurrentDeclaracion] = useState();
     const [openDeleteModal, openDeleteModalSetter] = useState<boolean>(false);
 
-    const handleDeleteModal = (declaracion: PJuridicas) => {
+    const handleDeleteModal = (declaracion: any) => {
         openDeleteModalSetter(openDeleteModal => !openDeleteModal);
         setCurrentDeclaracion(declaracion);
     }

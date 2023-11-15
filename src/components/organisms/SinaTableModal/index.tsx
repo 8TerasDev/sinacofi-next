@@ -50,7 +50,7 @@ export const SinaTableModal = ({
   handleClose,
   onNextDeclaracion,
   onPrevDeclaracion
-}: SinaTableModalProps) => {
+}: any) => {
 
   const [beneficiarios, beneficiariosSetter] = useState<any[]>([]);
   const [controlEfectivo, controlEfectivoSetter] = useState<any[]>([]);
