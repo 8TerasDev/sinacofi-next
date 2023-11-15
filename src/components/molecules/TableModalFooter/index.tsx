@@ -14,8 +14,15 @@ import DownloadIcon from "@mui/icons-material/Download";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import SinaText from "@/components/atoms/SinaText";
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import { DeclaracionPDF } from "../PDFViewer";
 
-const TableModalFooter = ({ onNextDeclaracion, onPrevDeclaracion }: any) => {
+const TableModalFooter = ({ 
+  onNextDeclaracion, onPrevDeclaracion,                
+  declaracion,
+  controlEfectivo,
+  beneficiarios 
+}: any) => {
   return (
     <Box
       component="footer"
@@ -52,14 +59,23 @@ const TableModalFooter = ({ onNextDeclaracion, onPrevDeclaracion }: any) => {
           </Button>
         </Grid>
         <Grid container item xs={8} justifyContent="end">
-          <Button
-            startIcon={<DownloadIcon color="secondary" />}
-            sx={{ height: "4vh", mr: "2vh" }}
-            aria-label="descargar"
-            variant="contained"
-          >
-            <SinaText color="white">Descargar declaración</SinaText>
-          </Button>
+          <PDFDownloadLink 
+              document={
+                <DeclaracionPDF
+                  declaracion={declaracion}
+                  controlEfectivo={controlEfectivo}
+                  beneficiarios={beneficiarios}/>
+                } 
+              fileName="declaracion.pdf">
+            <Button
+              startIcon={<DownloadIcon color="secondary" />}
+              sx={{ height: "4vh", mr: "2vh" }}
+              aria-label="descargar"
+              variant="contained"
+            >
+              <SinaText color="white">Descargar declaración</SinaText>
+            </Button>
+          </PDFDownloadLink>
           <Button
             startIcon={<DeleteOutlineIcon color="secondary" />}
             sx={{ height: "4vh" }}

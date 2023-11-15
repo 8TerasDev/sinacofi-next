@@ -127,6 +127,9 @@ export const SinaTableModal = ({
           <TableModalFooter
             onNextDeclaracion={onNextDeclaracion}
             onPrevDeclaracion={onPrevDeclaracion}
+            declaracion={declaracion}
+            controlEfectivo={controlEfectivo}
+            beneficiarios={beneficiarios}
           />
         </Paper>
       </Modal>
