@@ -62,7 +62,7 @@ export const SinCardHeader = () => {
             <MenuItem value={30}>Última Declaración</MenuItem>
           </Select>
         </FormControl>
-        <RangePicker  onCalendarChange={onChangeCalendar} value={calendarValue} />
+        <RangePicker locale={locale} onCalendarChange={onChangeCalendar} value={calendarValue} />
         <Button
           variant="contained"
           className={types.downloadButton}
