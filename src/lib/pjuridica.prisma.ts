@@ -18,6 +18,34 @@ export async function getAllPJuridicas(): Promise<PJuridicas[] | any> {
   }
 }
 
+export async function getAllPJuridicasByDates(
+  startDate: string,
+  endDate: string
+): Promise<PJuridicas[] | any> {
+  try {
+    console.log({ startDate, endDate });
+    const startDateDate = new Date(startDate);
+    const endDateDate = new Date(endDate);
+    console.log("startDateDate", startDateDate);
+    console.log("endDateDate", endDateDate);
+    const response = await prisma.p_juridicas.findMany({
+      where: {
+        disabled: false,
+        fechahora_creacion: {
+          gte: startDateDate, // Mayor o igual que startDate
+          lte: endDateDate, // Menor o igual que endDate
+        },
+      },
+    });
+    console.log("response", response);
+    return response;
+  } catch (error) {
+    return [];
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
 export async function disablePJuridicas(
   correlativo_declaracion: string
 ): Promise<PJuridicas[] | any> {

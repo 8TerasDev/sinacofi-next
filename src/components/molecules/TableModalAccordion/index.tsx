@@ -61,16 +61,6 @@ const TableModalAcordeon: React.FC<AcordeonProps> = ({ type, registros }) => {
               {getTitleFromType(type)}
             </SinaText>
           </Grid>
-          <Grid item>
-            <Button
-              endIcon={<DownloadOutlinedIcon />}
-              variant="outlined"
-              onClick={handleDownload}
-              sx={{ mr: '2vw' }}
-            >
-              Descargar Lista
-            </Button>
-          </Grid>
         </Grid>
       </AccordionSummary>
       <AccordionDetails>

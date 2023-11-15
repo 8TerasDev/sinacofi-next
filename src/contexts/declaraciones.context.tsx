@@ -1,7 +1,7 @@
 "use client"
 import React, { createContext, useEffect, useReducer, useState } from 'react';
 import { declaracionesReducer } from '@/reducers/declaraciones.reducer';
-import { fetchDeclaraciones, getDelcaracionesByRutBeneficiario, getUniqueCorrelativoDeclaracion } from '@/lib/pfinales.prisma';
+import { fetchDeclaraciones, fetchDeclaracionesByDates, getDelcaracionesByRutBeneficiario, getUniqueCorrelativoDeclaracion } from '@/lib/pfinales.prisma';
 import { getDeclaracionesByCorrelativos, getDelcaracionesByCorrelativos } from '@/lib/pjuridica.prisma';
 
 
@@ -14,6 +14,16 @@ export const DeclaracionesProvider = ({ children }: any) => {
 
     function reloadDeclaraciones() {
         fetchDeclaraciones()
+            .then(
+                declaraciones => dispatch({ type: "INIT", payload: declaraciones })
+            )
+            .finally(() => {
+                isLoadingSetter(false)
+            })
+    }
+
+    function loadDeclaracionesByDates(startDate: string, endDate: string) {
+        fetchDeclaracionesByDates(startDate, endDate)
             .then(
                 declaraciones => dispatch({ type: "INIT", payload: declaraciones })
             )
@@ -51,7 +61,8 @@ export const DeclaracionesProvider = ({ children }: any) => {
             isLoading,
             dispatch,
             reloadDeclaraciones,
-            getDeclaracionesByBeneficiario
+            getDeclaracionesByBeneficiario,
+            loadDeclaracionesByDates
         }}>
             {children}
         </DeclaracionesContext.Provider>

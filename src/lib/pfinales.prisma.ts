@@ -27,6 +27,23 @@ export async function fetchDeclaraciones() {
   }
 }
 
+export async function fetchDeclaracionesByDates(
+  startDate: string,
+  endDate: string
+) {
+  try {
+    const url = `${API_URL_PJ}?startdate=${encodeURIComponent(
+      startDate
+    )}&enddate=${encodeURIComponent(endDate)}`;
+    const { data } = await axios.get(url);
+    const declaraciones = data.declaraciones;
+    return declaraciones;
+  } catch (error) {
+    console.error("Hubo un error al obtener las declaraciones:", error);
+    return [];
+  }
+}
+
 export async function getUniqueCorrelativoDeclaracion(
   cni_id_rut_benef_final: string
 ): Promise<string[] | any> {
@@ -50,8 +67,8 @@ export async function getUniqueCorrelativoDeclaracion(
     throw error;
   }
 }
-function transformArray(arrayOfObjects:any) {
-  return arrayOfObjects.map((item:any) => item.correlativo_declaracion);
+function transformArray(arrayOfObjects: any) {
+  return arrayOfObjects.map((item: any) => item.correlativo_declaracion);
 }
 export async function getDelcaracionesByRutBeneficiario(
   rut_beneficiario: string
