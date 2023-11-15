@@ -232,6 +232,7 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
                     onNextDeclaracion={() => { handleNextDeclaracion(nextDeclaracion!) }}
                     onPrevDeclaracion={() => { handlePrevDeclaracion(prevDeclaracion!) }}
                     handleClose={() => { openModalSetter(false) }}
+                    handleDelete={handleDeleteModal}
                 />
             }
             <DeleteModal 
