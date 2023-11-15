@@ -95,7 +95,7 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
     const [currentDeclaracion, setCurrentDeclaracion] = useState();
     const [openDeleteModal, openDeleteModalSetter] = useState<boolean>(false);
 
-    const handleDeleteModal = (declaracion: PJuridicas) => {
+    const handleDeleteModal = (declaracion: any) => {
         openDeleteModalSetter(openDeleteModal => !openDeleteModal);
         setCurrentDeclaracion(declaracion);
     }
@@ -155,10 +155,10 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
                         </Button>
                     </TableCell>
                     <TableCell>
-                        {`${declaracion.fechahora_creacion}`}
+                        {`${declaracion.fechahora_creacion}`.slice(0,10).replace(/-/g,"/")}
                     </TableCell>
                     <TableCell>
-                        {`${declaracion.fecha_envio_archivo}`}
+                        {`${declaracion.fecha_envio_archivo}`.replace(/-/g,"/")}
                     </TableCell>
                 </TableRow>
             ));

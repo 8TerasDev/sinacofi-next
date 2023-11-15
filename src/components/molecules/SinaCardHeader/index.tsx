@@ -1,25 +1,50 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import types from "./sinacardheader.module.css";
 import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+// import { DateRangePicker, LocalizationProvider, SingleInputDateRangeField  } from '@mui/x-date-pickers-pro';
 import SinaText from "../../atoms/SinaText";
-import { handleDownloadCSV } from "@/lib/utils";
 import { DeclaracionesContext } from "@/contexts/declaraciones.context";
+import { handleDownloadCSV } from "@/lib/utils";
+import { DatePicker, Space } from 'antd';
+
+import locale from 'antd/es/date-picker/locale/es_Es';
 
 
-const SinCardHeader = () => {
+const { RangePicker } = DatePicker;
+
+export const SinCardHeader = () => {
   const [orden, setOrden] = React.useState<any>(10);
-  const { state } = useContext(DeclaracionesContext);
+  const { state, loadDeclaracionesByDates } = useContext(DeclaracionesContext);
+
   const handleChange = (event: SelectChangeEvent) => {
     setOrden(event.target.value);
   };
+
+  const [calendarValue, calendarValueSetter] = useState();
+
+  function dateStringifier(value: any) {
+    const response = `${value.$d}`
+    return response
+  }
+
+  function onChangeCalendar(e: any) {
+    calendarValueSetter(e)
+    const from = e[0] && dateStringifier(e[0])
+    const to = e[1] && dateStringifier(e[1])
+
+    if (from && to) {
+      loadDeclaracionesByDates(from, to)
+    }
+  }
+
   return (
     <div className={types.cardheader_container}>
       <div className={types.text_container}>
-        <SinaText size="l" font="Gilbert" lineHeight="off">
-          Declaraciones
+        <SinaText size="l" lineHeight="off" fontWeight={700}>
+          DECLARACIONES
+        </SinaText>
+        <SinaText size="xs" lineHeight="off" spacing="on">
+          Lorem ipsum dolor sit amet consectetur.
         </SinaText>
       </div>
       <div className={types.calendar_container}>
@@ -37,13 +62,11 @@ const SinCardHeader = () => {
             <MenuItem value={30}>Última Declaración</MenuItem>
           </Select>
         </FormControl>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker label="Rango de Fecha" disableFuture />
-        </LocalizationProvider>
+        <RangePicker locale={locale} onCalendarChange={onChangeCalendar} value={calendarValue} />
         <Button
           variant="contained"
           className={types.downloadButton}
-          onClick={()=>handleDownloadCSV(state.declaraciones)}
+          onClick={() => handleDownloadCSV(state.declaraciones)}
         >
           descargar
         </Button>

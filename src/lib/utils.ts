@@ -30,7 +30,7 @@ export const compareFechaEnvioArchivo = (a: PJuridicas, b: PJuridicas, direction
   return 0;
 };
 
-const createCSV = (data) => {
+const createCSV = (data:any) => {
   const keys = Object.keys(data[0]);
   let final = "";
   for(let i=0; i < data.length+1; i++){
@@ -48,7 +48,7 @@ const createCSV = (data) => {
   return final;
 }
 
-export const handleDownloadCSV = (data) => {
+export const handleDownloadCSV = (data:any) => {
   const csvData = createCSV(data);
   const blob = new Blob([csvData], {
     type: "application/json",
