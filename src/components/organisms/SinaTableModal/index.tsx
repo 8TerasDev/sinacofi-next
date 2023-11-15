@@ -49,7 +49,8 @@ export const SinaTableModal = ({
   isOpen,
   handleClose,
   onNextDeclaracion,
-  onPrevDeclaracion
+  onPrevDeclaracion,
+  handleDelete
 }: any) => {
 
   const [beneficiarios, beneficiariosSetter] = useState<any[]>([]);
@@ -130,6 +131,7 @@ export const SinaTableModal = ({
             declaracion={declaracion}
             controlEfectivo={controlEfectivo}
             beneficiarios={beneficiarios}
+            handleDelete={()=>handleDelete(declaracion)}
           />
         </Paper>
       </Modal>

@@ -21,7 +21,8 @@ const TableModalFooter = ({
   onNextDeclaracion, onPrevDeclaracion,                
   declaracion,
   controlEfectivo,
-  beneficiarios 
+  beneficiarios,
+  handleDelete
 }: any) => {
   return (
     <Box
@@ -81,6 +82,7 @@ const TableModalFooter = ({
             sx={{ height: "4vh" }}
             aria-label="eliminar"
             variant="contained"
+            onClick={handleDelete}
           >
             <SinaText color="white">Eliminar declaración</SinaText>
           </Button>

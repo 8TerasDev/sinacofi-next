@@ -3,7 +3,7 @@ import React from "react";
 import { Grid, Stack } from "@mui/material";
 import SinaText from "../../atoms/SinaText";
 import { PJuridicas } from "@/application";
-function formatISODateToDateTime(isoString: string) {
+function formatISODateToDateTime(isoString: any) {
   // Crear un objeto Date con la cadena ISO
   const date = new Date(isoString);
 
