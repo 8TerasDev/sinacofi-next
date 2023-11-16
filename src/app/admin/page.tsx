@@ -80,11 +80,11 @@ const AdminPage = () => {
           sx={{ justifyContent:'center', display:'flex', alignItems:'center'}}
           open={openModal}
           onClose={()=>setOpenModal(false)}>
-            <Paper sx={{height:'80%', width:'80%', padding:'20px'}}>
-              <Stack justifyContent={'center'} alignItems={'center'}>
-                <p>
-                  {type}
-                </p>
+            <Paper sx={{height:'80%', width:'80%', padding:'20px', overflow:'hidden', display:'flex', flexDirection:'column'}}>
+              <Stack justifyContent={'center'} alignItems={'center'} padding={'20px'}>
+                <SinaText>
+                 {type}
+                </SinaText>
               </Stack>
               <FormControl 
                 fullWidth
@@ -95,16 +95,16 @@ const AdminPage = () => {
                   //e.preventDefault();
                   console.log(e.target[0].value)
                 }}
-                sx={{height:'100%', flex:1, justifyContent:'space-between'}}
+                sx={{ justifyContent:'space-between', flex:1}}
                 >
                   <Stack overflow={'auto'}>
                     <Grid container sx={{ justifyContent:'center', height:'100%', flex:1}} >
-                      <Grid item sm={4} padding={'10px'}>
+                      {type === 'user' && <><Grid item sm={4} padding={'10px'}>
                         <TextField 
                           required 
                           variant='filled'
-                          label='Username'
-                          placeholder='Username'
+                          label='Nombre'
+                          placeholder='Nombre'
                           sx={{width:'100%'}}
                           />  
                       </Grid>
@@ -112,8 +112,8 @@ const AdminPage = () => {
                         <TextField 
                           required 
                           variant='filled'
-                          label='Username'
-                          placeholder='Username'
+                          label='Apellido'
+                          placeholder='Apellido'
                           sx={{width:'100%'}}
                           />  
                       </Grid>
@@ -121,8 +121,16 @@ const AdminPage = () => {
                         <TextField 
                           required 
                           variant='filled'
-                          label='Username'
-                          placeholder='Username'
+                          label='Email'
+                          placeholder='Email'
+                          sx={{width:'100%'}}
+                          />  
+                      </Grid>
+                      <Grid item sm={4} padding={'10px'}>
+                        <TextField 
+                          variant='filled'
+                          label='Telefono'
+                          placeholder='Telefono'
                           sx={{width:'100%'}}
                           />  
                       </Grid>
@@ -130,8 +138,21 @@ const AdminPage = () => {
                         <TextField 
                           required 
                           variant='filled'
-                          label='Username'
-                          placeholder='Username'
+                          label='Password'
+                          placeholder='Password'
+                          sx={{width:'100%'}}
+                          id="password"
+                          name="password"
+                          autoComplete="password"
+                          type={true ? "text" : "password"}
+                          />  
+                      </Grid>
+                      <Grid item sm={4} padding={'10px'}>
+                        <TextField 
+                          required 
+                          variant='filled'
+                          label='BankId'
+                          placeholder='BankId'
                           sx={{width:'100%'}}
                           />  
                       </Grid>
@@ -139,8 +160,18 @@ const AdminPage = () => {
                         <TextField 
                           required 
                           variant='filled'
-                          label='Username'
-                          placeholder='Username'
+                          label='Role'
+                          placeholder='Role'
+                          sx={{width:'100%'}}
+                          />  
+                      </Grid> </>}
+                      { type === 'bank' && <>
+                      <Grid item sm={4} padding={'10px'}>
+                        <TextField 
+                          required 
+                          variant='filled'
+                          label='Nombre'
+                          placeholder='Nombre'
                           sx={{width:'100%'}}
                           />  
                       </Grid>
@@ -148,389 +179,11 @@ const AdminPage = () => {
                         <TextField 
                           required 
                           variant='filled'
-                          label='Username'
-                          placeholder='Username'
+                          label='Codigo'
+                          placeholder='Codigo'
                           sx={{width:'100%'}}
                           />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Username'
-                          placeholder='Username'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
+                      </Grid></>}
                     </Grid>
                   </Stack>
                   <Stack padding={'10px'} flexDirection={'row'} justifyContent={'space-around'}>
@@ -546,7 +199,7 @@ const AdminPage = () => {
                       fullWidth
                       color='inherit'
                       variant='contained' 
-                      type='submit'>
+                      onClick={()=>setOpenModal(false)}>
                       Cerrar
                     </Button>
                   </Stack>
