@@ -1,9 +1,8 @@
 .sinatable_container {
     box-sizing: border-box;
-    grid-row: 2/3;
-    grid-column: 1/2;
-    width: 98%;
-    display: grid;
+    width: 100%;
+    display: flex;
+    flex: 1;
     grid-template-rows: 1fr auto;
 }
 

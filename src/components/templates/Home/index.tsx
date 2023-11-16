@@ -11,14 +11,18 @@ import SinaTable from '../../organisms/SinaTable';
 import { Declaracion, PJuridicas } from '@/application';
 import { MainLayout } from '@/components/atoms/MainLayout';
 import { CircularProgress, Stack } from '@mui/material';
+import SinaCardHeader from '../../molecules/SinaCardHeader';
+import { EmptyTable } from '@/components/organisms/EmptyTable';
 
 interface HomeTemplateProps {
-    declaraciones: PJuridicas[],
+    //declaraciones: PJuridicas[],
     isLoading: boolean,
+    state: any
 }
 
-const HomeTemplate = ({ declaraciones, isLoading }: HomeTemplateProps) => {
-    const [isOpen, isOpenSetter] = useState(true)
+const HomeTemplate = ({ isLoading, state }: HomeTemplateProps) => {
+    const [isOpen, isOpenSetter] = useState(true);
+    const { declaraciones, filter } = state;
     return (
         <MainLayout>
             <SinaAppBar />
@@ -26,12 +30,20 @@ const HomeTemplate = ({ declaraciones, isLoading }: HomeTemplateProps) => {
                 <DrawerBody isOpen={isOpen} isOpenSetter={isOpenSetter} />
             </SinaDrawer>
             <SinaMainCard>
-                {isLoading ? 
-                    <Stack justifyContent={'center'} alignItems={'center'}>
-                        <CircularProgress/>
+              {isLoading ? 
+                <Stack justifyContent={'center'} alignItems={'center'} flex={1}>
+                  <CircularProgress/>
+                </Stack> :
+                <>
+                  {state.declaraciones.length > 0 ? 
+                    <Stack flex={1}>
+                      <SinaCardHeader />
+                      <SinaTable declaraciones={declaraciones} />        
                     </Stack> :
-                    <SinaTable declaraciones={declaraciones} />
-                }
+                    <EmptyTable filterBy={filter.filterBy} input={filter.filterInput}/>
+                  }         
+                </>
+              }
             </SinaMainCard>
         </MainLayout>
     )

@@ -7,8 +7,8 @@ const HomeView = () => {
     const { state, isLoading } = useContext(DeclaracionesContext)
     return (
         <HomeTemplate
-            declaraciones={state.declaraciones}
             isLoading={isLoading}
+            state={state}
         />
     )
 }

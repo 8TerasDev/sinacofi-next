@@ -22,11 +22,19 @@ export const declaracionesReducer = (state: any, action: any) => {
         case "FILTER_BY_FOLIO":
             return {
                 ...state,
+                filter: {
+                    filterBy: 'FOLIO',
+                    filterInput: action.payload,
+                },
                 declaraciones: state.declaraciones.filter((item: PJuridicas) => item.correlativo_declaracion === action.payload)
             };
         case "FILTER_BY_PERSONA_JURIDICA":
             return {
                 ...state,
+                filter: {
+                    filterBy: 'PERSONA JURIDICA',
+                    filterInput: action.payload,
+                },
                 declaraciones: state.declaraciones.filter((item: PJuridicas) => item.rut_no === action.payload)
             };
         case "SORT_BY_FECHA_CREACION":
