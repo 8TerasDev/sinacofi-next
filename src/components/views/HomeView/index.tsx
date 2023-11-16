@@ -9,6 +9,7 @@ const HomeView = () => {
         <HomeTemplate
             declaraciones={state.declaraciones}
             isLoading={isLoading}
+            state={state}
         />
     )
 }

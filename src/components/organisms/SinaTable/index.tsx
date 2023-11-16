@@ -7,6 +7,7 @@ import {
     MenuItem,
     Paper,
     Select,
+    Stack,
     Table,
     TableBody,
     TableCell,
@@ -167,8 +168,8 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
     return (
         <>
             <div className={styles.sinatable_container}>
-                <TableContainer component={Paper}>
-                    <Table aria-label="tabla de personas jurídicas">
+                <TableContainer sx={{display:'flex', flex:1, flexDirection:'column', justifyContent:'space-between'}}>
+                    <Table aria-label="tabla de personas jurídicas" sx={{overflowX:'scroll'}}>
                         <TableHead>
                             <TableRow>
                                 <TableCell>
