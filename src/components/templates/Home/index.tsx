@@ -15,14 +15,14 @@ import SinaCardHeader from '../../molecules/SinaCardHeader';
 import { EmptyTable } from '@/components/organisms/EmptyTable';
 
 interface HomeTemplateProps {
-    declaraciones: PJuridicas[],
+    //declaraciones: PJuridicas[],
     isLoading: boolean,
     state: any
 }
 
-const HomeTemplate = ({ declaraciones, isLoading, state }: HomeTemplateProps) => {
+const HomeTemplate = ({ isLoading, state }: HomeTemplateProps) => {
     const [isOpen, isOpenSetter] = useState(true);
-    console.log(state)
+    const { declaraciones, filter } = state;
     return (
         <MainLayout>
             <SinaAppBar />
@@ -30,17 +30,19 @@ const HomeTemplate = ({ declaraciones, isLoading, state }: HomeTemplateProps) =>
                 <DrawerBody isOpen={isOpen} isOpenSetter={isOpenSetter} />
             </SinaDrawer>
             <SinaMainCard>
-              {state.declaraciones.length > 0 ? 
-                <Stack flex={1}>
-                  <SinaCardHeader />
-                  {isLoading ? 
-                    <Stack justifyContent={'center'} alignItems={'center'}>
-                      <CircularProgress/>
-                    </Stack> :
-                    <SinaTable declaraciones={declaraciones} />
-                  }               
+              {isLoading ? 
+                <Stack justifyContent={'center'} alignItems={'center'} flex={1}>
+                  <CircularProgress/>
                 </Stack> :
-                <EmptyTable folio='None'/>
+                <>
+                  {state.declaraciones.length > 0 ? 
+                    <Stack flex={1}>
+                      <SinaCardHeader />
+                      <SinaTable declaraciones={declaraciones} />        
+                    </Stack> :
+                    <EmptyTable filterBy={filter.filterBy} input={filter.filterInput}/>
+                  }         
+                </>
               }
             </SinaMainCard>
         </MainLayout>

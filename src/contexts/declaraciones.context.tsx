@@ -9,7 +9,7 @@ export const DeclaracionesContext = createContext<any>({});
 
 export const DeclaracionesProvider = ({ children }: any) => {
 
-    const [isLoading, isLoadingSetter] = useState<boolean>(false)
+    const [isLoading, isLoadingSetter] = useState<boolean>(true)
     const [state, dispatch] = useReducer(declaracionesReducer, { declaraciones: [] });
 
     function reloadDeclaraciones() {

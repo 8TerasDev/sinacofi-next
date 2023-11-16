@@ -13,7 +13,7 @@ const styles = {
     paddingBottom:'10px'
   }
 }
-export const EmptyTable = ({folio = 'none'}: {folio?: string}) => (
+export const EmptyTable = ({filterBy, input}: {filterBy: string, input: string}) => (
   <Stack
     justifyContent={'center'}
     alignItems={'center'}
@@ -24,7 +24,7 @@ export const EmptyTable = ({folio = 'none'}: {folio?: string}) => (
         Lo sentimos, no se encontraron resultados
       </p>
       <p>
-        La búsqueda de <strong>FOLIO {folio}</strong> no arrojó ningún resultado. 
+        La búsqueda de <strong>{filterBy} {input}</strong> no arrojó ningún resultado. 
       </p>
       <p>
         Verifica la información o intenta reajustar la búsqueda
