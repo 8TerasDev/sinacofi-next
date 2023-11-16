@@ -44,7 +44,7 @@ export const SinCardHeader = () => {
           DECLARACIONES
         </SinaText>
         <SinaText size="xs" lineHeight="off" spacing="on">
-          Lorem ipsum dolor sit amet consectetur.
+          
         </SinaText>
       </div>
       <div className={types.calendar_container}>

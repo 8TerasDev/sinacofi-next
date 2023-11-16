@@ -4,6 +4,8 @@ import { Button, FormControl, Grid, Modal, Paper, Stack, TextField } from '@mui/
 import Image from 'next/image';
 import sinacofi_logo from '../../assets/images/sinacofi_logo.png';
 import { useRouter } from 'next/navigation';
+import { Home } from '@mui/icons-material';
+import SinaText from '@/components/atoms/SinaText';
 
 const AdminPage = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -23,9 +25,19 @@ const AdminPage = () => {
       <Stack 
         borderRadius={'5px'}
         justifyContent={'space-between'} flexDirection={'row'} padding={'20px 40px'} boxShadow={'2px 4px 20px 2px rgba(0, 0, 0, 0.3);'}>
-        <Button onClick={()=>route.push('/home')}>
+        <Button
+          variant='contained'
+          color='success'
+          startIcon={<Home/>}
+          onClick={()=>route.push('/home')}>
           HOME
         </Button>
+        <Stack justifyContent={'center'}>
+          <SinaText size='mWide'>
+            ADMINISTRADOR
+          </SinaText>
+            
+        </Stack>
         <Image src={sinacofi_logo} alt="" width={180} />
       </Stack>
       <Stack height={'15px'} />
@@ -41,16 +53,23 @@ const AdminPage = () => {
         justifyContent={'space-around'} height={'100%'} width={'100%'} padding={'30px'} boxShadow={'2px 4px 20px 2px rgba(0, 0, 0, 0.3);'}>
           <Paper>
             <Stack flexDirection={'row'} justifyContent={'space-around'} padding={'30px'} >
-              <p> Crear usuario </p>
-              <Button variant='contained' onClick={()=>handleModal('user')}>
+            <SinaText size='sl'>
+              CREAR USUARIO
+            </SinaText>
+              <Button 
+                sx={{width:'200px'}}
+                variant='contained' 
+                onClick={()=>handleModal('user')}>
                 Crear
               </Button>
             </Stack>
           </Paper>
           <Paper>
             <Stack flexDirection={'row'} justifyContent={'space-around'} padding={'30px'}>
-              <p> Crear Banco </p>
-              <Button variant='contained' onClick={()=>handleModal('bank')}>
+            <SinaText size='sl'>
+              CREAR BANCO
+            </SinaText>
+              <Button sx={{width:'200px'}} variant='contained' onClick={()=>handleModal('bank')}>
                 Crear
               </Button>
             </Stack>
@@ -78,7 +97,7 @@ const AdminPage = () => {
                 }}
                 sx={{height:'100%', flex:1, justifyContent:'space-between'}}
                 >
-                  <Stack overflow={'scroll'}>
+                  <Stack overflow={'auto'}>
                     <Grid container sx={{ justifyContent:'center', height:'100%', flex:1}} >
                       <Grid item sm={4} padding={'10px'}>
                         <TextField 
@@ -514,12 +533,21 @@ const AdminPage = () => {
                       </Grid>
                     </Grid>
                   </Stack>
-                  <Stack padding={'10px'}>
+                  <Stack padding={'10px'} flexDirection={'row'} justifyContent={'space-around'}>
                     <Button
-                      fullWidth
+                      sx={{width:'40%'}}
+                      color='success'
                       variant='contained' 
                       type='submit'>
                       CREAR
+                    </Button>
+                    <Button
+                    sx={{width:'40%'}}
+                      fullWidth
+                      color='inherit'
+                      variant='contained' 
+                      type='submit'>
+                      Cerrar
                     </Button>
                   </Stack>
               </FormControl>
