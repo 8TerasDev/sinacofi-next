@@ -1,7 +1,8 @@
 import { PFinales } from "@/application";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "./newclient.prisma";
+//import { PrismaClient } from "@prisma/client";
 import axios from "axios";
-const prisma = new PrismaClient();
+//const prisma = new PrismaClient();
 
 export async function getAllPFinales(
   correlativo_declaracion: string

@@ -1,11 +1,12 @@
 "use client"
 import React, { useState } from 'react';
-import { Button, FormControl, Grid, Modal, Paper, Stack, TextField } from '@mui/material';
+import { Button, CircularProgress, FormControl, Grid, Modal, Paper, Stack, TextField } from '@mui/material';
 import Image from 'next/image';
 import sinacofi_logo from '../../assets/images/sinacofi_logo.png';
 import { useRouter } from 'next/navigation';
 import { Home } from '@mui/icons-material';
 import SinaText from '@/components/atoms/SinaText';
+import axios from 'axios';
 
 const AdminPage = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -19,6 +20,26 @@ const AdminPage = () => {
     setOpenModal(true);
     setIsLoading(false);
   }
+
+  const handleSubmit = async (e) => {
+    setIsLoading(true);
+    setOpenModal(false);
+    e.preventDefault();
+    const [nombre , codigo ] = e.target;
+    //console.log(nombre.value,codigo.value)
+    const data = await axios.post(
+      'api/createbank',{
+      nombre: nombre.value,
+      codigo: codigo.value
+    })
+    setIsLoading(false);
+    console.log(data);
+  }
+
+  if(isLoading) return (
+    <Stack flex={1} height={'100vh'} justifyContent={'center'} alignItems={'center'}>
+      <CircularProgress/>
+    </Stack>)
 
   return(
     <Stack flex={1} height={'100vh'} padding={'15px'}>
@@ -90,11 +111,7 @@ const AdminPage = () => {
                 fullWidth
                 required
                 component={'form'}
-                onSubmit={(e)=>{
-                  //e.stopPropagation();
-                  //e.preventDefault();
-                  console.log(e.target[0].value)
-                }}
+                onSubmit={handleSubmit}
                 sx={{ justifyContent:'space-between', flex:1}}
                 >
                   <Stack overflow={'auto'}>
@@ -195,7 +212,7 @@ const AdminPage = () => {
                       CREAR
                     </Button>
                     <Button
-                    sx={{width:'40%'}}
+                      sx={{width:'40%'}}
                       fullWidth
                       color='inherit'
                       variant='contained' 

@@ -1,11 +1,12 @@
-import { PrismaClient } from "@prisma/client";
+//import { PrismaClient } from "@prisma/client";
+import { prisma } from "./newclient.prisma";
 
 export async function verifyCredentials(
   correoInput: string,
   passwordInput: string
 ) {
   console.time("verifyCredentials");
-  const prisma = new PrismaClient();
+  //const prisma = new PrismaClient();
   try {
     const empleado = await prisma.empleado.findFirst({
       where: {
