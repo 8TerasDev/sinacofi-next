@@ -62,7 +62,7 @@ export const handleDownloadCSV = (data:any) => {
   a.remove();
 }
 
-export const encryption = (input) => {
+export const encryption = (input:string) => {
   const randomKey = randomBytes(22).toString('base64');
   const encrypt = pbkdf2Sync(input, randomKey, 600000, 32, 'sha256');
   const encryptedInput =`pbkdf2_sha256$600000$${randomKey}$${encrypt.toString('base64')}`;

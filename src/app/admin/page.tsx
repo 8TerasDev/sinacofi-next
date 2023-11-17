@@ -11,6 +11,11 @@ import { encryption } from '@/lib/utils';
 import { CreateUserForm } from '@/components/organisms/CreateUserForm';
 import { CreateBankForm } from '@/components/organisms/CreateBankForm';
 
+export type CreateFormsProps = {
+  handleSubmit: (input:any) => void;
+  setOpenModal: (input:boolean) => void;
+}
+
 const AdminPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +29,7 @@ const AdminPage = () => {
     setIsLoading(false);
   }
 
-  const handleCreateBank = async (e) => {
+  const handleCreateBank = async (e: any) => {
     const [nombre , codigo] = e.target;
     const data = await axios.post(
       `api/createbank`,{
@@ -33,7 +38,7 @@ const AdminPage = () => {
     })
   }
 
-  const handleCreateUser = async (e) => {
+  const handleCreateUser = async (e:any) => {
     const [name, lastName, email, bankCode, role, phone, password] = e.target;
     const encryptedPassword = encryption(password.value)
 
@@ -54,7 +59,7 @@ const AdminPage = () => {
     })
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:any) => {
     setIsLoading(true);
     setOpenModal(false);
     e.preventDefault();

@@ -1,10 +1,11 @@
+import { CreateFormsProps } from '@/app/admin/page';
 import { FormControl, Stack, Grid, TextField, Button } from '@mui/material';
 import React from 'react';
 
 export const CreateBankForm = ({
   handleSubmit,
   setOpenModal,
-}) => {
+}: CreateFormsProps) => {
   return(
     <FormControl 
       fullWidth

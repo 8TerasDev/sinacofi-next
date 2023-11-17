@@ -154,6 +154,8 @@ model bf_data_process_bank {
   nombre                        String?                         @db.VarChar(128)
   codigo                        String?                         @db.VarChar(4)
   created_at                    DateTime?                       @db.Timestamptz(6)
+  accounts_user                 accounts_user[]
+  bf_data_process_declaraciones bf_data_process_declaraciones[]
 }
 
 /// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
