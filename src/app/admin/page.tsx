@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Home } from '@mui/icons-material';
 import SinaText from '@/components/atoms/SinaText';
 import axios from 'axios';
+import { encryption } from '@/lib/utils';
 
 const AdminPage = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -21,32 +22,55 @@ const AdminPage = () => {
     setIsLoading(false);
   }
 
+  const handleCreateBank = async (e) => {
+    const [nombre , codigo] = e.target;
+    const data = await axios.post(
+      `api/createbank`,{
+      nombre: nombre.value,
+      codigo: codigo.value
+    })
+  }
+
+  const handleCreateUser = async (e) => {
+    const [name, lastName, email, bankCode, role, phone, password] = e.target;
+    const encryptedPassword = encryption(password.value)
+
+    const date = new Date()
+    const data = await axios.post(
+      `api/createuser`,{
+      username: name.value,
+      first_name: name.value,
+      last_name: lastName.value,
+      email: email.value,
+      is_superuser: true,
+      is_staff: true,
+      is_active: true,
+      // bank_id: BigInt(9007199254740991),
+      //phone: phone.value,
+      password: encryptedPassword,
+      date_joined: date.toISOString()
+    })
+  }
+
   const handleSubmit = async (e) => {
     setIsLoading(true);
     setOpenModal(false);
     e.preventDefault();
-    //const [nombre , codigo ] = e.target;
+    try{
+      if(type === 'createbank'){
+        const res = await handleCreateBank(e);
+      }
+      if(type === 'createuser'){
+        const res = await handleCreateUser(e);
+      }
+    }
+    catch(err){
+      console.log('Error0',err);
+    }
+    finally{
+      setIsLoading(false);
+    }
 
-    const [name, lastName, email, bankCode, role, phone, password] = e.target;
-
-    //console.log(nombre.value,codigo.value)
-    // const data = await axios.post(
-    //   `api/${type}`,{
-    //   nombre: nombre.value,
-    //   codigo: codigo.value
-    // })
-    const data = await axios.post(
-      `api/${type}`,{
-      nombre: name.value,
-      lastName: lastName.value,
-      email: email.value,
-      bankCode: bankCode.value,
-      role: role.value,
-      phone: phone.value,
-      password: password.value
-    })
-    setIsLoading(false);
-    console.log(data);
   }
 
   if(isLoading) return (

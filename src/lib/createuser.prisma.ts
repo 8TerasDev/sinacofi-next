@@ -2,33 +2,30 @@
 import { prisma } from "./newclient.prisma";
 
 export type CreateUserProps = {
-  name: string,
-  lastName: string,
+  first_name: string,
+  last_name: string,
+  username: string,
   email: string,
-  bankCode: string,
-  role: string,
   phone?: string,
   password: string,
+  bank_id?: number,
+  is_active: boolean,
+  is_superuser: boolean,
+  is_staff: boolean,
+  date_joined: Date,
 }
 
-const promise = new Promise((resolve, reject) => {
-  setTimeout(() => resolve("Done!"), 2000);
-});
-
 export const createUser = async (data: CreateUserProps ) => {
-  //const prisma = new PrismaClient();
-
   try {
-    const newUser = await promise;
-    //const newUser = await prisma.empleado.create({ data })
+    const newUser = await prisma.accounts_user.create({data})
     return newUser;
   }
   catch(err){
     console.log(err)
     return 'error'
   }
-  finally {
-    await prisma.$disconnect();
-  }
+  // finally {
+  //   await prisma.$disconnect();
+  // }
 
 }
