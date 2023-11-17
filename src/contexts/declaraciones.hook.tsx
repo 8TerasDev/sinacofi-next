@@ -1,16 +1,9 @@
-"use client"
-import React, { createContext, useEffect, useReducer, useState } from 'react';
+import { fetchDeclaraciones, fetchDeclaracionesByDates, getDelcaracionesByRutBeneficiario } from '@/lib/pfinales.prisma';
+import { getDelcaracionesByCorrelativos } from '@/lib/pjuridica.prisma';
 import { declaracionesReducer } from '@/reducers/declaraciones.reducer';
-import { fetchDeclaraciones, fetchDeclaracionesByDates, getDelcaracionesByRutBeneficiario, getUniqueCorrelativoDeclaracion } from '@/lib/pfinales.prisma';
-import { getDeclaracionesByCorrelativos, getDelcaracionesByCorrelativos } from '@/lib/pjuridica.prisma';
-import { useDeclaraciones } from './declaraciones.hook';
+import React, { useEffect, useReducer, useState } from 'react'
 
-
-export const DeclaracionesContext = createContext<any>({});
-
-
-
-export const DeclaracionesProvider = ({ children }: any) => {
+export const useDeclaraciones = () => {
     const [isLoading, isLoadingSetter] = useState<boolean>(false)
     const [state, dispatch] = useReducer(declaracionesReducer, { declaraciones: [] });
 
@@ -24,7 +17,7 @@ export const DeclaracionesProvider = ({ children }: any) => {
             })
     }
 
-    function loadDeclaracionesByDates(startDate: Date, endDate: Date) {
+    function loadDeclaracionesByDates(startDate: string, endDate: string) {
         fetchDeclaracionesByDates(startDate, endDate)
             .then(
                 declaraciones => dispatch({ type: "INIT", payload: declaraciones })
@@ -60,15 +53,13 @@ export const DeclaracionesProvider = ({ children }: any) => {
         loadFirstDeclaracion()
     }, [])
     return (
-        <DeclaracionesContext.Provider value={{
-            state,
+        {
+            state: state.declaraciones || [],
             isLoading,
             dispatch,
             reloadDeclaraciones,
             getDeclaracionesByBeneficiario,
             loadDeclaracionesByDates
-        }}>
-            {children}
-        </DeclaracionesContext.Provider>
-    );
-};
+        }
+    )
+}

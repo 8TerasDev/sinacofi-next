@@ -13,11 +13,10 @@ import { MainLayout } from '@/components/atoms/MainLayout';
 import { CircularProgress, Stack } from '@mui/material';
 
 interface HomeTemplateProps {
-    declaraciones: PJuridicas[],
     isLoading: boolean,
 }
 
-const HomeTemplate = ({ declaraciones, isLoading }: HomeTemplateProps) => {
+const HomeTemplate = ({ isLoading }: HomeTemplateProps) => {
     const [isOpen, isOpenSetter] = useState(true)
     return (
         <MainLayout>
@@ -26,11 +25,11 @@ const HomeTemplate = ({ declaraciones, isLoading }: HomeTemplateProps) => {
                 <DrawerBody isOpen={isOpen} isOpenSetter={isOpenSetter} />
             </SinaDrawer>
             <SinaMainCard>
-                {isLoading ? 
+                {isLoading ?
                     <Stack justifyContent={'center'} alignItems={'center'}>
-                        <CircularProgress/>
+                        <CircularProgress />
                     </Stack> :
-                    <SinaTable declaraciones={declaraciones} />
+                    <SinaTable />
                 }
             </SinaMainCard>
         </MainLayout>

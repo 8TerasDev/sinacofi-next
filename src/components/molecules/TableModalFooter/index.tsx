@@ -18,7 +18,8 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import { DeclaracionPDF } from "../PDFViewer";
 
 const TableModalFooter = ({ 
-  onNextDeclaracion, onPrevDeclaracion,                
+  onNextDeclaracion,
+  onPrevDeclaracion,                
   declaracion,
   controlEfectivo,
   beneficiarios,

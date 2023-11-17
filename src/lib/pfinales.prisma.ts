@@ -28,13 +28,13 @@ export async function fetchDeclaraciones() {
 }
 
 export async function fetchDeclaracionesByDates(
-  startDate: string,
-  endDate: string
+  startDate: Date,
+  endDate: Date
 ) {
   try {
     const url = `${API_URL_PJ}?startdate=${encodeURIComponent(
-      startDate
-    )}&enddate=${encodeURIComponent(endDate)}`;
+      `${startDate}`
+    )}&enddate=${encodeURIComponent(`${endDate}`)}`;
     const { data } = await axios.get(url);
     const declaraciones = data.declaraciones;
     return declaraciones;

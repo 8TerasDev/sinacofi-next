@@ -11,10 +11,12 @@ import { DeclaracionesContext } from '@/contexts/declaraciones.context';
 const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
     const {
         typeOfSearch,
+        filter,
+        filterSetter
     } = useContext(TypeSearchContext)
     const { dispatch, reloadDeclaraciones, getDeclaracionesByBeneficiario } = useContext(DeclaracionesContext)
-    const [filter, filterSetter] = useState("")
 
+    const [preValue, preValueSetter] = useState("")
     async function handleSearchByParams() {
         if (typeOfSearch == TypeOfSearch.FOLIO) {
             dispatch({ type: 'FILTER_BY_FOLIO', payload: filter });
@@ -39,8 +41,13 @@ const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
         }
     }
 
+    function cleanAndSearch({ target }: any) {
+        filterSetter(target.value)
+    }
+
     useEffect(() => {
-        if (filter.length == 0) {
+
+        if (filter?.length == 0) {
             reloadDeclaraciones()
         }
     }, [filter])
@@ -49,13 +56,13 @@ const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
     return (
         <>
             {isOpen && < SinaText > Busca una declaración por:</SinaText >}
-            {/* {//TODO: MEJORAR ACA} */}
             {
                 isOpen &&
                 <TextField
                     label={placeHolderText()}
                     placeholder={`busqueda por ${typeOfSearch}`}
-                    onChange={(e) => { filterSetter(e.target.value) }}
+                    onChange={cleanAndSearch}
+                    value={filter}
                     fullWidth
                 />
             }

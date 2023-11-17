@@ -6,10 +6,9 @@ import AttachFileIcon from "@mui/icons-material/AttachFile";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import { Declaracion, PJuridicas } from "@/application";
-
-const TableModalTitle: React.FC<{ declaracion: PJuridicas }> = ({
+export const TableModalTitle = ({
   declaracion,
-}) => {
+}: any) => {
   return (
     <Box
       component="header"
@@ -24,7 +23,6 @@ const TableModalTitle: React.FC<{ declaracion: PJuridicas }> = ({
         height: "11vh",
         borderRadius: 2,
         borderBottomRightRadius: 0,
-        bgcolor: "#f7f7f7",
       }}
     >
       <Grid item xs={8} container direction="column">
@@ -48,7 +46,7 @@ const TableModalTitle: React.FC<{ declaracion: PJuridicas }> = ({
               <SinaText size="xs" color="var(--gray-text)">
                 Declaración de{" "}
                 {declaracion &&
-                  `${declaracion.fechahora_creacion}`}
+                  `${declaracion.fechahora_creacion}`.slice(0, 10).replace(/-/g, "/")}
               </SinaText>
             </Box>
           </Grid>
@@ -66,7 +64,7 @@ const TableModalTitle: React.FC<{ declaracion: PJuridicas }> = ({
             </Box>
           </Grid>
         </Grid>
-        <Grid item>
+        <Grid item sx={{ marginTop: "1rem" }}>
           <SinaText size="sl" lineHeight="off">
             {declaracion && declaracion.razon_social}
           </SinaText>
@@ -75,5 +73,3 @@ const TableModalTitle: React.FC<{ declaracion: PJuridicas }> = ({
     </Box>
   );
 };
-
-export default TableModalTitle;

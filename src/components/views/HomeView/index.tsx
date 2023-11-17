@@ -4,10 +4,9 @@ import { DeclaracionesContext } from '@/contexts/declaraciones.context';
 
 const HomeView = () => {
 
-    const { state, isLoading } = useContext(DeclaracionesContext)
+    const { isLoading } = useContext(DeclaracionesContext)
     return (
         <HomeTemplate
-            declaraciones={state.declaraciones}
             isLoading={isLoading}
         />
     )

@@ -28,6 +28,7 @@ import { SinaTableModal } from '../SinaTableModal';
 import { DeclaracionesContext } from '@/contexts/declaraciones.context';
 import { disablePJuridicasAxios } from '@/lib/pjuridica.prisma';
 import { DeleteModal } from '../DeleteModal';
+import RenderTable from './RenderTable';
 
 
 const listOfHeaders = [
@@ -61,7 +62,9 @@ const compareFechaEnvioArchivo = (a: PJuridicas, b: PJuridicas, direction: 'asc'
     return 0;
 };
 
-const SinaTable = ({ declaraciones }: SinaTableProps) => {
+const SinaTable = () => {
+    const { state, dispatch, reloadDeclaraciones } = useContext(DeclaracionesContext)
+
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(3);
     const handleChangePage = (event: unknown, newPage: number) => {
@@ -69,23 +72,20 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
     };
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0); // Reiniciar a la primera página cuando cambie el número de filas por página
+        setPage(0);
     };
     const [orderDirectionFecha, setorderDirectionFecha] = useState<'asc' | 'desc'>('asc');
     const [orderDirection, setOrderDirection] = useState<'asc' | 'desc'>('asc');
-    const { state, dispatch, reloadDeclaraciones } = useContext(DeclaracionesContext)
 
     const handleSortClickFechaHora = () => {
         const isAsc = orderDirectionFecha === 'asc';
-        const sortedDeclaraciones = [...state.declaraciones].sort((a, b) => compareFechaHoraCreacion(a, b, isAsc ? 'asc' : 'desc'));
         setorderDirectionFecha(isAsc ? 'desc' : 'asc');
-        dispatch({ type: "SORT_BY_FECHA_CREACION", payload: sortedDeclaraciones });
+        dispatch({ type: "SORT_BY_FECHA_CREACION", payload: isAsc });
     };
     const handleSortClickCarga = () => {
         const isAsc = orderDirection === 'asc';
-        const sortedDeclaraciones = [...state.declaraciones].sort((a, b) => compareFechaEnvioArchivo(a, b, isAsc ? 'asc' : 'desc'));
         setOrderDirection(isAsc ? 'desc' : 'asc');
-        dispatch({ type: "SORT_BY_FECHA_CARGA", payload: sortedDeclaraciones });
+        dispatch({ type: "SORT_BY_FECHA_CARGA", payload: isAsc });
     };
 
     const [activeDeclaracion, activeDeclaracionSetter] = useState<PJuridicas>();
@@ -135,34 +135,6 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
         disablePJuridicasAxios(declaracion.correlativo_declaracion)
         reloadDeclaraciones()
     }
-    
-
-    const renderTableRows = () => {
-        return state.declaraciones
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((declaracion: PJuridicas) => (
-                <TableRow key={declaracion.correlativo_declaracion}>
-                    <SinaTableCtaIcons
-                        handleDelete={()=>handleDeleteModal(declaracion)}
-                        handleDownload={() => {}}
-                    />
-                    <TableCell>{declaracion.correlativo_declaracion}</TableCell>
-                    <TableCell>
-                        <Button
-                            onClick={() => openModalWithDeclaracion(declaracion)}
-                        >
-                            {`${declaracion.nombre_rep_legal}`.toUpperCase()}
-                        </Button>
-                    </TableCell>
-                    <TableCell>
-                        {`${declaracion.fechahora_creacion}`.slice(0,10).replace(/-/g,"/")}
-                    </TableCell>
-                    <TableCell>
-                        {`${declaracion.fecha_envio_archivo}`.replace(/-/g,"/")}
-                    </TableCell>
-                </TableRow>
-            ));
-    };
 
     return (
         <>
@@ -211,7 +183,13 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
                             </TableRow>
                         </TableHead >
                         <TableBody>
-                            {renderTableRows()}
+                            <RenderTable
+                                declaraciones={state.declaraciones}
+                                page={page}
+                                rowsPerPage={rowsPerPage}
+                                handleDeleteModal={handleDeleteModal}
+                                openModalWithDeclaracion={openModalWithDeclaracion}
+                            />
                         </TableBody>
                     </Table>
                     <TablePagination
@@ -235,15 +213,15 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
                     handleDelete={handleDeleteModal}
                 />
             }
-            <DeleteModal 
-              open={openDeleteModal} 
-              handleClose={()=>openDeleteModalSetter(false)}
-              handleDelete={()=>{
-                //console.log(currentDeclaracion);
-                currentDeclaracion && disableDeclaracion(currentDeclaracion)
-              }}
+            <DeleteModal
+                open={openDeleteModal}
+                handleClose={() => openDeleteModalSetter(false)}
+                handleDelete={() => {
+                    //console.log(currentDeclaracion);
+                    currentDeclaracion && disableDeclaracion(currentDeclaracion)
+                }}
             />
-            </>
+        </>
     )
 }
 

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Divider, Grid, Modal, Paper, Container } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import TableModalTitle from "../../molecules/TableModalTitle";
 import TableModalDetails from "../../molecules/TableModalDetails";
 import TableModalAccordion from "../../molecules/TableModalAccordion";
 import TableModalCloseButton from "../../atoms/TableModalCloseButton";
 import TableModalFooter from "@/components/molecules/TableModalFooter";
 import { Declaracion, PJuridicas } from "@/application";
 import axios from "axios";
+import { TableModalTitle } from "@/components/molecules/TableModalTitle";
 
 const theme = createTheme({
   palette: {
@@ -20,13 +20,6 @@ const theme = createTheme({
   },
 });
 
-interface SinaTableModalProps {
-  declaracion: PJuridicas;
-  isOpen: boolean;
-  handleClose: () => void;
-  onNextDeclaracion: () => void;
-  onPrevDeclaracion: () => void;
-}
 export async function fetchPFinales(correlativo_declaracion: string) {
   try {
     const { data } = await axios.get('/api/pfinales', {

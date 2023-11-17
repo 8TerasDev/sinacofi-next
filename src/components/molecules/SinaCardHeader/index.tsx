@@ -29,9 +29,8 @@ export const SinCardHeader = () => {
 
   function onChangeCalendar(e: any) {
     calendarValueSetter(e)
-    const from = e[0] && dateStringifier(e[0])
-    const to = e[1] && dateStringifier(e[1])
-
+    let from = e[0] && dateStringifier(e[0])
+    let to = e[1] && dateStringifier(e[1])
     if (from && to) {
       loadDeclaracionesByDates(from, to)
     }
@@ -42,9 +41,6 @@ export const SinCardHeader = () => {
       <div className={types.text_container}>
         <SinaText size="l" lineHeight="off" fontWeight={700}>
           DECLARACIONES
-        </SinaText>
-        <SinaText size="xs" lineHeight="off" spacing="on">
-          Lorem ipsum dolor sit amet consectetur.
         </SinaText>
       </div>
       <div className={types.calendar_container}>
@@ -63,7 +59,7 @@ export const SinCardHeader = () => {
           </Select>
         </FormControl>
         {/* <RangePicker locale={locale} onCalendarChange={onChangeCalendar} value={calendarValue} /> */}
-        <RangePicker onCalendarChange={onChangeCalendar} value={calendarValue} />
+        <RangePicker onCalendarChange={onChangeCalendar} value={calendarValue}/>
         <Button
           variant="contained"
           className={types.downloadButton}

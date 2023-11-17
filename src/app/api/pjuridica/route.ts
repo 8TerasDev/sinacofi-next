@@ -15,7 +15,6 @@ export async function GET(req: NextRequest) {
     // Asegúrate de que startDate y endDate estén definidos
     if (startDate && endDate) {
       const declaraciones = await getAllPJuridicasByDates(startDate, endDate);
-      console.log({ declaraciones });
       return Response.json({ declaraciones });
     }
     const declaraciones = await getAllPJuridicas();
