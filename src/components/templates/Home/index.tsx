@@ -47,7 +47,7 @@ const HomeTemplate = ({ isLoading, state }: HomeTemplateProps) => {
                       <SinaCardHeader />
                       <SinaTable declaraciones={declaraciones} />        
                     </Stack> :
-                    <EmptyTable filterBy={filter.filterBy} input={filter.filterInput}/>
+                    <EmptyTable filterBy={filter && filter.filterBy} input={filter && filter.filterInput}/>
                   }         
                 </>
               }
