@@ -3,7 +3,6 @@ import React, { createContext, useEffect, useReducer, useState } from 'react';
 import { declaracionesReducer } from '@/reducers/declaraciones.reducer';
 import { fetchDeclaraciones, fetchDeclaracionesByDates, getDelcaracionesByRutBeneficiario, getUniqueCorrelativoDeclaracion } from '@/lib/pfinales.prisma';
 import { getDeclaracionesByCorrelativos, getDelcaracionesByCorrelativos } from '@/lib/pjuridica.prisma';
-import { useDeclaraciones } from './declaraciones.hook';
 
 
 export const DeclaracionesContext = createContext<any>({});

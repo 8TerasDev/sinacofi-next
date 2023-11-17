@@ -17,11 +17,13 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body>
+        <ReactQueryProvider>
           <DeclaracionesProvider>
             <TypeSearchProvider>
               {children}
             </TypeSearchProvider>
           </DeclaracionesProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   )
