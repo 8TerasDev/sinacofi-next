@@ -13,6 +13,7 @@ import { MainLayout } from '@/components/atoms/MainLayout';
 import { CircularProgress, Stack } from '@mui/material';
 import SinaCardHeader from '../../molecules/SinaCardHeader';
 import { EmptyTable } from '@/components/organisms/EmptyTable';
+import { useRouter } from 'next/navigation';
 
 interface HomeTemplateProps {
     //declaraciones: PJuridicas[],
@@ -22,10 +23,16 @@ interface HomeTemplateProps {
 
 const HomeTemplate = ({ isLoading, state }: HomeTemplateProps) => {
     const [isOpen, isOpenSetter] = useState(true);
+    const route = useRouter();
+    const isAdmin = true;
     const { declaraciones, filter } = state;
+    const handleAdmin = () => {
+      isAdmin && route.push('/admin');
+    }
+    
     return (
         <MainLayout>
-            <SinaAppBar />
+            <SinaAppBar handleAdmin={isAdmin && handleAdmin}/>
             <SinaDrawer isOpen={isOpen} isOpenSetter={isOpenSetter}>
                 <DrawerBody isOpen={isOpen} isOpenSetter={isOpenSetter} />
             </SinaDrawer>
