@@ -1,13 +1,13 @@
 import { NextRequest } from "next/server";
-import { SignUpProps, signUp } from "@/lib/signup.prisma";
+import { CreateUserProps, createUser } from "@/lib/createuser.prisma";
 
 // to GET users --> await prisma.empleado.findMany()
 
 export const POST = async ( req: NextRequest) => {
 
   try {
-    const data: SignUpProps = await req.json()
-    const newUser = await signUp(data);
+    const data: CreateUserProps = await req.json()
+    const newUser = await createUser(data);
     const newUserString = JSON.stringify(newUser);
 
     return new Response(

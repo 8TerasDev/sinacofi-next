@@ -25,12 +25,25 @@ const AdminPage = () => {
     setIsLoading(true);
     setOpenModal(false);
     e.preventDefault();
-    const [nombre , codigo ] = e.target;
+    //const [nombre , codigo ] = e.target;
+
+    const [name, lastName, email, bankCode, role, phone, password] = e.target;
+
     //console.log(nombre.value,codigo.value)
+    // const data = await axios.post(
+    //   `api/${type}`,{
+    //   nombre: nombre.value,
+    //   codigo: codigo.value
+    // })
     const data = await axios.post(
-      'api/createbank',{
-      nombre: nombre.value,
-      codigo: codigo.value
+      `api/${type}`,{
+      nombre: name.value,
+      lastName: lastName.value,
+      email: email.value,
+      bankCode: bankCode.value,
+      role: role.value,
+      phone: phone.value,
+      password: password.value
     })
     setIsLoading(false);
     console.log(data);
@@ -80,7 +93,7 @@ const AdminPage = () => {
               <Button 
                 sx={{width:'200px'}}
                 variant='contained' 
-                onClick={()=>handleModal('user')}>
+                onClick={()=>handleModal('createuser')}>
                 Crear
               </Button>
             </Stack>
@@ -90,7 +103,7 @@ const AdminPage = () => {
             <SinaText size='sl'>
               CREAR BANCO
             </SinaText>
-              <Button sx={{width:'200px'}} variant='contained' onClick={()=>handleModal('bank')}>
+              <Button sx={{width:'200px'}} variant='contained' onClick={()=>handleModal('createbank')}>
                 Crear
               </Button>
             </Stack>
@@ -116,7 +129,7 @@ const AdminPage = () => {
                 >
                   <Stack overflow={'auto'}>
                     <Grid container sx={{ justifyContent:'center', height:'100%', flex:1}} >
-                      {type === 'user' && <><Grid item sm={4} padding={'10px'}>
+                      {type === 'createuser' && <><Grid item sm={4} padding={'10px'}>
                         <TextField 
                           required 
                           variant='filled'
@@ -145,6 +158,24 @@ const AdminPage = () => {
                       </Grid>
                       <Grid item sm={4} padding={'10px'}>
                         <TextField 
+                          required 
+                          variant='filled'
+                          label='BankId'
+                          placeholder='BankId'
+                          sx={{width:'100%'}}
+                          />  
+                      </Grid>
+                      <Grid item sm={4} padding={'10px'}>
+                        <TextField 
+                          required 
+                          variant='filled'
+                          label='Role'
+                          placeholder='Role'
+                          sx={{width:'100%'}}
+                          />  
+                      </Grid>
+                      <Grid item sm={4} padding={'10px'}>
+                        <TextField 
                           variant='filled'
                           label='Telefono'
                           placeholder='Telefono'
@@ -163,26 +194,8 @@ const AdminPage = () => {
                           autoComplete="password"
                           type={true ? "text" : "password"}
                           />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='BankId'
-                          placeholder='BankId'
-                          sx={{width:'100%'}}
-                          />  
-                      </Grid>
-                      <Grid item sm={4} padding={'10px'}>
-                        <TextField 
-                          required 
-                          variant='filled'
-                          label='Role'
-                          placeholder='Role'
-                          sx={{width:'100%'}}
-                          />  
                       </Grid> </>}
-                      { type === 'bank' && <>
+                      { type === 'createbank' && <>
                       <Grid item sm={4} padding={'10px'}>
                         <TextField 
                           required 
