@@ -6,7 +6,7 @@ import sinacofi_logo from '../../../assets/images/sinacofi_logo.png'
 import { Person } from "@mui/icons-material";
 
 
-const SinaAppBar = ({handleAdmin}) => {
+const SinaAppBar = ({handleAdmin}:any) => {
   return (
     <div className={styles.sinappbar_container}>
       {handleAdmin &&       

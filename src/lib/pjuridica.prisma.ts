@@ -1,8 +1,9 @@
 import { PJuridicas } from "@/application";
-import { PrismaClient } from "@prisma/client";
+//import { PrismaClient } from "@prisma/client";
+import { prisma } from "./newclient.prisma";
 import axios from "axios";
 
-const prisma = new PrismaClient();
+//const prisma = new PrismaClient();
 
 export async function getAllPJuridicas(): Promise<PJuridicas[] | any> {
   try {

@@ -152,7 +152,7 @@ const SinaTable = ({ declaraciones }: SinaTableProps) => {
                         <Button
                             onClick={() => openModalWithDeclaracion(declaracion)}
                         >
-                            {`${declaracion.nombre_rep_legal}`.toUpperCase()}
+                            {`${declaracion.razon_social}`.toUpperCase()}
                         </Button>
                     </TableCell>
                     <TableCell>
