@@ -8,7 +8,7 @@ type RenderTableProps = {
     page: number;
     rowsPerPage: number;
     handleDeleteModal: (declaracion: BfDataProcessDeclaraciones) => void;
-    openModalWithDeclaracion: (declaracion: BfDataProcessDeclaraciones) => void;
+    openModalWithDeclaracion: (declaracion: BfDataProcessDeclaraciones) => any;
 }
 
 const RenderTable = ({ declaraciones, page, rowsPerPage, handleDeleteModal, openModalWithDeclaracion }: RenderTableProps) => {

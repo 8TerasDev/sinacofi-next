@@ -1,9 +1,9 @@
 import React from 'react';
 import { Grid, Divider } from '@mui/material';
 import SinaText from '../../atoms/SinaText';
-import { PFinales } from '@/application';
+import { BfDataProcessBeneficiariosFinales, PFinales } from '@/application';
 
-const TableModalAccordionDetails = ({ registros }: { registros: PFinales[] }) => {
+const TableModalAccordionDetails = ({ registros }: { registros: BfDataProcessBeneficiariosFinales[] }) => {
 
   return (
     <>
@@ -25,7 +25,7 @@ const TableModalAccordionDetails = ({ registros }: { registros: PFinales[] }) =>
                 RUT / Identificación
               </SinaText>
               <SinaText size="xs">
-                {registro.cni_id_rut_benef_final}
+                {registro.identificacion}
               </SinaText>
             </Grid>
 
@@ -34,7 +34,7 @@ const TableModalAccordionDetails = ({ registros }: { registros: PFinales[] }) =>
                 Participación
               </SinaText>
               <SinaText size="xs">
-                {registro.porc_participacion}
+                {registro.participacion}
               </SinaText>
             </Grid>
           </Grid>

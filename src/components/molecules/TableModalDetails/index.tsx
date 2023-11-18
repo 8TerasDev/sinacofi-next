@@ -2,7 +2,7 @@
 import React from "react";
 import { Grid, Stack } from "@mui/material";
 import SinaText from "../../atoms/SinaText";
-import { PJuridicas } from "@/application";
+import { BfDataProcessDeclaraciones, PJuridicas } from "@/application";
 function formatISODateToDateTime(isoString: any) {
   // Crear un objeto Date con la cadena ISO
   const date = new Date(isoString);
@@ -13,18 +13,17 @@ function formatISODateToDateTime(isoString: any) {
   // Formatear la fecha y el tiempo en el formato deseado
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
 }
-const TableModalDetails = ({ declaracion }: { declaracion: PJuridicas }) => {
-  const {
-    rut_no: rut,
-    domicilio,
-    telefono,
-    ciudad,
-    lugar_de_constitucion: constitucion,
-    nombre_rep_legal: nombreRep,
-    tipo_sociedad: tipo,
-    fechahora_creacion: fecha,
-  } = declaracion;
-  const rutRep = rut;
+const TableModalDetails = ({ declaracion }: { declaracion: BfDataProcessDeclaraciones|null }) => {
+
+  const rut_no = declaracion?.personas_juridicas?.[0]?.rut;
+  const domicilio = declaracion?.personas_juridicas?.[0]?.domicilio
+  const telefono = declaracion?.personas_juridicas?.[0]?.telefono
+  const ciudad = declaracion?.personas_juridicas?.[0]?.ciudad
+  const lugar_de_constitucion = declaracion?.personas_juridicas?.[0]?.lugar_de_constitucion
+  const nombre_rep_legal = declaracion?.personas_juridicas?.[0]?.nombre_rep_legal
+  const tipo_sociedad = declaracion?.personas_juridicas?.[0]?.tipo_de_sociedad
+  const fechahora_creacion = declaracion?.personas_juridicas?.[0]?.created_at
+  const rutRep = declaracion?.personas_juridicas?.[0]?.identificacion_rep_legal;
   return (
     <Grid container direction="column" alignItems="flex-start">
       {/* Los items ahora ocupan toda la anchura disponible, xs={12} */}
@@ -32,7 +31,7 @@ const TableModalDetails = ({ declaracion }: { declaracion: PJuridicas }) => {
         <Stack paddingBottom={'3px'}>
           <SinaText size="xxs" fontWeight={700}>RUT/N Identificación</SinaText>
         </Stack>
-          <SinaText size="xs">{rut}</SinaText>
+        <SinaText size="xs">{rut_no}</SinaText>
       </Grid>
       <Grid item xs={6} paddingBottom='10px'>
         <SinaText size="xxs" fontWeight={700}>Domicilio</SinaText>
@@ -48,11 +47,11 @@ const TableModalDetails = ({ declaracion }: { declaracion: PJuridicas }) => {
       </Grid>
       <Grid item xs={6} paddingBottom='10px'>
         <SinaText size="xxs" fontWeight={700}>Constitución</SinaText>
-        <SinaText size="xs">{constitucion}</SinaText>
+        <SinaText size="xs">{lugar_de_constitucion}</SinaText>
       </Grid>
       <Grid item xs={6} paddingBottom='10px'>
         <SinaText size="xxs" fontWeight={700}>Nombre Rep. Legal</SinaText>
-        <SinaText size="xs">{nombreRep}</SinaText>
+        <SinaText size="xs">{nombre_rep_legal}</SinaText>
       </Grid>
       <Grid item xs={6} paddingBottom='10px'>
         <SinaText size="xxs" fontWeight={700}>RUT Rep. Legal</SinaText>
@@ -60,12 +59,12 @@ const TableModalDetails = ({ declaracion }: { declaracion: PJuridicas }) => {
       </Grid>
       <Grid item xs={6} paddingBottom='10px'>
         <SinaText size="xxs" fontWeight={700}>Tipo de Sociedad</SinaText>
-        <SinaText size="xs">{tipo}</SinaText>
+        <SinaText size="xs">{tipo_sociedad}</SinaText>
       </Grid>
       <Grid item xs={6} paddingBottom='10px'>
         <SinaText size="xxs" fontWeight={700}>Fecha de carga</SinaText>
         <SinaText size="xs">
-          {`${formatISODateToDateTime(fecha)}`}
+          {`${formatISODateToDateTime(fechahora_creacion)}`}
         </SinaText>
       </Grid>
     </Grid>

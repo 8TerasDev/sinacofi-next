@@ -22,7 +22,7 @@ import styles from './sinatable.module.css'
 import SinaTableHead from '../../molecules/SinaTableHead';
 import SinaTableBody from '../../molecules/SinaTableBody';
 
-import { Declaracion, PJuridicas } from '@/application';
+import { BfDataProcessDeclaraciones, Declaracion, PJuridicas } from '@/application';
 import SinaTypography from '@/components/atoms/SinaTypography';
 import SinaTableCtaIcons from '@/components/atoms/SinaTableCtaIcons';
 import { SinaTableModal } from '../SinaTableModal';
@@ -59,9 +59,9 @@ const SinaTable = () => {
         // dispatch({ type: "SORT_BY_FECHA_CARGA", payload: isAsc });
     };
 
-    const [activeDeclaracion, activeDeclaracionSetter] = useState<PJuridicas>();
-    const [nextDeclaracion, nextDeclaracionSetter] = useState<PJuridicas>();
-    const [prevDeclaracion, prevDeclaracionSetter] = useState<PJuridicas>();
+    const [activeDeclaracion, activeDeclaracionSetter] = useState<BfDataProcessDeclaraciones>();
+    const [nextDeclaracion, nextDeclaracionSetter] = useState<any>();
+    const [prevDeclaracion, prevDeclaracionSetter] = useState<any>();
     const [openModal, openModalSetter] = useState<boolean>(false);
     const [currentDeclaracion, setCurrentDeclaracion] = useState();
     const [openDeleteModal, openDeleteModalSetter] = useState<boolean>(false);
@@ -78,13 +78,12 @@ const SinaTable = () => {
     //     return { nextDeclaracion, prevDeclaracion };
     // };
 
-    // const openModalWithDeclaracion = (declaracion: PJuridicas) => {
-    //     openModalSetter(true);
-    //     const { nextDeclaracion, prevDeclaracion } = getDeclaraciones(declaracion);
-    //     nextDeclaracionSetter(nextDeclaracion);
-    //     prevDeclaracionSetter(prevDeclaracion);
-    //     activeDeclaracionSetter(declaracion);
-    // };
+     const openModalWithDeclaracion = (declaracion: BfDataProcessDeclaraciones) => {
+         openModalSetter(true);
+         nextDeclaracionSetter("1");
+         prevDeclaracionSetter("2");
+         activeDeclaracionSetter(declaracion);
+     };
 
     // const handleNextDeclaracion = (declaracion: PJuridicas) => {
     //     const { nextDeclaracion, prevDeclaracion } = getDeclaraciones(declaracion);
@@ -158,8 +157,7 @@ const SinaTable = () => {
                                 page={page}
                                 rowsPerPage={rowsPerPage}
                                 handleDeleteModal={handleDeleteModal}
-                                // openModalWithDeclaracion={openModalWithDeclaracion}
-                                openModalWithDeclaracion={() => { }}
+                                openModalWithDeclaracion={openModalWithDeclaracion}
                             />
                         </TableBody>
                     </Table>
@@ -175,14 +173,14 @@ const SinaTable = () => {
                 </TableContainer>
             </div >
             {
-                // <SinaTableModal
-                //     declaracion={activeDeclaracion ? activeDeclaracion : state.declaraciones[0]}
-                //     isOpen={openModal}
-                //     onNextDeclaracion={()=>{}}
-                //     onPrevDeclaracion={()=>{}}
-                //     handleClose={() => { openModalSetter(false) }}
-                //     handleDelete={handleDeleteModal}
-                // />
+                <SinaTableModal
+                    declaracion={activeDeclaracion ? activeDeclaracion : null}
+                    isOpen={openModal}
+                    onNextDeclaracion={()=>{}}
+                    onPrevDeclaracion={()=>{}}
+                    handleClose={() => { openModalSetter(false) }}
+                    handleDelete={handleDeleteModal}
+                />
             }
             <DeleteModal
                 open={openDeleteModal}
