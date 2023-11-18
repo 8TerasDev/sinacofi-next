@@ -30,41 +30,11 @@ import { DeclaracionesContext } from '@/contexts/declaraciones.context';
 import { disablePJuridicasAxios } from '@/lib/pjuridica.prisma';
 import { DeleteModal } from '../DeleteModal';
 import RenderTable from './RenderTable';
-
-
-const listOfHeaders = [
-    "Acción",
-    "Folio",
-    "Razón Social",
-    "Fecha de declaración",
-    "Fecha de carga",
-]
-
-interface SinaTableProps {
-    declaraciones: PJuridicas[]
-}
-const compareFechaHoraCreacion = (a: PJuridicas, b: PJuridicas, direction: 'asc' | 'desc') => {
-    if (a.fechahora_creacion! < b.fechahora_creacion!) {
-        return direction === 'asc' ? -1 : 1;
-    }
-    if (a.fechahora_creacion! > b.fechahora_creacion!) {
-        return direction === 'asc' ? 1 : -1;
-    }
-    return 0;
-};
-
-const compareFechaEnvioArchivo = (a: PJuridicas, b: PJuridicas, direction: 'asc' | 'desc') => {
-    if (a.fecha_envio_archivo! < b.fecha_envio_archivo!) {
-        return direction === 'asc' ? -1 : 1;
-    }
-    if (a.fecha_envio_archivo! > b.fecha_envio_archivo!) {
-        return direction === 'asc' ? 1 : -1;
-    }
-    return 0;
-};
+import { NewDeclaracionesContext } from '@/contexts/new-declaraciones.context';
 
 const SinaTable = () => {
-    const { state, dispatch, reloadDeclaraciones } = useContext(DeclaracionesContext)
+
+    const { declaraciones } = useContext(NewDeclaracionesContext)
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(3);
@@ -81,12 +51,12 @@ const SinaTable = () => {
     const handleSortClickFechaHora = () => {
         const isAsc = orderDirectionFecha === 'asc';
         setorderDirectionFecha(isAsc ? 'desc' : 'asc');
-        dispatch({ type: "SORT_BY_FECHA_CREACION", payload: isAsc });
+        // dispatch({ type: "SORT_BY_FECHA_CREACION", payload: isAsc });
     };
     const handleSortClickCarga = () => {
         const isAsc = orderDirection === 'asc';
         setOrderDirection(isAsc ? 'desc' : 'asc');
-        dispatch({ type: "SORT_BY_FECHA_CARGA", payload: isAsc });
+        // dispatch({ type: "SORT_BY_FECHA_CARGA", payload: isAsc });
     };
 
     const [activeDeclaracion, activeDeclaracionSetter] = useState<PJuridicas>();
@@ -101,47 +71,47 @@ const SinaTable = () => {
         setCurrentDeclaracion(declaracion);
     }
 
-    const getDeclaraciones = (declaracion: PJuridicas) => {
-        const index = state.declaraciones.findIndex((item: any) => item.correlativo_declaracion === declaracion.correlativo_declaracion);
-        const nextDeclaracion = index + 1 >= state.declaraciones.length ? state.declaraciones[index] : state.declaraciones[index + 1];
-        const prevDeclaracion = index - 1 >= 0 ? state.declaraciones[index - 1] : state.declaraciones[index];
-        return { nextDeclaracion, prevDeclaracion };
-    };
+    // const getDeclaraciones = (declaracion: PJuridicas) => {
+    //     const index = state.declaraciones.findIndex((item: any) => item.correlativo_declaracion === declaracion.correlativo_declaracion);
+    //     const nextDeclaracion = index + 1 >= state.declaraciones.length ? state.declaraciones[index] : state.declaraciones[index + 1];
+    //     const prevDeclaracion = index - 1 >= 0 ? state.declaraciones[index - 1] : state.declaraciones[index];
+    //     return { nextDeclaracion, prevDeclaracion };
+    // };
 
-    const openModalWithDeclaracion = (declaracion: PJuridicas) => {
-        openModalSetter(true);
-        const { nextDeclaracion, prevDeclaracion } = getDeclaraciones(declaracion);
-        nextDeclaracionSetter(nextDeclaracion);
-        prevDeclaracionSetter(prevDeclaracion);
-        activeDeclaracionSetter(declaracion);
-    };
+    // const openModalWithDeclaracion = (declaracion: PJuridicas) => {
+    //     openModalSetter(true);
+    //     const { nextDeclaracion, prevDeclaracion } = getDeclaraciones(declaracion);
+    //     nextDeclaracionSetter(nextDeclaracion);
+    //     prevDeclaracionSetter(prevDeclaracion);
+    //     activeDeclaracionSetter(declaracion);
+    // };
 
-    const handleNextDeclaracion = (declaracion: PJuridicas) => {
-        const { nextDeclaracion, prevDeclaracion } = getDeclaraciones(declaracion);
-        nextDeclaracionSetter(nextDeclaracion);
-        prevDeclaracionSetter(prevDeclaracion);
-        activeDeclaracionSetter(declaracion);
-    };
+    // const handleNextDeclaracion = (declaracion: PJuridicas) => {
+    //     const { nextDeclaracion, prevDeclaracion } = getDeclaraciones(declaracion);
+    //     nextDeclaracionSetter(nextDeclaracion);
+    //     prevDeclaracionSetter(prevDeclaracion);
+    //     activeDeclaracionSetter(declaracion);
+    // };
 
-    const handlePrevDeclaracion = (declaracion: PJuridicas) => {
-        const { nextDeclaracion, prevDeclaracion } = getDeclaraciones(declaracion);
-        nextDeclaracionSetter(nextDeclaracion);
-        prevDeclaracionSetter(prevDeclaracion);
-        activeDeclaracionSetter(declaracion);
-    };
+    // const handlePrevDeclaracion = (declaracion: PJuridicas) => {
+    //     const { nextDeclaracion, prevDeclaracion } = getDeclaraciones(declaracion);
+    //     nextDeclaracionSetter(nextDeclaracion);
+    //     prevDeclaracionSetter(prevDeclaracion);
+    //     activeDeclaracionSetter(declaracion);
+    // };
 
 
     const disableDeclaracion = (declaracion: any) => {
         console.log(declaracion.correlativo_declaracion)
         disablePJuridicasAxios(declaracion.correlativo_declaracion)
-        reloadDeclaraciones()
+        // reloadDeclaraciones()
     }
 
     return (
         <>
             <div className={styles.sinatable_container}>
-                <TableContainer sx={{display:'flex', flex:1, flexDirection:'column', justifyContent:'space-between'}}>
-                    <Table aria-label="tabla de personas jurídicas" sx={{overflowX:'scroll'}}>
+                <TableContainer sx={{ display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <Table aria-label="tabla de personas jurídicas" sx={{ overflowX: 'scroll' }}>
                         <TableHead>
                             <TableRow>
                                 <TableCell>
@@ -185,18 +155,19 @@ const SinaTable = () => {
                         </TableHead >
                         <TableBody>
                             <RenderTable
-                                declaraciones={state.declaraciones}
+                                declaraciones={declaraciones}
                                 page={page}
                                 rowsPerPage={rowsPerPage}
                                 handleDeleteModal={handleDeleteModal}
-                                openModalWithDeclaracion={openModalWithDeclaracion}
+                                // openModalWithDeclaracion={openModalWithDeclaracion}
+                                openModalWithDeclaracion={() => { }}
                             />
                         </TableBody>
                     </Table>
                     <TablePagination
                         rowsPerPageOptions={[3, 5, 10]}
                         component="div"
-                        count={state.declaraciones.length}
+                        count={0}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
@@ -205,14 +176,14 @@ const SinaTable = () => {
                 </TableContainer>
             </div >
             {
-                <SinaTableModal
-                    declaracion={activeDeclaracion ? activeDeclaracion : state.declaraciones[0]}
-                    isOpen={openModal}
-                    onNextDeclaracion={() => { handleNextDeclaracion(nextDeclaracion!) }}
-                    onPrevDeclaracion={() => { handlePrevDeclaracion(prevDeclaracion!) }}
-                    handleClose={() => { openModalSetter(false) }}
-                    handleDelete={handleDeleteModal}
-                />
+                // <SinaTableModal
+                //     declaracion={activeDeclaracion ? activeDeclaracion : state.declaraciones[0]}
+                //     isOpen={openModal}
+                //     onNextDeclaracion={()=>{}}
+                //     onPrevDeclaracion={()=>{}}
+                //     handleClose={() => { openModalSetter(false) }}
+                //     handleDelete={handleDeleteModal}
+                // />
             }
             <DeleteModal
                 open={openDeleteModal}

@@ -6,6 +6,7 @@ import { TypeOfSearch, useTypeSearch } from '../../../custom-hooks/typeSearchHoo
 import SinaText from '@/components/atoms/SinaText';
 import { TypeSearchContext } from '@/contexts/typesearch.context';
 import { DeclaracionesContext } from '@/contexts/declaraciones.context';
+import { NewDeclaracionesContext } from '@/contexts/new-declaraciones.context';
 
 
 const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
@@ -14,18 +15,18 @@ const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
         filter,
         filterSetter
     } = useContext(TypeSearchContext)
-    const { dispatch, reloadDeclaraciones, getDeclaracionesByBeneficiario } = useContext(DeclaracionesContext)
+    const { FilterByFolio,FilterByPersonaJuridica, resetFilter } = useContext(NewDeclaracionesContext)
 
-    const [preValue, preValueSetter] = useState("")
     async function handleSearchByParams() {
         if (typeOfSearch == TypeOfSearch.FOLIO) {
-            dispatch({ type: 'FILTER_BY_FOLIO', payload: filter });
+            FilterByFolio(filter);
         }
         if (typeOfSearch == TypeOfSearch.BENEFICIARIO) {
-            await getDeclaracionesByBeneficiario(filter)
+            //await getDeclaracionesByBeneficiario(filter)
         }
         if (typeOfSearch == TypeOfSearch.RUT) {
-            dispatch({ type: 'FILTER_BY_PERSONA_JURIDICA', payload: filter });
+            FilterByPersonaJuridica(filter);
+            
         }
     }
 
@@ -48,7 +49,7 @@ const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
     useEffect(() => {
 
         if (filter?.length == 0) {
-            reloadDeclaraciones()
+            resetFilter()
         }
     }, [filter])
 

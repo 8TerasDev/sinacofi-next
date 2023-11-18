@@ -4,6 +4,7 @@ import './globals.css'
 import ReactQueryProvider from '@/providers/reactQuery.provider'
 import { TypeSearchProvider } from '@/contexts/typesearch.context'
 import { DeclaracionesProvider } from '@/contexts/declaraciones.context'
+import { NewDeclaracionesProvider } from '@/contexts/new-declaraciones.context'
 
 export const metadata: Metadata = {
   title: 'Sinacofi',
@@ -18,11 +19,11 @@ export default function RootLayout({
     <html lang="es">
       <body>
         <ReactQueryProvider>
-          <DeclaracionesProvider>
+          <NewDeclaracionesProvider>
             <TypeSearchProvider>
               {children}
             </TypeSearchProvider>
-          </DeclaracionesProvider>
+          </NewDeclaracionesProvider>
         </ReactQueryProvider>
       </body>
     </html>

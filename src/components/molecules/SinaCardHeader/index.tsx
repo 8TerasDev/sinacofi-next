@@ -6,6 +6,7 @@ import SinaText from "../../atoms/SinaText";
 import { DeclaracionesContext } from "@/contexts/declaraciones.context";
 import { handleDownloadCSV } from "@/lib/utils";
 import { DatePicker, Space } from 'antd';
+import { NewDeclaracionesContext } from "@/contexts/new-declaraciones.context";
 
 // import locale from 'antd/es/date-picker/locale/es_Es';
 
@@ -15,6 +16,8 @@ const { RangePicker } = DatePicker;
 export const SinCardHeader = () => {
   const [orden, setOrden] = React.useState<any>(10);
   const { state, loadDeclaracionesByDates } = useContext(DeclaracionesContext);
+  const { FilterByLastUpdated, FilterByLastUploaded, resetFilter } = useContext(NewDeclaracionesContext)
+
 
   const handleChange = (event: SelectChangeEvent) => {
     setOrden(event.target.value);
@@ -36,6 +39,22 @@ export const SinCardHeader = () => {
     }
   }
 
+  const [filterDeclaraciones, filterDeclaracionesBySetter] = useState<any>(1);
+
+
+  async function filterDeclaracionesBy({ target }: any) {
+    filterDeclaracionesBySetter(target.value )
+    if (target.value === 1) {
+      resetFilter();
+    }
+    if (target.value === 2) {
+      FilterByLastUpdated();
+    }
+    if (target.value === 3) {
+      FilterByLastUploaded();
+    }
+  }
+
   return (
     <div className={types.cardheader_container}>
       <div className={types.text_container}>
@@ -49,13 +68,13 @@ export const SinCardHeader = () => {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={`${orden}`}
+            value={`${filterDeclaraciones}`}
             label="Mostrar"
-            onChange={handleChange}
+            onChange={filterDeclaracionesBy}
           >
-            <MenuItem value={10}>Totalidad</MenuItem>
-            <MenuItem value={20}>Última Actualización</MenuItem>
-            <MenuItem value={30}>Última Declaración</MenuItem>
+            <MenuItem value={1}>Totalidad</MenuItem>
+            <MenuItem value={2}>Última Actualización</MenuItem>
+            <MenuItem value={3}>Última Declaración</MenuItem>
           </Select>
         </FormControl>
         <RangePicker onCalendarChange={onChangeCalendar} value={calendarValue} />

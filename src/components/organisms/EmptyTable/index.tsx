@@ -13,7 +13,7 @@ const styles = {
     paddingBottom:'10px'
   }
 }
-export const EmptyTable = ({filterBy, input}: {filterBy: string, input: string}) => (
+export const EmptyTable = ({filterBy="", input=""}: {filterBy?: string, input?: string}) => (
   <Stack
     justifyContent={'center'}
     alignItems={'center'}
