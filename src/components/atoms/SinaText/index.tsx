@@ -1,6 +1,5 @@
 import React from 'react'
 import localFont from 'next/font/local';
-import "@fontsource/montserrat";
 
 const sizeStyles = {
     xxxs: {
