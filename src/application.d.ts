@@ -96,6 +96,20 @@ export type PersonasJuridicas = {
   declaracion_id: string; // BigInt cambiado a string
   // bf_data_process_declaraciones?: BfDataProcessDeclaraciones; // Dependiendo de cómo esté definido este tipo
 };
+
+type BfDataProcessBeneficiariosFinales = {
+  id: string; // BigInt cambiado a string
+  tipo?: string | null; // Opcional y puede ser null
+  identificacion?: string | null; // Opcional y puede ser null
+  nombre_completo?: string | null; // Opcional y puede ser null
+  domicilio?: string | null; // Opcional y puede ser null
+  ciudad?: string | null; // Opcional y puede ser null
+  pais?: string | null; // Opcional y puede ser null
+  participacion?: string | null; // Opcional y puede ser null
+  created_at?: string | null; // DateTime convertido a string, opcional y puede ser null
+  declaracion_id: string; // BigInt cambiado a string
+  // bf_data_process_declaraciones?: BfDataProcessDeclaraciones; // Dependiendo de cómo esté definido este tipo
+};
 export type BfDataProcessDeclaraciones = {
   id: string; // Cambiado de BigInt a string
   codigo_banco?: string | null; // Opcional y puede ser null
@@ -106,7 +120,7 @@ export type BfDataProcessDeclaraciones = {
   fecha_declaracion?: string | null; // DateTime convertido a string, opcional y puede ser null
   bank_id: string; // Cambiado de BigInt a string
   // Los siguientes campos representan relaciones y dependen de cómo desees manejarlas en TypeScript.
-  // bf_data_process_beneficiariosfinales?: BfDataProcessBeneficiariosFinales[]; // Dependiendo de cómo esté definido este tipo
+  bf_data_process_beneficiariosfinales?: BfDataProcessBeneficiariosFinales[]; // Dependiendo de cómo esté definido este tipo
   // bf_data_process_bank?: BfDataProcessBank; // Dependiendo de cómo esté definido este tipo
   personas_juridicas?: PersonasJuridicas[]; // Dependiendo de cómo esté definido este tipo
 };

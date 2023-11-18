@@ -27,7 +27,7 @@ const RenderTable = ({ declaraciones, page, rowsPerPage, handleDeleteModal, open
                     <Button
                         onClick={() => openModalWithDeclaracion(declaracion)}
                     >
-                        {`${declaracion.personas_juridicas[0]?.razon_social}`.toUpperCase()}
+                        {declaracion?.personas_juridicas?.[0]?.razon_social?.toUpperCase() ?? ""}
                     </Button>
                 </TableCell>
                 <TableCell>

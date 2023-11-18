@@ -8,6 +8,7 @@ export const NewDeclaracionesContext = createContext<any>({});
 enum typeOffilterEnum {
     FILTER_BY_FOLIO = "FILTER_BY_FOLIO",
     FILTER_BY_PERSONA_JURIDICA = "FILTER_BY_PERSONA_JURIDICA",
+    FILTER_BY_BENEFICIARIO_FINAL = "FILTER_BY_BENEFICIARIO_FINAL",
     FILTER_BY_ULTIMA_ACTUALIZADA = "FILTER_BY_ULTIMA_ACTUALIZADA",
     FILTER_BY_ULTIMA_SUBIDA = "FILTER_BY_ULTIMA_SUBIDA",
 }
@@ -22,6 +23,7 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
         if (!typeOffilter) return declaraciones
         if (typeOffilter === typeOffilterEnum.FILTER_BY_FOLIO) return DeclaracionesFilterByFolio()
         if (typeOffilter === typeOffilterEnum.FILTER_BY_PERSONA_JURIDICA) return DeclaracionesFilterByPersonaJuridica()
+        if (typeOffilter === typeOffilterEnum.FILTER_BY_BENEFICIARIO_FINAL) return DeclaracionesFilterByBeneficiarioFinal()
         if (typeOffilter === typeOffilterEnum.FILTER_BY_ULTIMA_ACTUALIZADA) return DeclaracionesFilterByLastUpdated()
         if (typeOffilter === typeOffilterEnum.FILTER_BY_ULTIMA_SUBIDA) return DeclaracionesFilterByLastUploaded()
     }
@@ -38,6 +40,11 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
 
     function FilterByPersonaJuridica(value: string) {
         typeOffilterSetter(typeOffilterEnum.FILTER_BY_PERSONA_JURIDICA)
+        filterSetter(value)
+    }
+
+    function FilterByBeneficiarioFinal(value: string) {
+        typeOffilterSetter(typeOffilterEnum.FILTER_BY_BENEFICIARIO_FINAL)
         filterSetter(value)
     }
 
@@ -83,6 +90,13 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
         );
     }
 
+    function DeclaracionesFilterByBeneficiarioFinal() {
+        return declaraciones?.filter(declaracion =>
+            declaracion.bf_data_process_beneficiariosfinales?.some(beneficiario_final =>
+                beneficiario_final.identificacion === filter)
+        );
+    }
+
     useEffect(() => {
         getAllDeclaracionesClientSide().then(
             (declaraciones) => {
@@ -95,6 +109,7 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
         declaraciones: declaracionesWithFilter(),
         FilterByFolio,
         FilterByPersonaJuridica,
+        FilterByBeneficiarioFinal,
         FilterByLastUpdated,
         FilterByLastUploaded,
         resetFilter

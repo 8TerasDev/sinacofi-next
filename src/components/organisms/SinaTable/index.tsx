@@ -102,7 +102,6 @@ const SinaTable = () => {
 
 
     const disableDeclaracion = (declaracion: any) => {
-        console.log(declaracion.correlativo_declaracion)
         disablePJuridicasAxios(declaracion.correlativo_declaracion)
         // reloadDeclaraciones()
     }

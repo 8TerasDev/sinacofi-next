@@ -6,10 +6,10 @@ export async function getAllDeclaraciones() {
   try {
     const declaraciones = await prisma.bf_data_process_declaraciones.findMany({
       include: {
-        personas_juridicas: true
+        personas_juridicas: true,
+        bf_data_process_beneficiariosfinales: true
       }
     });
-    console.log({ declaraciones })
     if (!declaraciones) {
       return [];
     }
@@ -21,13 +21,22 @@ export async function getAllDeclaraciones() {
           declaracion_id: `${persona_juridica.declaracion_id}`,
         }
       })
+      const beneficiarios_finales = declaracion.bf_data_process_beneficiariosfinales.map(beneficiario_final => {
+        return {
+          ...beneficiario_final,
+          id: `${beneficiario_final.id}`,
+          declaracion_id: `${beneficiario_final.declaracion_id}`,
+        }
+      })
       return {
         ...declaracion,
         id: `${declaracion.id}`,
         bank_id: `${declaracion.bank_id}`,
-        personas_juridicas: personas_juridicas
+        personas_juridicas: personas_juridicas,
+        bf_data_process_beneficiariosfinales: beneficiarios_finales
       }
     })
+    console.log({cleanDeclaraciones})
     return cleanDeclaraciones;
   } catch (error) {
     return [];

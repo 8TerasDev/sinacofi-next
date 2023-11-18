@@ -5,7 +5,7 @@ export async function GET(req: NextRequest) {
   try {
     const declaraciones = await getAllDeclaraciones();
     return Response.json({ declaraciones });
-  } catch (error) {
+  } catch (error: any) {
     return new Response(JSON.stringify({ error: error?.message }), {
       status: 500,
     });
