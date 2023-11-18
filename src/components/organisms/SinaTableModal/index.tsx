@@ -40,11 +40,18 @@ export const SinaTableModal = ({
   handleDelete
 }: SinaTableModalProps) => {
 
-  const cleanBeneficiarios = declaracion?.bf_data_process_beneficiariosfinales?.filter(beneficiarios_finales => beneficiarios_finales.tipo === "01")
-  const cleanControl = declaracion?.bf_data_process_beneficiariosfinales?.filter(beneficiarios_finales => beneficiarios_finales.tipo === "02")
 
-  const [beneficiarios, beneficiariosSetter] = useState<any[]>(cleanBeneficiarios || []);
-  const [controlEfectivo, controlEfectivoSetter] = useState<any[]>(cleanControl || []);
+
+  const [beneficiarios, beneficiariosSetter] = useState<any[]>([]);
+  const [controlEfectivo, controlEfectivoSetter] = useState<any[]>([]);
+
+  useEffect(() => {
+    const cleanBeneficiarios = declaracion?.bf_data_process_beneficiariosfinales?.filter(beneficiarios_finales => beneficiarios_finales.tipo === "01") || []
+    const cleanControl = declaracion?.bf_data_process_beneficiariosfinales?.filter(beneficiarios_finales => beneficiarios_finales.tipo === "02") || []
+    beneficiariosSetter(cleanBeneficiarios)
+    controlEfectivoSetter(cleanControl)
+
+  }, [declaracion])
 
   return (
     <ThemeProvider theme={theme}>
