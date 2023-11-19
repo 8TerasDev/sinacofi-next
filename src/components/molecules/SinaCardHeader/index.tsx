@@ -3,7 +3,6 @@ import types from "./sinacardheader.module.css";
 import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 // import { DateRangePicker, LocalizationProvider, SingleInputDateRangeField  } from '@mui/x-date-pickers-pro';
 import SinaText from "../../atoms/SinaText";
-import { DeclaracionesContext } from "@/contexts/declaraciones.context";
 import { handleDownloadCSV } from "@/lib/utils";
 import { DatePicker, Space } from 'antd';
 import { NewDeclaracionesContext } from "@/contexts/new-declaraciones.context";
@@ -14,13 +13,7 @@ import { NewDeclaracionesContext } from "@/contexts/new-declaraciones.context";
 const { RangePicker } = DatePicker;
 
 export const SinCardHeader = () => {
-  const [orden, setOrden] = React.useState<any>(10);
-  const { FilterByLastUpdated, FilterByLastUploaded, resetFilter, FilterByDateRange } = useContext(NewDeclaracionesContext)
-
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setOrden(event.target.value);
-  };
+  const { allDeclaraciones, FilterByLastUpdated, FilterByLastUploaded, resetFilter, FilterByDateRange } = useContext(NewDeclaracionesContext)
 
   const [calendarValue, calendarValueSetter] = useState();
 
@@ -84,7 +77,7 @@ export const SinCardHeader = () => {
         <Button
           variant="contained"
           className={types.downloadButton}
-        // onClick={() => handleDownloadCSV(state.declaraciones)}
+          onClick={() => handleDownloadCSV(allDeclaraciones)}
         >
           descargar
         </Button>

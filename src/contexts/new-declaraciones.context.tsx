@@ -249,6 +249,7 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
         handlePrevDeclaracion,
         firstDeclaracion,
         lastDeclaracion,
+        allDeclaraciones:declaraciones,
         resetFilter
     }
 
