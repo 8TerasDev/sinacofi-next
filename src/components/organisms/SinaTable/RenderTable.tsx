@@ -5,17 +5,14 @@ import React from 'react'
 
 type RenderTableProps = {
     declaraciones: BfDataProcessDeclaraciones[] | null;
-    page: number;
-    rowsPerPage: number;
     handleDeleteModal: (declaracion: BfDataProcessDeclaraciones) => void;
     openModalWithDeclaracion: (declaracion: BfDataProcessDeclaraciones) => any;
 }
 
-const RenderTable = ({ declaraciones, page, rowsPerPage, handleDeleteModal, openModalWithDeclaracion }: RenderTableProps) => {
+const RenderTable = ({ declaraciones, handleDeleteModal, openModalWithDeclaracion }: RenderTableProps) => {
     if (!declaraciones) return <TableRow><TableCell colSpan={5}>Fetch Data...</TableCell></TableRow>
     if (declaraciones.length === 0) return <TableRow><TableCell colSpan={5}>Fetch Data...</TableCell></TableRow>
     return declaraciones
-        // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         .map((declaracion: BfDataProcessDeclaraciones) => (
             <TableRow key={declaracion.id}>
                 <SinaTableCtaIcons

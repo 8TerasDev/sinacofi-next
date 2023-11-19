@@ -34,34 +34,27 @@ import { NewDeclaracionesContext } from '@/contexts/new-declaraciones.context';
 
 const SinaTable = () => {
 
-    const { declaraciones } = useContext(NewDeclaracionesContext)
+    const {
+        declaraciones,
+        currentPage,
+        rowsPerPage,
+        handleChangePage,
+        handleChangeRowsPerPage,
+        totalDeclaraciones,
+        handleOrderByFechaDeclaracion,
+        handleOrderByFechaCarga,
+        orderByFechaDeclaracion,
+        orderByFechaCarga,
+        activeDeclaracion,
+        nextDeclaracion,
+        prevDeclaracion,
+        getDeclaraciones,
+        assignDeclaraciones,
+        handleNextDeclaracion,
+        handlePrevDeclaracion
+    } = useContext(NewDeclaracionesContext)
 
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(3);
-    const handleChangePage = (event: unknown, newPage: number) => {
-        setPage(newPage);
-    };
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
-    const [orderDirectionFecha, setorderDirectionFecha] = useState<'asc' | 'desc'>('asc');
-    const [orderDirection, setOrderDirection] = useState<'asc' | 'desc'>('asc');
 
-    const handleSortClickFechaHora = () => {
-        const isAsc = orderDirectionFecha === 'asc';
-        setorderDirectionFecha(isAsc ? 'desc' : 'asc');
-        // dispatch({ type: "SORT_BY_FECHA_CREACION", payload: isAsc });
-    };
-    const handleSortClickCarga = () => {
-        const isAsc = orderDirection === 'asc';
-        setOrderDirection(isAsc ? 'desc' : 'asc');
-        // dispatch({ type: "SORT_BY_FECHA_CARGA", payload: isAsc });
-    };
-
-    const [activeDeclaracion, activeDeclaracionSetter] = useState<BfDataProcessDeclaraciones>();
-    const [nextDeclaracion, nextDeclaracionSetter] = useState<any>();
-    const [prevDeclaracion, prevDeclaracionSetter] = useState<any>();
     const [openModal, openModalSetter] = useState<boolean>(false);
     const [currentDeclaracion, setCurrentDeclaracion] = useState();
     const [openDeleteModal, openDeleteModalSetter] = useState<boolean>(false);
@@ -71,34 +64,10 @@ const SinaTable = () => {
         setCurrentDeclaracion(declaracion);
     }
 
-    // const getDeclaraciones = (declaracion: PJuridicas) => {
-    //     const index = state.declaraciones.findIndex((item: any) => item.correlativo_declaracion === declaracion.correlativo_declaracion);
-    //     const nextDeclaracion = index + 1 >= state.declaraciones.length ? state.declaraciones[index] : state.declaraciones[index + 1];
-    //     const prevDeclaracion = index - 1 >= 0 ? state.declaraciones[index - 1] : state.declaraciones[index];
-    //     return { nextDeclaracion, prevDeclaracion };
-    // };
-
-     const openModalWithDeclaracion = (declaracion: BfDataProcessDeclaraciones) => {
-         openModalSetter(true);
-         nextDeclaracionSetter("1");
-         prevDeclaracionSetter("2");
-         activeDeclaracionSetter(declaracion);
-     };
-
-    // const handleNextDeclaracion = (declaracion: PJuridicas) => {
-    //     const { nextDeclaracion, prevDeclaracion } = getDeclaraciones(declaracion);
-    //     nextDeclaracionSetter(nextDeclaracion);
-    //     prevDeclaracionSetter(prevDeclaracion);
-    //     activeDeclaracionSetter(declaracion);
-    // };
-
-    // const handlePrevDeclaracion = (declaracion: PJuridicas) => {
-    //     const { nextDeclaracion, prevDeclaracion } = getDeclaraciones(declaracion);
-    //     nextDeclaracionSetter(nextDeclaracion);
-    //     prevDeclaracionSetter(prevDeclaracion);
-    //     activeDeclaracionSetter(declaracion);
-    // };
-
+    const openModalWithDeclaracion = (declaracion: BfDataProcessDeclaraciones) => {
+        openModalSetter(true);
+        assignDeclaraciones(declaracion)
+    };
 
     const disableDeclaracion = (declaracion: any) => {
         disablePJuridicasAxios(declaracion.correlativo_declaracion)
@@ -130,8 +99,8 @@ const SinaTable = () => {
                                 <TableCell >
                                     <TableSortLabel
                                         active={true}
-                                        direction={orderDirectionFecha}
-                                        onClick={handleSortClickFechaHora}
+                                        direction={orderByFechaDeclaracion}
+                                        onClick={handleOrderByFechaDeclaracion}
                                     >
                                         <SinaTypography>
                                             Fecha de declaración
@@ -141,8 +110,8 @@ const SinaTable = () => {
                                 <TableCell>
                                     <TableSortLabel
                                         active={true}
-                                        direction={orderDirection}
-                                        onClick={handleSortClickCarga}
+                                        direction={orderByFechaCarga}
+                                        onClick={handleOrderByFechaCarga}
                                     >
                                         <SinaTypography>
                                             Fecha de carga
@@ -154,19 +123,17 @@ const SinaTable = () => {
                         <TableBody>
                             <RenderTable
                                 declaraciones={declaraciones}
-                                page={page}
-                                rowsPerPage={rowsPerPage}
                                 handleDeleteModal={handleDeleteModal}
                                 openModalWithDeclaracion={openModalWithDeclaracion}
                             />
                         </TableBody>
                     </Table>
                     <TablePagination
-                        rowsPerPageOptions={[3, 5, 10]}
+                        rowsPerPageOptions={[3, 5, 6]}
                         component="div"
-                        count={0}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
+                        count={totalDeclaraciones} // Debe ser el número total de elementos
+                        rowsPerPage={rowsPerPage} // Número de filas por página
+                        page={Math.min(currentPage, Math.ceil(totalDeclaraciones / rowsPerPage) - 1)} // Asegurando que la página no sea mayor que el total de páginas
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
@@ -176,8 +143,8 @@ const SinaTable = () => {
                 <SinaTableModal
                     declaracion={activeDeclaracion ? activeDeclaracion : null}
                     isOpen={openModal}
-                    onNextDeclaracion={()=>{}}
-                    onPrevDeclaracion={()=>{}}
+                    onNextDeclaracion={() => { handleNextDeclaracion(nextDeclaracion) }}
+                    onPrevDeclaracion={() => { handlePrevDeclaracion(prevDeclaracion) }}
                     handleClose={() => { openModalSetter(false) }}
                     handleDelete={handleDeleteModal}
                 />

@@ -11,6 +11,8 @@ enum typeOffilterEnum {
     FILTER_BY_BENEFICIARIO_FINAL = "FILTER_BY_BENEFICIARIO_FINAL",
     FILTER_BY_ULTIMA_ACTUALIZADA = "FILTER_BY_ULTIMA_ACTUALIZADA",
     FILTER_BY_ULTIMA_SUBIDA = "FILTER_BY_ULTIMA_SUBIDA",
+    FILTER_BY_DATE_RANGE = "FILTER_BY_DATE_RANGE",
+
 }
 
 export const NewDeclaracionesProvider = ({ children }: any) => {
@@ -18,14 +20,49 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
 
     const [typeOffilter, typeOffilterSetter] = useState<typeOffilterEnum | null>(null)
     const [filter, filterSetter] = useState<any>(null)
+    const [rangeFilter, rangeFilterSetter] = useState<any>(null)
+
+    const [currentPage, setCurrentPage] = useState(0);
+    const [rowsPerPage, rowsPerPageSetter] = useState(3);
+
+    const [orderByFechaDeclaracion, orderByFechaDeclaracionSetter] = useState<'asc' | 'desc'>('asc');
+    const [orderByFechaCarga, orderByFechaCargaSetter] = useState<'asc' | 'desc'>('asc');
+
+
+    const handleOrderByFechaDeclaracion = () => {
+        orderByFechaDeclaracionSetter((prev) => prev === 'asc' ? 'desc' : 'asc');
+        DeclaracionesOrderByFechaDeclaracion()
+    };
+
+    const handleOrderByFechaCarga = () => {
+        orderByFechaCargaSetter((prev) => prev === 'asc' ? 'desc' : 'asc');
+        DeclaracionesOrderByFechaCarga()
+    };
+
+    const handleChangePage = (event: unknown, newPage: number) => {
+        setCurrentPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        rowsPerPageSetter(parseInt(event.target.value, 10));
+        setCurrentPage(0);
+    };
+    const totalDeclaraciones = declaraciones?.length
+
+    function paginatedDeclaraciones() {
+        const startIndex = currentPage * rowsPerPage;
+        const endIndex = startIndex + rowsPerPage;
+        return declaraciones?.slice(startIndex, endIndex);
+    }
 
     function declaracionesWithFilter() {
-        if (!typeOffilter) return declaraciones
+        if (!typeOffilter) return paginatedDeclaraciones()
         if (typeOffilter === typeOffilterEnum.FILTER_BY_FOLIO) return DeclaracionesFilterByFolio()
         if (typeOffilter === typeOffilterEnum.FILTER_BY_PERSONA_JURIDICA) return DeclaracionesFilterByPersonaJuridica()
         if (typeOffilter === typeOffilterEnum.FILTER_BY_BENEFICIARIO_FINAL) return DeclaracionesFilterByBeneficiarioFinal()
         if (typeOffilter === typeOffilterEnum.FILTER_BY_ULTIMA_ACTUALIZADA) return DeclaracionesFilterByLastUpdated()
         if (typeOffilter === typeOffilterEnum.FILTER_BY_ULTIMA_SUBIDA) return DeclaracionesFilterByLastUploaded()
+        if (typeOffilter === typeOffilterEnum.FILTER_BY_DATE_RANGE) return filtrarDeclaracionesPorRangoDeFechas()
     }
 
     function resetFilter() {
@@ -51,8 +88,14 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
     function FilterByLastUpdated() {
         typeOffilterSetter(typeOffilterEnum.FILTER_BY_ULTIMA_ACTUALIZADA)
     }
+
     function FilterByLastUploaded() {
         typeOffilterSetter(typeOffilterEnum.FILTER_BY_ULTIMA_SUBIDA)
+    }
+
+    function FilterByDateRange(value: any) {
+        typeOffilterSetter(typeOffilterEnum.FILTER_BY_DATE_RANGE)
+        rangeFilterSetter(value)
     }
 
     function DeclaracionesFilterByLastUpdated() {
@@ -83,6 +126,45 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
         return declaraciones?.filter(declaraciones => declaraciones.correlativo === filter)
     }
 
+    function DeclaracionesOrderByFechaDeclaracion() {
+        if (!declaraciones) return;
+
+        const OrderDeclaraciones = declaraciones.sort((a, b) => {
+            const fechaA = new Date(a.fecha_declaracion || Date.now()).getTime();
+            const fechaB = new Date(b.fecha_declaracion || Date.now()).getTime();
+
+            return orderByFechaDeclaracion === 'asc' ? fechaA - fechaB : fechaB - fechaA;
+        });
+
+        declaracionesSetter(OrderDeclaraciones)
+    }
+
+    function filtrarDeclaracionesPorRangoDeFechas() {
+        const { fechaInicio, fechaFin } = rangeFilter
+        if (!declaraciones) return [];
+
+        const inicio = new Date(fechaInicio).getTime();
+        const fin = new Date(fechaFin).getTime();
+
+        return declaraciones.filter(declaracion => {
+            const fechaDeclaracion = new Date(declaracion.fecha_declaracion || Date.now()).getTime();
+            return fechaDeclaracion >= inicio && fechaDeclaracion <= fin;
+        });
+    }
+
+    function DeclaracionesOrderByFechaCarga() {
+        if (!declaraciones) return;
+
+        const OrderDeclaraciones = declaraciones.sort((a, b) => {
+            const fechaA = new Date(a.fecha_subida || Date.now()).getTime();
+            const fechaB = new Date(b.fecha_subida || Date.now()).getTime();
+
+            return orderByFechaCarga === 'asc' ? fechaA - fechaB : fechaB - fechaA;
+        });
+
+        declaracionesSetter(OrderDeclaraciones)
+    }
+
     function DeclaracionesFilterByPersonaJuridica() {
         return declaraciones?.filter(declaracion =>
             declaracion.personas_juridicas?.some(persona_juridica =>
@@ -97,6 +179,43 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
         );
     }
 
+    const [activeDeclaracion, activeDeclaracionSetter] = useState<BfDataProcessDeclaraciones>();
+    const [nextDeclaracion, nextDeclaracionSetter] = useState<BfDataProcessDeclaraciones>();
+    const [prevDeclaracion, prevDeclaracionSetter] = useState<BfDataProcessDeclaraciones>();
+    const [firstDeclaracion, firstDeclaracionSetter] = useState<boolean>(false);
+    const [lastDeclaracion, lastDeclaracionSetter] = useState<boolean>(false);
+
+    const getDeclaraciones = (declaracion?: BfDataProcessDeclaraciones) => {
+        const index = declaraciones?.findIndex((item: BfDataProcessDeclaraciones) => item.correlativo === declaracion?.correlativo) || 0;
+        const nextDeclaracion = index + 1 >= (declaraciones?.length || 0) ? declaraciones?.[index] : declaraciones?.[index + 1];
+        const prevDeclaracion = index - 1 >= 0 ? declaraciones?.[index - 1] : declaraciones?.[index];
+        firstDeclaracionSetter(index == 0)
+        lastDeclaracionSetter(index == (declaraciones?.length || 0) - 1)
+        return { nextDeclaracion, prevDeclaracion };
+    };
+
+    const assignDeclaraciones = (declaracion: BfDataProcessDeclaraciones) => {
+        const { nextDeclaracion, prevDeclaracion } = getDeclaraciones(declaracion);
+        nextDeclaracionSetter(nextDeclaracion);
+        prevDeclaracionSetter(prevDeclaracion);
+        activeDeclaracionSetter(declaracion);
+    }
+
+    const handleNextDeclaracion = (declaracion?: BfDataProcessDeclaraciones) => {
+        const { nextDeclaracion, prevDeclaracion } = getDeclaraciones(declaracion);
+        nextDeclaracionSetter(nextDeclaracion);
+        prevDeclaracionSetter(prevDeclaracion);
+        activeDeclaracionSetter(declaracion);
+    };
+
+    const handlePrevDeclaracion = (declaracion: BfDataProcessDeclaraciones) => {
+        const { nextDeclaracion, prevDeclaracion } = getDeclaraciones(declaracion);
+        nextDeclaracionSetter(nextDeclaracion);
+        prevDeclaracionSetter(prevDeclaracion);
+        activeDeclaracionSetter(declaracion);
+    };
+
+
     useEffect(() => {
         getAllDeclaracionesClientSide().then(
             (declaraciones) => {
@@ -107,11 +226,29 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
 
     const valueContext = {
         declaraciones: declaracionesWithFilter(),
+        totalDeclaraciones,
+        orderByFechaDeclaracion,
+        orderByFechaCarga,
+        handleChangePage,
+        handleChangeRowsPerPage,
+        currentPage,
+        rowsPerPage,
         FilterByFolio,
         FilterByPersonaJuridica,
         FilterByBeneficiarioFinal,
         FilterByLastUpdated,
         FilterByLastUploaded,
+        handleOrderByFechaDeclaracion,
+        handleOrderByFechaCarga,
+        FilterByDateRange,
+        activeDeclaracion,
+        nextDeclaracion,
+        prevDeclaracion,
+        assignDeclaraciones,
+        handleNextDeclaracion,
+        handlePrevDeclaracion,
+        firstDeclaracion,
+        lastDeclaracion,
         resetFilter
     }
 

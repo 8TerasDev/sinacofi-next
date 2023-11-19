@@ -36,7 +36,6 @@ export async function getAllDeclaraciones() {
         bf_data_process_beneficiariosfinales: beneficiarios_finales
       }
     })
-    console.log({cleanDeclaraciones})
     return cleanDeclaraciones;
   } catch (error) {
     return [];

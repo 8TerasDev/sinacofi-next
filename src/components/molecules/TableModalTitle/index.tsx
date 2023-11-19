@@ -5,10 +5,10 @@ import SinaText from "../../atoms/SinaText";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import { Declaracion, PJuridicas } from "@/application";
+import { BfDataProcessDeclaraciones, Declaracion, PJuridicas } from "@/application";
 export const TableModalTitle = ({
   declaracion,
-}: any) => {
+}: { declaracion?: BfDataProcessDeclaraciones | null }) => {
   return (
     <Box
       component="header"
@@ -46,7 +46,7 @@ export const TableModalTitle = ({
               <SinaText size="xs" color="var(--gray-text)">
                 Declaración de{" "}
                 {declaracion &&
-                  `${declaracion.fechahora_creacion}`.slice(0, 10).replace(/-/g, "/")}
+                  `${declaracion.fecha_declaracion}`.slice(0, 10).replace(/-/g, "/")}
               </SinaText>
             </Box>
           </Grid>
@@ -59,14 +59,14 @@ export const TableModalTitle = ({
             <Box display="flex" alignItems="center">
               <AttachFileIcon fontSize="small" />
               <SinaText size="xs" color="var(--gray-text)">
-                Folio : {declaracion && declaracion.correlativo_declaracion}
+                Folio : {declaracion && declaracion.correlativo}
               </SinaText>
             </Box>
           </Grid>
         </Grid>
         <Grid item sx={{ marginTop: "1rem" }}>
           <SinaText size="sl" lineHeight="off">
-            {declaracion && declaracion.razon_social}
+            {declaracion && declaracion.personas_juridicas?.[0]?.razon_social}
           </SinaText>
         </Grid>
       </Grid>

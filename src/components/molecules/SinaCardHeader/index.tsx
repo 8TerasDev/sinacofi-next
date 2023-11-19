@@ -15,8 +15,7 @@ const { RangePicker } = DatePicker;
 
 export const SinCardHeader = () => {
   const [orden, setOrden] = React.useState<any>(10);
-  const { state, loadDeclaracionesByDates } = useContext(DeclaracionesContext);
-  const { FilterByLastUpdated, FilterByLastUploaded, resetFilter } = useContext(NewDeclaracionesContext)
+  const { FilterByLastUpdated, FilterByLastUploaded, resetFilter, FilterByDateRange } = useContext(NewDeclaracionesContext)
 
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -31,11 +30,15 @@ export const SinCardHeader = () => {
   }
 
   function onChangeCalendar(e: any) {
+    if (!e) { resetFilter() }
     calendarValueSetter(e)
     let from = e[0] && dateStringifier(e[0])
     let to = e[1] && dateStringifier(e[1])
     if (from && to) {
-      loadDeclaracionesByDates(from, to)
+      FilterByDateRange({
+        fechaInicio: from,
+        fechaFin: to
+      })
     }
   }
 
@@ -43,7 +46,7 @@ export const SinCardHeader = () => {
 
 
   async function filterDeclaracionesBy({ target }: any) {
-    filterDeclaracionesBySetter(target.value )
+    filterDeclaracionesBySetter(target.value)
     if (target.value === 1) {
       resetFilter();
     }
@@ -81,7 +84,7 @@ export const SinCardHeader = () => {
         <Button
           variant="contained"
           className={types.downloadButton}
-          onClick={() => handleDownloadCSV(state.declaraciones)}
+        // onClick={() => handleDownloadCSV(state.declaraciones)}
         >
           descargar
         </Button>
