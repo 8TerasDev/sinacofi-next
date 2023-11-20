@@ -39,24 +39,33 @@ const AdminPage = () => {
   }
 
   const handleCreateUser = async (e:any) => {
-    const [name, lastName, email, bankCode, role, phone, password] = e.target;
-    const encryptedPassword = encryption(password.value)
+    const [
+      {value: username},
+      {value: first_name},
+      {value: last_name},
+      {value: email},
+      {value: bank_id},
+      {value: phone},
+      {value: password}
+    ] = e.target;
+    const encryptedPassword = encryption(password);
+    const date = new Date();
 
-    const date = new Date()
-    const data = await axios.post(
+    await axios.post(
       `api/createuser`,{
-      username: name.value,
-      first_name: name.value,
-      last_name: lastName.value,
-      email: email.value,
-      is_superuser: true,
+      username,
+      first_name,
+      last_name,
+      email,
+      is_superuser: false,
       is_staff: true,
       is_active: true,
       // bank_id: BigInt(9007199254740991),
-      //phone: phone.value,
+      // bank_id,
+      phone: phone,
       password: encryptedPassword,
       date_joined: date.toISOString()
-    })
+    });
   }
 
   const handleSubmit = async (e:any) => {

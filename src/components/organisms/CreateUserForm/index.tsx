@@ -2,6 +2,8 @@ import { CreateFormsProps } from '@/app/admin/page';
 import { FormControl, Stack, Grid, TextField, Button } from '@mui/material';
 import React from 'react';
 
+const Fields = ['Username','Nombre', 'Apellido', 'Email', 'Banco', 'Telefono'];
+
 export const CreateUserForm = ({
   handleSubmit,
   setOpenModal,
@@ -16,59 +18,17 @@ export const CreateUserForm = ({
       >
       <Stack overflow={'auto'}>
         <Grid container sx={{ justifyContent:'center', height:'100%', flex:1}} >
-         <Grid item sm={4} padding={'10px'}>
-            <TextField
-              required 
-              variant='filled'
-              label='Nombre'
-              placeholder='Nombre'
-              sx={{width:'100%'}}
-              />  
-          </Grid>
-          <Grid item sm={4} padding={'10px'}>
-            <TextField 
-              required 
-              variant='filled'
-              label='Apellido'
-              placeholder='Apellido'
-              sx={{width:'100%'}}
-              />  
-          </Grid>
-          <Grid item sm={4} padding={'10px'}>
-            <TextField 
-              required 
-              variant='filled'
-              label='Email'
-              placeholder='Email'
-              sx={{width:'100%'}}
-              />  
-          </Grid>
-          <Grid item sm={4} padding={'10px'}>
-            <TextField 
-              required 
-              variant='filled'
-              label='BankId'
-              placeholder='BankId'
-              sx={{width:'100%'}}
-              />  
-          </Grid>
-          <Grid item sm={4} padding={'10px'}>
-            <TextField 
-              required 
-              variant='filled'
-              label='Role'
-              placeholder='Role'
-              sx={{width:'100%'}}
-              />  
-          </Grid>
-          <Grid item sm={4} padding={'10px'}>
-            <TextField 
-              variant='filled'
-              label='Telefono'
-              placeholder='Telefono'
-              sx={{width:'100%'}}
-              />  
-          </Grid>
+          {Fields.map((item, index) => 
+            <Grid item sm={4} padding={'10px'} key={index}>
+              <TextField
+                required={item !== 'Telefono'}
+                variant='filled'
+                label={item}
+                placeholder={item}
+                sx={{width:'100%'}}
+                />  
+            </Grid>) 
+          }
           <Grid item sm={4} padding={'10px'}>
             <TextField 
               required 
