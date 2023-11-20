@@ -78,7 +78,7 @@ model accounts_user {
   is_active                      Boolean
   date_joined                    DateTime                         @db.Timestamptz(6)
   bank_id                        BigInt?
-  bf_data_process_bank           bf_data_process_bank?            @relation(fields: [bank_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "accounts_user_bank_id_c7ab1b89_fk_bf_data_process_bank_id")
+  bf_data_process_bank           bf_data_process_bancos?          @relation(fields: [bank_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "accounts_user_bank_id_c7ab1b89_fk_bf_data_process_bank_id")
   accounts_user_groups           accounts_user_groups[]
   accounts_user_user_permissions accounts_user_user_permissions[]
   django_admin_log               django_admin_log[]
@@ -150,12 +150,10 @@ model auth_permission {
 }
 
 model bf_data_process_bank {
-  id                            BigInt                          @id @default(autoincrement())
-  nombre                        String?                         @db.VarChar(128)
-  codigo                        String?                         @db.VarChar(4)
-  created_at                    DateTime?                       @db.Timestamptz(6)
-  accounts_user                 accounts_user[]
-  bf_data_process_declaraciones bf_data_process_declaraciones[]
+  id         BigInt    @id @default(autoincrement())
+  nombre     String?   @db.VarChar(128)
+  codigo     String?   @db.VarChar(4)
+  created_at DateTime? @db.Timestamptz(6)
 }
 
 /// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
@@ -184,14 +182,14 @@ model bf_data_process_declaraciones {
   fecha_subida                         DateTime?                              @db.Date
   num_declaracion                      String?                                @db.VarChar(64)
   fecha_declaracion                    DateTime?                              @db.Timestamptz(6)
-  bank_id                              BigInt
+  banco_id                             BigInt
   bf_data_process_beneficiariosfinales bf_data_process_beneficiariosfinales[]
-  bf_data_process_bank                 bf_data_process_bank                   @relation(fields: [bank_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "bf_data_process_decl_bank_id_17af436e_fk_bf_data_p")
-  personas_juridicas                   personas_juridicas[]
+  bf_data_process_bancos               bf_data_process_bancos                 @relation(fields: [banco_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "bf_data_process_decl_banco_id_7b827fc9_fk_bf_data_p")
+  bf_data_process_personasjuridicas    bf_data_process_personasjuridicas[]
 
-  @@index([bank_id], map: "bf_data_process_declaraciones_bank_id_17af436e")
   @@index([num_declaracion], map: "bf_data_process_declaraciones_num_declaracion_39382cf9")
   @@index([num_declaracion], map: "bf_data_process_declaraciones_num_declaracion_39382cf9_like")
+  @@index([banco_id], map: "bf_data_process_declaraciones_banco_id_7b827fc9")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -261,6 +259,56 @@ model line_log {
 
 /// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
 model personas_juridicas {
+  id                       BigInt    @id @default(autoincrement())
+  rut                      String?   @db.VarChar(9)
+  razon_social             String?   @db.VarChar(128)
+  domicilio                String?   @db.VarChar(128)
+  ciudad                   String?   @db.VarChar(128)
+  lugar_de_constitucion    String?   @db.VarChar(128)
+  telefono                 String?   @db.VarChar(128)
+  identificacion_rep_legal String?   @db.VarChar(128)
+  nombre_rep_legal         String?   @db.VarChar(128)
+  tipo_de_sociedad         String?   @db.VarChar(2)
+  created_at               DateTime? @db.Timestamptz(6)
+  declaracion_id           BigInt
+
+  @@index([declaracion_id], map: "personas_juridicas_declaracion_id_b1f6a16e")
+}
+
+model bf_data_process_bancos {
+  id                            BigInt                          @id @default(autoincrement())
+  nombre                        String?                         @db.VarChar(128)
+  codigo                        String?                         @db.VarChar(4)
+  created_at                    DateTime?                       @db.Timestamptz(6)
+  accounts_user                 accounts_user[]
+  bf_data_process_declaraciones bf_data_process_declaraciones[]
+}
+
+model bf_data_process_filelog {
+  id             BigInt    @id @default(autoincrement())
+  file_name      String?   @db.VarChar(256)
+  file_path      String?   @db.VarChar(256)
+  full_file_path String?   @db.VarChar(256)
+  created_at     DateTime? @db.Timestamptz(6)
+  updated_at     DateTime? @db.Timestamptz(6)
+  codigo_banco   String?   @db.VarChar(4)
+  errors         Boolean
+  message        String?   @db.VarChar(256)
+}
+
+model bf_data_process_linelog {
+  id             BigInt    @id @default(autoincrement())
+  file_name      String?   @db.VarChar(256)
+  folder_path    String?   @db.VarChar(256)
+  full_file_path String?   @db.VarChar(256)
+  line_content   String?   @db.VarChar(256)
+  error_message  String?   @db.VarChar(256)
+  created_at     DateTime? @db.Timestamptz(6)
+  updated_at     DateTime? @db.Timestamptz(6)
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model bf_data_process_personasjuridicas {
   id                            BigInt                        @id @default(autoincrement())
   rut                           String?                       @db.VarChar(9)
   razon_social                  String?                       @db.VarChar(128)
@@ -273,7 +321,7 @@ model personas_juridicas {
   tipo_de_sociedad              String?                       @db.VarChar(2)
   created_at                    DateTime?                     @db.Timestamptz(6)
   declaracion_id                BigInt
-  bf_data_process_declaraciones bf_data_process_declaraciones @relation(fields: [declaracion_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "personas_juridicas_declaracion_id_b1f6a16e_fk_bf_data_p")
+  bf_data_process_declaraciones bf_data_process_declaraciones @relation(fields: [declaracion_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "bf_data_process_pers_declaracion_id_cb383968_fk_bf_data_p")
 
-  @@index([declaracion_id], map: "personas_juridicas_declaracion_id_b1f6a16e")
+  @@index([declaracion_id], map: "bf_data_process_personasjuridicas_declaracion_id_cb383968")
 }

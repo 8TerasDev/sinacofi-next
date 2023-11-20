@@ -15,15 +15,15 @@ function formatISODateToDateTime(isoString: any) {
 }
 const TableModalDetails = ({ declaracion }: { declaracion: BfDataProcessDeclaraciones|null }) => {
 
-  const rut_no = declaracion?.personas_juridicas?.[0]?.rut;
-  const domicilio = declaracion?.personas_juridicas?.[0]?.domicilio
-  const telefono = declaracion?.personas_juridicas?.[0]?.telefono
-  const ciudad = declaracion?.personas_juridicas?.[0]?.ciudad
-  const lugar_de_constitucion = declaracion?.personas_juridicas?.[0]?.lugar_de_constitucion
-  const nombre_rep_legal = declaracion?.personas_juridicas?.[0]?.nombre_rep_legal
-  const tipo_sociedad = declaracion?.personas_juridicas?.[0]?.tipo_de_sociedad
-  const fechahora_creacion = declaracion?.personas_juridicas?.[0]?.created_at
-  const rutRep = declaracion?.personas_juridicas?.[0]?.identificacion_rep_legal;
+  const rut_no = declaracion?.bf_data_process_personasjuridicas?.[0]?.rut;
+  const domicilio = declaracion?.bf_data_process_personasjuridicas?.[0]?.domicilio
+  const telefono = declaracion?.bf_data_process_personasjuridicas?.[0]?.telefono
+  const ciudad = declaracion?.bf_data_process_personasjuridicas?.[0]?.ciudad
+  const lugar_de_constitucion = declaracion?.bf_data_process_personasjuridicas?.[0]?.lugar_de_constitucion
+  const nombre_rep_legal = declaracion?.bf_data_process_personasjuridicas?.[0]?.nombre_rep_legal
+  const tipo_sociedad = declaracion?.bf_data_process_personasjuridicas?.[0]?.tipo_de_sociedad
+  const fechahora_creacion = declaracion?.bf_data_process_personasjuridicas?.[0]?.created_at
+  const rutRep = declaracion?.bf_data_process_personasjuridicas?.[0]?.identificacion_rep_legal;
   return (
     <Grid container direction="column" alignItems="flex-start">
       {/* Los items ahora ocupan toda la anchura disponible, xs={12} */}

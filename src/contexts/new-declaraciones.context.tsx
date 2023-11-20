@@ -105,8 +105,15 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
                 const fechaB = new Date(b.fecha_declaracion || Date.now()).getTime();
                 return fechaB - fechaA;
             });
+            const registrosMasRecientes = Object.values(declaracionesOrdenadas.reduce((acc: any, item: BfDataProcessDeclaraciones) => {
+                const owner = item?.bf_data_process_personasjuridicas?.[0]?.rut || "0";
+                if (!acc[owner] || new Date(item.fecha_declaracion || Date.now()) > new Date(acc[owner].fecha_declaracion)) {
+                    acc[owner] = item;
+                }
+                return acc;
+            }, {}));
 
-            return [declaracionesOrdenadas[0]];
+            return registrosMasRecientes;
         }
     }
 
@@ -117,13 +124,19 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
                 const fechaB = new Date(b.fecha_subida || Date.now()).getTime();
                 return fechaB - fechaA;
             });
-
-            return [declaracionesOrdenadas[0]];
+            const registrosMasRecientes = Object.values(declaracionesOrdenadas.reduce((acc: any, item: BfDataProcessDeclaraciones) => {
+                const owner = item?.bf_data_process_personasjuridicas?.[0]?.rut || "0";
+                if (!acc[owner] || new Date(item.fecha_declaracion || Date.now()) > new Date(acc[owner].fecha_declaracion)) {
+                    acc[owner] = item;
+                }
+                return acc;
+            }, {}));
+            return registrosMasRecientes;
         }
     }
 
     function DeclaracionesFilterByFolio() {
-        return declaraciones?.filter(declaraciones => declaraciones.correlativo === filter)
+        return declaraciones?.filter(declaraciones => declaraciones.num_declaracion === filter)
     }
 
     function DeclaracionesOrderByFechaDeclaracion() {
@@ -167,8 +180,8 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
 
     function DeclaracionesFilterByPersonaJuridica() {
         return declaraciones?.filter(declaracion =>
-            declaracion.personas_juridicas?.some(persona_juridica =>
-                persona_juridica.identificacion_rep_legal === filter)
+            declaracion.bf_data_process_personasjuridicas?.some(persona_juridica =>
+                persona_juridica.rut === filter)
         );
     }
 
@@ -186,7 +199,7 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
     const [lastDeclaracion, lastDeclaracionSetter] = useState<boolean>(false);
 
     const getDeclaraciones = (declaracion?: BfDataProcessDeclaraciones) => {
-        const index = declaraciones?.findIndex((item: BfDataProcessDeclaraciones) => item.correlativo === declaracion?.correlativo) || 0;
+        const index = declaraciones?.findIndex((item: BfDataProcessDeclaraciones) => item.num_declaracion === declaracion?.num_declaracion) || 0;
         const nextDeclaracion = index + 1 >= (declaraciones?.length || 0) ? declaraciones?.[index] : declaraciones?.[index + 1];
         const prevDeclaracion = index - 1 >= 0 ? declaraciones?.[index - 1] : declaraciones?.[index];
         firstDeclaracionSetter(index == 0)
@@ -249,7 +262,7 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
         handlePrevDeclaracion,
         firstDeclaracion,
         lastDeclaracion,
-        allDeclaraciones:declaraciones,
+        allDeclaraciones: declaraciones,
         resetFilter
     }
 

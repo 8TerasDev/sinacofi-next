@@ -122,7 +122,7 @@ export type BfDataProcessDeclaraciones = {
   // Los siguientes campos representan relaciones y dependen de cómo desees manejarlas en TypeScript.
   bf_data_process_beneficiariosfinales?: BfDataProcessBeneficiariosFinales[]; // Dependiendo de cómo esté definido este tipo
   // bf_data_process_bank?: BfDataProcessBank; // Dependiendo de cómo esté definido este tipo
-  personas_juridicas?: PersonasJuridicas[]; // Dependiendo de cómo esté definido este tipo
+  bf_data_process_personasjuridicas?: PersonasJuridicas[]; // Dependiendo de cómo esté definido este tipo
 };
 
 

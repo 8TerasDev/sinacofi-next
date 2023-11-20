@@ -19,12 +19,12 @@ const RenderTable = ({ declaraciones, handleDeleteModal, openModalWithDeclaracio
                     handleDelete={() => handleDeleteModal(declaracion)}
                     handleDownload={() => { }}
                 />
-                <TableCell>{declaracion.correlativo}</TableCell>
+                <TableCell>{declaracion.num_declaracion}</TableCell>
                 <TableCell>
                     <Button
                         onClick={() => openModalWithDeclaracion(declaracion)}
                     >
-                        {declaracion?.personas_juridicas?.[0]?.razon_social?.toUpperCase() ?? ""}
+                        {declaracion?.bf_data_process_personasjuridicas?.[0]?.razon_social?.toUpperCase() ?? ""}
                     </Button>
                 </TableCell>
                 <TableCell>

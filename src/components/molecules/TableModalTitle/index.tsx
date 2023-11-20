@@ -59,14 +59,14 @@ export const TableModalTitle = ({
             <Box display="flex" alignItems="center">
               <AttachFileIcon fontSize="small" />
               <SinaText size="xs" color="var(--gray-text)">
-                Folio : {declaracion && declaracion.correlativo}
+                Folio : {declaracion && declaracion.num_declaracion}
               </SinaText>
             </Box>
           </Grid>
         </Grid>
         <Grid item sx={{ marginTop: "1rem" }}>
           <SinaText size="sl" lineHeight="off">
-            {declaracion && declaracion.personas_juridicas?.[0]?.razon_social}
+            {declaracion && declaracion.bf_data_process_personasjuridicas?.[0]?.razon_social}
           </SinaText>
         </Grid>
       </Grid>

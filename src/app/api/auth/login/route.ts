@@ -9,8 +9,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { username, password } = body;
-    console.log("body", body);
-    
+
     const user = await verifyCredentials(username, password);
 
     if (!user) {
@@ -25,13 +24,13 @@ export async function POST(req: NextRequest) {
 
     const token = jwt.sign(
       {
-        username, 
-        password, 
+        username,
+        password,
         isAdmin: user.is_superuser,
         name: user.last_name,
         lastName: user.last_name,
         email: user.email,
-        bank: user.bank_id
+        bank: user.bank_id,
       },
       "secret",
       {
@@ -53,12 +52,10 @@ export async function POST(req: NextRequest) {
     });
 
     return res;
-
   } catch (error) {
-
+    console.error("Error al obtener las declaraciones:", error);
     return new Response(JSON.stringify({ error }), {
       status: 500,
     });
-
   }
 }
