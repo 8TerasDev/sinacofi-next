@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, CircularProgress, FormControl, Grid, Modal, Paper, Stack, TextField } from '@mui/material';
 import Image from 'next/image';
 import sinacofi_logo from '../../assets/images/sinacofi_logo.png';
@@ -10,6 +10,7 @@ import axios from 'axios';
 import { encryption } from '@/lib/utils';
 import { CreateUserForm } from '@/components/organisms/CreateUserForm';
 import { CreateBankForm } from '@/components/organisms/CreateBankForm';
+import { useGetProfile } from '@/custom-hooks/useGetProfile';
 
 // TODO: Create a customHook / actions in store to createUsers/Banks
 
@@ -20,9 +21,19 @@ export type CreateFormsProps = {
 
 const AdminPage = () => {
   const [openModal, setOpenModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [type, setType] = useState('');
   const route = useRouter();
+  const { data, isLoading: loading } = useGetProfile();
+
+  useEffect(()=>{
+    // TODO. REFACTOR. Better use Middleware
+    if(data){
+      // @ts-ignore
+      !data.isAdmin && route.push('/home');
+      setIsLoading(loading);
+    }
+  },[data])
 
   const handleModal = (modalType:string) => {
     setIsLoading(true);

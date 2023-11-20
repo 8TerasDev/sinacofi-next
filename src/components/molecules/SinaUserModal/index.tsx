@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, IconButton, Button, TextField } from "@mui/material";
 import styles from "./modalappbar.module.css";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -11,10 +11,12 @@ import axios from "axios";
 interface UserModalProps {
   isOpen: boolean;
   handleClick: () => void;
+  data: any;
 }
 
-const UserModal: React.FC<UserModalProps> = ({ isOpen, handleClick }) => {
+const UserModal: React.FC<UserModalProps> = ({ isOpen, handleClick, data}) => {
   const router = useRouter();
+  const {name, lastName, email, bank} = data;
 
   const handleLogout = async () => {
     try{
@@ -25,6 +27,7 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, handleClick }) => {
       console.log(err)
     }
   };
+
   return (
     <Modal open={isOpen} onClose={handleClick}>
       <div className={styles.modalWrapper}>
@@ -54,7 +57,7 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, handleClick }) => {
                 Mi Perfil
               </SinaText>
               <SinaText size="mWide" lineHeight="off">
-                Juan Pablo
+                {name}
               </SinaText>
             </div>
           </div>
@@ -63,19 +66,19 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, handleClick }) => {
             <TextField
               label="Nombre(s)"
               variant="standard"
-              value="Juan Pablo"
+              value={name}
               disabled
             />
             <TextField
               label="Apellido(s)"
               variant="standard"
-              value="Peres S."
+              value={lastName}
               disabled
             />
             <TextField
               label="Email"
               variant="standard"
-              value="jpperez@santander.cl"
+              value={email}
               disabled
             />
             <TextField
