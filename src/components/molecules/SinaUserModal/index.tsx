@@ -5,6 +5,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import CloseIcon from "@mui/icons-material/Close";
 import SinaText from "../../atoms/SinaText";
 import { useRouter } from "next/navigation";
+import { cookies } from "next/headers";
+import axios from "axios";
 
 interface UserModalProps {
   isOpen: boolean;
@@ -14,8 +16,14 @@ interface UserModalProps {
 const UserModal: React.FC<UserModalProps> = ({ isOpen, handleClick }) => {
   const router = useRouter();
 
-  const handleLogout = () => {
-    router.push('/');
+  const handleLogout = async () => {
+    try{
+      await axios.post('api/auth/logout');
+      router.push('/');
+    }
+    catch(err){
+      console.log(err)
+    }
   };
   return (
     <Modal open={isOpen} onClose={handleClick}>

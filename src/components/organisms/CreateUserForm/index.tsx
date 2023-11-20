@@ -2,7 +2,7 @@ import { CreateFormsProps } from '@/app/admin/page';
 import { FormControl, Stack, Grid, TextField, Button } from '@mui/material';
 import React from 'react';
 
-const Fields = ['Username','Nombre', 'Apellido', 'Email', 'Banco', 'Telefono'];
+const Fields = ['Username','Nombre', 'Apellido', 'Email', 'Banco'];
 
 export const CreateUserForm = ({
   handleSubmit,
@@ -21,7 +21,7 @@ export const CreateUserForm = ({
           {Fields.map((item, index) => 
             <Grid item sm={4} padding={'10px'} key={index}>
               <TextField
-                required={item !== 'Telefono'}
+                required
                 variant='filled'
                 label={item}
                 placeholder={item}

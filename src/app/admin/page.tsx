@@ -11,6 +11,8 @@ import { encryption } from '@/lib/utils';
 import { CreateUserForm } from '@/components/organisms/CreateUserForm';
 import { CreateBankForm } from '@/components/organisms/CreateBankForm';
 
+// TODO: Create a customHook / actions in store to createUsers/Banks
+
 export type CreateFormsProps = {
   handleSubmit: (input:any) => void;
   setOpenModal: (input:boolean) => void;
@@ -45,10 +47,11 @@ const AdminPage = () => {
       {value: last_name},
       {value: email},
       {value: bank_id},
-      {value: phone},
       {value: password}
     ] = e.target;
-    const encryptedPassword = encryption(password);
+
+    // TODO. Do it when DJANDO AUTH is done !
+    // const encryptedPassword = encryption(password);
     const date = new Date();
 
     await axios.post(
@@ -58,12 +61,11 @@ const AdminPage = () => {
       last_name,
       email,
       is_superuser: false,
-      is_staff: true,
+      is_staff: false,
       is_active: true,
       // bank_id: BigInt(9007199254740991),
       // bank_id,
-      phone: phone,
-      password: encryptedPassword,
+      password,
       date_joined: date.toISOString()
     });
   }
