@@ -139,16 +139,14 @@ const SinaTable = () => {
                     />
                 </TableContainer>
             </div >
-            {
-                <SinaTableModal
-                    declaracion={activeDeclaracion ? activeDeclaracion : null}
-                    isOpen={openModal}
-                    onNextDeclaracion={() => { handleNextDeclaracion(nextDeclaracion) }}
-                    onPrevDeclaracion={() => { handlePrevDeclaracion(prevDeclaracion) }}
-                    handleClose={() => { openModalSetter(false) }}
-                    handleDelete={handleDeleteModal}
-                />
-            }
+            <SinaTableModal
+                declaracion={activeDeclaracion ? activeDeclaracion : null}
+                isOpen={openModal}
+                onNextDeclaracion={() => { handleNextDeclaracion(nextDeclaracion) }}
+                onPrevDeclaracion={() => { handlePrevDeclaracion(prevDeclaracion) }}
+                handleClose={() => { openModalSetter(false) }}
+                handleDelete={handleDeleteModal}
+            />
             <DeleteModal
                 open={openDeleteModal}
                 handleClose={() => openDeleteModalSetter(false)}

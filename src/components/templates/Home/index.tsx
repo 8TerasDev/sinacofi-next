@@ -43,16 +43,13 @@ const HomeTemplate = ({ isLoading, state }: HomeTemplateProps) => {
           <Stack justifyContent={'center'} alignItems={'center'} flex={1}>
             <CircularProgress />
           </Stack> :
-          <>
-            {declaraciones && declaraciones.length !== 0 ?
-              <Stack flex={1}>
-                <SinaCardHeader />
-                <SinaTable />
-              </Stack> :
-              // <EmptyTable filterBy={filter && filter.filterBy} input={filter && filter.filterInput}/>
-              <EmptyTable />
+          <Stack flex={1}>
+            <SinaCardHeader />
+            {declaraciones && declaraciones.length !== 0 
+              ? <SinaTable /> 
+              : <EmptyTable /> 
             }
-          </>
+          </Stack>
         }
       </SinaMainCard>
     </MainLayout>

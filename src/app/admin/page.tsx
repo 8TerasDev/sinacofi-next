@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, CircularProgress, FormControl, Grid, Modal, Paper, Stack, TextField } from '@mui/material';
 import Image from 'next/image';
 import sinacofi_logo from '../../assets/images/sinacofi_logo.png';
@@ -10,6 +10,9 @@ import axios from 'axios';
 import { encryption } from '@/lib/utils';
 import { CreateUserForm } from '@/components/organisms/CreateUserForm';
 import { CreateBankForm } from '@/components/organisms/CreateBankForm';
+import { useGetProfile } from '@/custom-hooks/useGetProfile';
+
+// TODO: Create a customHook / actions in store to createUsers/Banks
 
 export type CreateFormsProps = {
   handleSubmit: (input:any) => void;
@@ -18,9 +21,19 @@ export type CreateFormsProps = {
 
 const AdminPage = () => {
   const [openModal, setOpenModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [type, setType] = useState('');
   const route = useRouter();
+  const { data, isLoading: loading } = useGetProfile();
+
+  useEffect(()=>{
+    // TODO. REFACTOR. Better use Middleware
+    if(data){
+      // @ts-ignore
+      !data.isAdmin && route.push('/home');
+      setIsLoading(loading);
+    }
+  },[data])
 
   const handleModal = (modalType:string) => {
     setIsLoading(true);
@@ -39,24 +52,33 @@ const AdminPage = () => {
   }
 
   const handleCreateUser = async (e:any) => {
-    const [name, lastName, email, bankCode, role, phone, password] = e.target;
-    const encryptedPassword = encryption(password.value)
+    const [
+      {value: username},
+      {value: first_name},
+      {value: last_name},
+      {value: email},
+      {value: bank_id},
+      {value: password}
+    ] = e.target;
 
-    const date = new Date()
-    const data = await axios.post(
+    // TODO. Do it when DJANDO AUTH is done !
+    // const encryptedPassword = encryption(password);
+    const date = new Date();
+
+    await axios.post(
       `api/createuser`,{
-      username: name.value,
-      first_name: name.value,
-      last_name: lastName.value,
-      email: email.value,
-      is_superuser: true,
-      is_staff: true,
+      username,
+      first_name,
+      last_name,
+      email,
+      is_superuser: false,
+      is_staff: false,
       is_active: true,
       // bank_id: BigInt(9007199254740991),
-      //phone: phone.value,
-      password: encryptedPassword,
+      // bank_id,
+      password,
       date_joined: date.toISOString()
-    })
+    });
   }
 
   const handleSubmit = async (e:any) => {

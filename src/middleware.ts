@@ -1,24 +1,40 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
-import { verify } from "jsonwebtoken";
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
+
+// JWS VERIFY CAN NOT BE USED HERE.
+
+//const whiteListPaths = ['/','/home'];
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
-    const cookies = request.cookies;
-    const auth = cookies.get("auth")
-
-    if (!auth) {
-        return NextResponse.redirect(new URL('/', request.url))
-    }
     try {
-        // const user = await verify(`${auth?.value}`, "secret") as any
-    } catch (error) {
+        const cookies = request.cookies;
+        const auth = cookies.get("auth");
+        //const path = request.nextUrl.pathname;
+
+        // TODO: if isLogged -> go to Home.
+        if(auth) return NextResponse.next();
         return NextResponse.redirect(new URL('/', request.url))
+
+        // if(!whiteListPaths.includes(path) || !auth){
+        //     return NextResponse.redirect(new URL('/', request.url))
+        // }
+        
+    } catch (error) {
+        console.log(error)
+        //return NextResponse.redirect(new URL('/', request.url))
     }
-    return NextResponse.next()
+    //return NextResponse.next()
 }
 
 // See "Matching Paths" below to learn more
+// TODO
 export const config = {
-    matcher: '/home',
+    matcher: [
+        '/home',
+        '/admin',
+        // TODO: Run always middleware
+        //'/((?!api|_next/static|_next/image|favicon.ico).*)',
+    ]
 }
