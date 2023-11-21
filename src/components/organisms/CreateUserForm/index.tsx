@@ -10,6 +10,7 @@ export const CreateUserForm = ({
   banks,
 }: CreateFormsProps) => {
   const [bank, setBank] = useState("none");
+  // console.log(banks)
   return(
     <FormControl
       variant='filled'
@@ -44,8 +45,8 @@ export const CreateUserForm = ({
               onChange={(e)=>setBank(e.target.value)}
             >
               <MenuItem disabled value="none">Banco</MenuItem>
-              {banks.map((bank,index) => (
-                <MenuItem key={index} value={bank.codigo}>
+              {banks.map((bank:any,index:any) => (
+                <MenuItem key={index} value={bank.id}>
                   {bank.nombre}
                 </MenuItem>
               ))}

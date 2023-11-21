@@ -8,7 +8,7 @@ export type CreateUserProps = {
   email: string,
   phone?: string,
   password: string,
-  bank_id?: number,
+  bank_id?: any,
   is_active: boolean,
   is_superuser: boolean,
   is_staff: boolean,
@@ -17,6 +17,7 @@ export type CreateUserProps = {
 
 export const createUser = async (data: CreateUserProps ) => {
   try {
+    data.bank_id = BigInt(data.bank_id);
     const newUser = await prisma.accounts_user.create({data})
     return newUser;
   }
