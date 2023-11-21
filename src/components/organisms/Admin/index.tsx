@@ -3,8 +3,10 @@ import { Button, Paper, Stack } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React from 'react';
 
-export const UserTableComponent = ({rows, onClose, 
- tableColumns
+export const UserTableComponent = ({
+  rows, 
+  tableColumns,
+  banks
 }:any) => {
   const columns = tableColumns.map((column:any) => ({ 
     field: column.field, 
@@ -12,7 +14,17 @@ export const UserTableComponent = ({rows, onClose,
     width: window.screen.width/(tableColumns.length+1),
   }));
 
-  const rows2 = rows.map((row:any, index:any) =>({...row, id:index}));
+  const rows2 = rows.map((row:any, index:any) => {
+    if(banks) {
+      const bank = row.bank_id && banks.find(
+        (bank:any) => parseInt(bank.id) === parseInt(row.bank_id)
+      );
+      const { nombre } = bank || {};
+      return({...row, id:index, bank_id: nombre})
+    }
+    return({...row, id:index})
+  } 
+  );
   return(
     <DataGrid
       sx={{paddingX:'20px'}}
@@ -32,7 +44,8 @@ export const AdminStack = ({
   showTable,
   setShowTable,
   dataTable,
-  tableColumns
+  tableColumns,
+  banks
 }:any) => {
   return(
     <Stack>
@@ -52,7 +65,8 @@ export const AdminStack = ({
       <Stack height={'15px'} />
       {dataTable && true && 
         <UserTableComponent 
-          rows={dataTable} 
+          rows={dataTable}
+          banks={banks} 
           tableColumns={tableColumns}
           onClose={()=>setShowTable(false)}/> }
     </Stack>

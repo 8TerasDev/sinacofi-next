@@ -1,15 +1,19 @@
 import { CreateFormsProps } from '@/app/admin/page';
-import { FormControl, Stack, Grid, TextField, Button } from '@mui/material';
-import React from 'react';
+import { FormControl, Stack, Grid, TextField, Button, InputLabel, MenuItem, Select } from '@mui/material';
+import React, { useState } from 'react';
 
-const Fields = ['Username','Nombre', 'Apellido', 'Email', 'Banco'];
+const Fields = ['Username','Nombre', 'Apellido', 'Email'];
 
 export const CreateUserForm = ({
   handleSubmit,
   setOpenModal,
+  banks,
 }: CreateFormsProps) => {
+  const [bank, setBank] = useState("none");
+  // console.log(banks)
   return(
-    <FormControl 
+    <FormControl
+      variant='filled'
       fullWidth
       required
       component={'form'}
@@ -29,6 +33,25 @@ export const CreateUserForm = ({
                 />  
             </Grid>) 
           }
+          <Grid item sm={4} padding={'10px'}>
+            <InputLabel id="select-label" sx={{visibility:'hidden'}}>Banco</InputLabel>
+            <Select
+              labelId="select-label"
+              id="select"
+              label="Banco"
+              fullWidth
+              placeholder="Banco"
+              value={bank}
+              onChange={(e)=>setBank(e.target.value)}
+            >
+              <MenuItem disabled value="none">Banco</MenuItem>
+              {banks.map((bank:any,index:any) => (
+                <MenuItem key={index} value={bank.id}>
+                  {bank.nombre}
+                </MenuItem>
+              ))}
+            </Select>
+          </Grid>
           <Grid item sm={4} padding={'10px'}>
             <TextField 
               required 
