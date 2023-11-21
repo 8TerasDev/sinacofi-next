@@ -28,10 +28,10 @@ const RenderTable = ({ declaraciones, handleDeleteModal, openModalWithDeclaracio
                     </Button>
                 </TableCell>
                 <TableCell>
-                    {`${declaracion.fecha_declaracion}`.slice(0, 10).replace(/-/g, "/")}
+                    {`${declaracion.fecha_declaracion}`.slice(0, 10)}
                 </TableCell>
                 <TableCell>
-                    {`${declaracion.fecha_subida}`.slice(0, 10).replace(/-/g, "/")}
+                    {`${declaracion.fecha_subida}`.slice(0, 10)}
                 </TableCell>
             </TableRow>
         ));
