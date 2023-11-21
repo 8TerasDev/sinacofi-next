@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import { Button, CircularProgress, FormControl, Grid, Modal, Paper, Stack, TextField } from '@mui/material';
+import { Button, CircularProgress, FormControl, Grid, Modal, Paper, Stack, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material';
 import Image from 'next/image';
 import sinacofi_logo from '../../assets/images/sinacofi_logo.png';
 import { useRouter } from 'next/navigation';
@@ -11,6 +11,11 @@ import { encryption } from '@/lib/utils';
 import { CreateUserForm } from '@/components/organisms/CreateUserForm';
 import { CreateBankForm } from '@/components/organisms/CreateBankForm';
 import { useGetProfile } from '@/custom-hooks/useGetProfile';
+import { useGetUsers } from '@/custom-hooks/useGetUsers';
+import { Table } from 'antd';
+import { DataGrid } from '@mui/x-data-grid';
+import { AdminStack } from '@/components/organisms/Admin';
+import { useGetBanks } from '@/custom-hooks/useGetBanks';
 
 // TODO: Create a customHook / actions in store to createUsers/Banks
 
@@ -19,12 +24,50 @@ export type CreateFormsProps = {
   setOpenModal: (input:boolean) => void;
 }
 
+
+const preColumnsUsers = [
+  {
+    field:'username',
+    name: 'Username'
+  }, 
+  {
+    field:'first_name',
+    name: 'Nombre',
+  },
+  {
+    field:'last_name',
+    name: 'Apellido',
+  },
+  {
+    field:'email',
+    name: 'Email'
+  },
+  {
+    field:'is_staff',
+    name: 'Es Staff'
+  }];
+const preColumnsBanks = [  
+  {
+    field:'nombre',
+    name: 'Nombre'
+  },
+  {
+    field:'codigo',
+    name: 'Codigo'
+  }
+]; 
+
+
 const AdminPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [showUsers , setShowUsers] = useState(false);
+  const [showBanks , setShowBanks] = useState(false);
   const [type, setType] = useState('');
   const route = useRouter();
   const { data, isLoading: loading } = useGetProfile();
+  const { data: usersData, isLoading: usersLoading } = useGetUsers(isLoading);
+  const { data: banksData, isLoading: banksLoading } = useGetBanks(isLoading);
 
   useEffect(()=>{
     // TODO. REFACTOR. Better use Middleware
@@ -44,10 +87,12 @@ const AdminPage = () => {
 
   const handleCreateBank = async (e: any) => {
     const [nombre , codigo] = e.target;
+    const date = new Date();
     const data = await axios.post(
       `api/createbank`,{
       nombre: nombre.value,
-      codigo: codigo.value
+      codigo: codigo.value,
+      created_at: date.toISOString(),
     })
   }
 
@@ -94,7 +139,7 @@ const AdminPage = () => {
       }
     }
     catch(err){
-      console.log('Error0',err);
+      console.log('Error',err);
     }
     finally{
       setIsLoading(false);
@@ -102,7 +147,7 @@ const AdminPage = () => {
 
   }
 
-  if(isLoading) return (
+  if(isLoading || usersLoading || banksLoading) return (
     <Stack flex={1} height={'100vh'} justifyContent={'center'} alignItems={'center'}>
       <CircularProgress/>
     </Stack>)
@@ -130,36 +175,30 @@ const AdminPage = () => {
       <Stack
         justifyContent={'center'} 
         alignItems={'center'} 
-        height={'100%'} 
-        padding={'0px'} 
+        paddingTop={'10px'} 
         >
-        <Stack 
-        borderRadius={'5px'}
-        justifyContent={'space-around'} height={'100%'} width={'100%'} padding={'30px'} boxShadow={'2px 4px 20px 2px rgba(0, 0, 0, 0.3);'}>
-          <Paper>
-            <Stack flexDirection={'row'} justifyContent={'space-around'} padding={'30px'} >
-            <SinaText size='sl'>
-              CREAR USUARIO
-            </SinaText>
-              <Button 
-                sx={{width:'200px'}}
-                variant='contained' 
-                onClick={()=>handleModal('createuser')}>
-                Crear
-              </Button>
-            </Stack>
-          </Paper>
-          <Paper>
-            <Stack flexDirection={'row'} justifyContent={'space-around'} padding={'30px'}>
-            <SinaText size='sl'>
-              CREAR BANCO
-            </SinaText>
-              <Button sx={{width:'200px'}} variant='contained' onClick={()=>handleModal('createbank')}>
-                Crear
-              </Button>
-            </Stack>
-          </Paper>
-
+        <Stack
+          borderRadius={'5px'}
+          justifyContent={'space-around'} 
+          width={'100%'} padding={'30px'} 
+          boxShadow={'2px 4px 20px 2px rgba(0, 0, 0, 0.3);'}>
+          {!showBanks && <AdminStack 
+            title={'ADMINISTRAR USUARIOS'}
+            handleModal={()=>handleModal('createuser')}
+            showTable={showUsers}
+            tableColumns={preColumnsUsers}
+            setShowTable={setShowUsers}
+            dataTable={usersData}
+          />}
+          <Stack height={'15px'} />
+          {!showUsers && <AdminStack 
+            title={'ADMINISTRAR BANCOS'}
+            handleModal={()=>handleModal('createbank')}
+            showTable={showBanks}
+            tableColumns={preColumnsBanks}
+            setShowTable={setShowBanks}
+            dataTable={banksData}
+          />}
         </Stack>
         <Modal
           sx={{ justifyContent:'center', display:'flex', alignItems:'center'}}
