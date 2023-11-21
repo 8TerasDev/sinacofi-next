@@ -22,6 +22,7 @@ import { useGetBanks } from '@/custom-hooks/useGetBanks';
 export type CreateFormsProps = {
   handleSubmit: (input:any) => void;
   setOpenModal: (input:boolean) => void;
+  banks?: any;
 }
 
 
@@ -45,7 +46,12 @@ const preColumnsUsers = [
   {
     field:'is_staff',
     name: 'Es Staff'
-  }];
+  },
+  {
+    field: 'bank_id',
+    name: 'Banco'
+  }
+];
 const preColumnsBanks = [  
   {
     field:'nombre',
@@ -109,7 +115,6 @@ const AdminPage = () => {
     // TODO. Do it when DJANDO AUTH is done !
     // const encryptedPassword = encryption(password);
     const date = new Date();
-
     await axios.post(
       `api/createuser`,{
       username,
@@ -119,8 +124,7 @@ const AdminPage = () => {
       is_superuser: false,
       is_staff: false,
       is_active: true,
-      // bank_id: BigInt(9007199254740991),
-      // bank_id,
+      bank_id,
       password,
       date_joined: date.toISOString()
     });
@@ -189,6 +193,7 @@ const AdminPage = () => {
             tableColumns={preColumnsUsers}
             setShowTable={setShowUsers}
             dataTable={usersData}
+            banks={banksData}
           />}
           <Stack height={'15px'} />
           {!showUsers && <AdminStack 
@@ -211,7 +216,11 @@ const AdminPage = () => {
                   {type === 'createbank' && 'Crear Banco' }
                 </SinaText>
               </Stack>
-              {type === 'createuser' && <CreateUserForm handleSubmit={handleSubmit} setOpenModal={setOpenModal}/>}
+              {type === 'createuser' && 
+                <CreateUserForm 
+                  banks={banksData}
+                  handleSubmit={handleSubmit} 
+                  setOpenModal={setOpenModal}/>}
               {type === 'createbank' && <CreateBankForm handleSubmit={handleSubmit} setOpenModal={setOpenModal}/>}
             </Paper>
         </Modal>
