@@ -15,6 +15,7 @@ export const UserTableComponent = ({rows, onClose,
   const rows2 = rows.map((row:any, index:any) =>({...row, id:index}));
   return(
     <DataGrid
+      sx={{paddingX:'20px'}}
       hideFooterPagination
       hideFooter
       columns={columns}
