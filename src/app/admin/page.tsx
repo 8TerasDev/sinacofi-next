@@ -22,6 +22,7 @@ import { useGetBanks } from '@/custom-hooks/useGetBanks';
 export type CreateFormsProps = {
   handleSubmit: (input:any) => void;
   setOpenModal: (input:boolean) => void;
+  banks?: any;
 }
 
 
@@ -211,7 +212,11 @@ const AdminPage = () => {
                   {type === 'createbank' && 'Crear Banco' }
                 </SinaText>
               </Stack>
-              {type === 'createuser' && <CreateUserForm handleSubmit={handleSubmit} setOpenModal={setOpenModal}/>}
+              {type === 'createuser' && 
+                <CreateUserForm 
+                  banks={banksData}
+                  handleSubmit={handleSubmit} 
+                  setOpenModal={setOpenModal}/>}
               {type === 'createbank' && <CreateBankForm handleSubmit={handleSubmit} setOpenModal={setOpenModal}/>}
             </Paper>
         </Modal>
