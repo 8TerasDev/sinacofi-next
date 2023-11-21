@@ -47,12 +47,6 @@ export const AdminStack = ({
             onClick={handleModal}>
             Crear
           </Button>
-          <Button 
-            sx={{width:'200px'}}
-            variant='contained' 
-            onClick={()=>setShowTable(true)}>
-            Ver
-          </Button>
         </Stack>
       </Paper>
       <Stack height={'15px'} />
