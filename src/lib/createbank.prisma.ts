@@ -14,7 +14,4 @@ export const createBank = async ( data: CreateBankProps) => {
   catch(err){
     return err;
   }
-  // finally {
-  //   await prisma.$disconnect();
-  // }
 }

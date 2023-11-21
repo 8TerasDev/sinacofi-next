@@ -10,7 +10,6 @@ export const useGetBanks = (load:any) => {
     setIsLoading(true);
     try{
       const { data } = await axios.get("/api/banks/getBanks");
-      console.log('inside',data);
       const dataParsed = JSON.parse(data);
       setData(dataParsed);
     }

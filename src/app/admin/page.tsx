@@ -25,11 +25,40 @@ export type CreateFormsProps = {
 }
 
 
+const preColumnsUsers = [
+  {
+    field:'username',
+    name: 'Username'
+  }, 
+  {
+    field:'first_name',
+    name: 'Nombre',
+  },
+  {
+    field:'last_name',
+    name: 'Apellido',
+  },
+  {
+    field:'email',
+    name: 'Email'
+  },
+  {
+    field:'is_staff',
+    name: 'Es Staff'
+  }];
+const preColumnsBanks = [  
+  {
+    field:'nombre',
+    name: 'Nombre'
+  },
+  {
+    field:'codigo',
+    name: 'Codigo'
+  }
+]; 
 
 
 const AdminPage = () => {
-  const preColumnsUsers = ['username', 'first_name', 'last_name', 'email', 'is_staff'];
-  const preColumnsBanks = ['nombre', 'codigo']; 
   const [openModal, setOpenModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showUsers , setShowUsers] = useState(false);
@@ -65,7 +94,6 @@ const AdminPage = () => {
       codigo: codigo.value,
       created_at: date.toISOString(),
     })
-    console.log('lala', data)
   }
 
   const handleCreateUser = async (e:any) => {
