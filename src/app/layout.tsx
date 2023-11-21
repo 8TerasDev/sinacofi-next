@@ -19,11 +19,11 @@ export default function RootLayout({
     <html lang="es">
       <body>
         <ReactQueryProvider>
-          <NewDeclaracionesProvider>
-            <TypeSearchProvider>
+          <TypeSearchProvider>
+            <NewDeclaracionesProvider>
               {children}
-            </TypeSearchProvider>
-          </NewDeclaracionesProvider>
+            </NewDeclaracionesProvider>
+          </TypeSearchProvider>
         </ReactQueryProvider>
       </body>
     </html>

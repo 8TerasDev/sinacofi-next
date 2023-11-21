@@ -28,6 +28,9 @@ export const useTypeSearch = () => {
             return TypeOfSearch.BENEFICIARIO
         })
     }
+    function resetFiltertypeOfSearch() {
+        filterSetter("")
+    }
 
     const activeColorFolio: ActiveColor = TypeOfSearch.FOLIO === typeOfSearch && 'primary' || 'inherit'
     const activeColorRut: ActiveColor = TypeOfSearch.RUT === typeOfSearch && 'primary' || 'inherit'
@@ -43,6 +46,7 @@ export const useTypeSearch = () => {
         activeColorBeneficiario,
         TypeOfSearch,
         filter,
-        filterSetter
+        filterSetter,
+        resetFiltertypeOfSearch
     }
 }

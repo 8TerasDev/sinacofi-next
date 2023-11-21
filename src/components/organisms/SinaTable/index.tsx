@@ -129,7 +129,7 @@ const SinaTable = () => {
                         </TableBody>
                     </Table>
                     <TablePagination
-                        rowsPerPageOptions={[3, 5, 6]}
+                        rowsPerPageOptions={[10, 25, 50]}
                         component="div"
                         count={totalDeclaraciones} // Debe ser el número total de elementos
                         rowsPerPage={rowsPerPage} // Número de filas por página

@@ -15,7 +15,7 @@ const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
         filter,
         filterSetter
     } = useContext(TypeSearchContext)
-    const { FilterByFolio,FilterByPersonaJuridica, FilterByBeneficiarioFinal,resetFilter } = useContext(NewDeclaracionesContext)
+    const { FilterByFolio,FilterByPersonaJuridica, FilterByBeneficiarioFinal, resetFilter } = useContext(NewDeclaracionesContext)
 
     async function handleSearchByParams() {
         if (typeOfSearch == TypeOfSearch.FOLIO) {

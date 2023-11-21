@@ -1,7 +1,8 @@
 "use client"
 import { BfDataProcessDeclaraciones } from '@/application';
 import { getAllDeclaracionesClientSide } from '@/lib/declaraciones.prisma';
-import React, { createContext, useEffect, useReducer, useState } from 'react';
+import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
+import { TypeSearchContext } from './typesearch.context';
 
 export const NewDeclaracionesContext = createContext<any>({});
 
@@ -16,6 +17,9 @@ enum typeOffilterEnum {
 }
 
 export const NewDeclaracionesProvider = ({ children }: any) => {
+    const {
+        resetFiltertypeOfSearch,
+    } = useContext(TypeSearchContext)
     const [declaraciones, declaracionesSetter] = useState<BfDataProcessDeclaraciones[] | null>(null)
 
     const [typeOffilter, typeOffilterSetter] = useState<typeOffilterEnum | null>(null)
@@ -23,7 +27,7 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
     const [rangeFilter, rangeFilterSetter] = useState<any>(null)
 
     const [currentPage, setCurrentPage] = useState(0);
-    const [rowsPerPage, rowsPerPageSetter] = useState(3);
+    const [rowsPerPage, rowsPerPageSetter] = useState(10);
 
     const [orderByFechaDeclaracion, orderByFechaDeclaracionSetter] = useState<'asc' | 'desc'>('asc');
     const [orderByFechaCarga, orderByFechaCargaSetter] = useState<'asc' | 'desc'>('asc');
@@ -68,6 +72,7 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
     function resetFilter() {
         typeOffilterSetter(null)
         filterSetter(null)
+        resetFiltertypeOfSearch()
     }
 
     function FilterByFolio(value: string) {
@@ -99,7 +104,9 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
     }
 
     function DeclaracionesFilterByLastUpdated() {
+
         if (declaraciones) {
+            resetFiltertypeOfSearch()
             const declaracionesOrdenadas = declaraciones?.sort((a, b) => {
                 const fechaA = new Date(a.fecha_declaracion || Date.now()).getTime();
                 const fechaB = new Date(b.fecha_declaracion || Date.now()).getTime();
@@ -118,7 +125,9 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
     }
 
     function DeclaracionesFilterByLastUploaded() {
+
         if (declaraciones) {
+            resetFiltertypeOfSearch()
             const declaracionesOrdenadas = declaraciones?.sort((a, b) => {
                 const fechaA = new Date(a.fecha_subida || Date.now()).getTime();
                 const fechaB = new Date(b.fecha_subida || Date.now()).getTime();

@@ -13,6 +13,7 @@ type TypeSearchContextProps = {
     TypeOfSearch?: TypeOfSearch;
     filter?: string;
     filterSetter?: any;
+    resetFiltertypeOfSearch?: any;
 }
 
 export const TypeSearchContext = createContext<TypeSearchContextProps>({});
@@ -28,7 +29,8 @@ export const TypeSearchProvider = ({ children }: any) => {
         activeColorBeneficiario,
         TypeOfSearch,
         filter,
-        filterSetter
+        filterSetter,
+        resetFiltertypeOfSearch
     } = useTypeSearch()
 
     // El valor que se pasa al proveedor debe ser un objeto
@@ -43,7 +45,8 @@ export const TypeSearchProvider = ({ children }: any) => {
         activeColorBeneficiario,
         TypeOfSearch,
         filter,
-        filterSetter
+        filterSetter,
+        resetFiltertypeOfSearch
     };
 
     return (

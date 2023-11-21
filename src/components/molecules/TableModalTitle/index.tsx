@@ -46,7 +46,7 @@ export const TableModalTitle = ({
               <SinaText size="xs" color="var(--gray-text)">
                 Declaración de{" "}
                 {declaracion &&
-                  `${declaracion.fecha_declaracion}`.slice(0, 10).replace(/-/g, "/")}
+                  `${declaracion.fecha_declaracion}`.slice(0, 10)}
               </SinaText>
             </Box>
           </Grid>
