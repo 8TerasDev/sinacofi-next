@@ -10,7 +10,7 @@ describe("Home", () => {
     const heading = screen.getByRole("heading", {
       name: /welcome to next\.js!/i,
     });
-
+    //@ts-ignore
     expect(heading).toBeInTheDocument();
   });
 });

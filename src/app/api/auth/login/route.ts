@@ -3,35 +3,34 @@ import jwt from "jsonwebtoken";
 import { serialize } from "cookie";
 import { cookies } from "next/headers";
 import { verifyCredentials } from "@/lib/queries.prisma";
+import { prisma } from "@/lib/newclient.prisma";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { username, password } = body;
-    console.log("body", body);
 
-    if (!username || !password || username !== "admin" || password !== "admin") {
-      console.log("username vacio");
+    const user = await verifyCredentials(username, password);
+
+    if (!user) {
+      console.log("usuario no existe");
       return new Response(
-        JSON.stringify({ error: "Missing username or password" }),
+        JSON.stringify({ error: "Invalid username or password" }),
         {
           status: 400,
         }
       );
     }
-    // if (!(await verifyCredentials(username, password))) {
-    //   console.log("usuario no existe");
-    //   return new Response(
-    //     JSON.stringify({ error: "Invalid username or password" }),
-    //     {
-    //       status: 400,
-    //     }
-    //   );
-    // }
+
     const token = jwt.sign(
       {
         username,
         password,
+        isAdmin: user.is_superuser,
+        name: user.last_name,
+        lastName: user.last_name,
+        email: user.email,
+        bank: user.bank_id,
       },
       "secret",
       {
@@ -51,11 +50,12 @@ export async function POST(req: NextRequest) {
       status: 200,
       headers: { "Set-Cookie": `auth=${token}` },
     });
+
     return res;
   } catch (error) {
+    console.error("Error al obtener las declaraciones:", error);
     return new Response(JSON.stringify({ error }), {
       status: 500,
     });
   }
-  // return res.redirect(307, "/home");
 }

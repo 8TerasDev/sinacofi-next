@@ -9,21 +9,27 @@ export enum TypeOfSearch {
 type ActiveColor = 'primary' | 'inherit'
 export const useTypeSearch = () => {
     const [typeOfSearch, typeOfSearchSetter] = useState<TypeOfSearch>(TypeOfSearch.FOLIO)
-
+    const [filter, filterSetter] = useState("")
     function onSelectFolioType() {
         typeOfSearchSetter(x => {
+            filterSetter("")
             return TypeOfSearch.FOLIO
         })
     }
     function onSelectRutType() {
         typeOfSearchSetter(x => {
+            filterSetter("")
             return TypeOfSearch.RUT
         })
     }
     function onSelectBeneficiarioType() {
         typeOfSearchSetter(x => {
+            filterSetter("")
             return TypeOfSearch.BENEFICIARIO
         })
+    }
+    function resetFiltertypeOfSearch() {
+        filterSetter("")
     }
 
     const activeColorFolio: ActiveColor = TypeOfSearch.FOLIO === typeOfSearch && 'primary' || 'inherit'
@@ -38,6 +44,9 @@ export const useTypeSearch = () => {
         activeColorFolio,
         activeColorRut,
         activeColorBeneficiario,
-        TypeOfSearch
+        TypeOfSearch,
+        filter,
+        filterSetter,
+        resetFiltertypeOfSearch
     }
 }

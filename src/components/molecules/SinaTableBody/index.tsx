@@ -10,7 +10,6 @@ type SinaTableBodyProps = {
 };
 
 const SinaTableBody = ({ declaraciones }: SinaTableBodyProps) => {
-  const { isModalOpen, handleClick } = useModalHandle();
 
   return (
     <TableBody>
@@ -30,12 +29,6 @@ const SinaTableBody = ({ declaraciones }: SinaTableBodyProps) => {
         ))
       )}
 
-      <SinaTableModal
-        //TODO: DECLARACIONES ESTA HARDCODEADO
-        declaracion={declaraciones[0]}
-        isOpen={isModalOpen}
-        handleClose={handleClick}
-      />
     </TableBody>
   );
 };

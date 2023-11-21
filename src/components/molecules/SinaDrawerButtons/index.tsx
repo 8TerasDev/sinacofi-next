@@ -6,24 +6,27 @@ import { TypeOfSearch, useTypeSearch } from '../../../custom-hooks/typeSearchHoo
 import SinaText from '@/components/atoms/SinaText';
 import { TypeSearchContext } from '@/contexts/typesearch.context';
 import { DeclaracionesContext } from '@/contexts/declaraciones.context';
+import { NewDeclaracionesContext } from '@/contexts/new-declaraciones.context';
 
 
 const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
     const {
         typeOfSearch,
+        filter,
+        filterSetter
     } = useContext(TypeSearchContext)
-    const { dispatch, reloadDeclaraciones, getDeclaracionesByBeneficiario } = useContext(DeclaracionesContext)
-    const [filter, filterSetter] = useState("")
+    const { FilterByFolio,FilterByPersonaJuridica, FilterByBeneficiarioFinal, resetFilter } = useContext(NewDeclaracionesContext)
 
     async function handleSearchByParams() {
         if (typeOfSearch == TypeOfSearch.FOLIO) {
-            dispatch({ type: 'FILTER_BY_FOLIO', payload: filter });
+            FilterByFolio(filter);
         }
         if (typeOfSearch == TypeOfSearch.BENEFICIARIO) {
-            await getDeclaracionesByBeneficiario(filter)
+            FilterByBeneficiarioFinal(filter);
         }
         if (typeOfSearch == TypeOfSearch.RUT) {
-            dispatch({ type: 'FILTER_BY_PERSONA_JURIDICA', payload: filter });
+            FilterByPersonaJuridica(filter);
+            
         }
     }
 
@@ -39,9 +42,14 @@ const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
         }
     }
 
+    function cleanAndSearch({ target }: any) {
+        filterSetter(target.value)
+    }
+
     useEffect(() => {
-        if (filter.length == 0) {
-            reloadDeclaraciones()
+
+        if (filter?.length == 0) {
+            resetFilter()
         }
     }, [filter])
 
@@ -49,13 +57,13 @@ const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
     return (
         <>
             {isOpen && < SinaText > Busca una declaración por:</SinaText >}
-            {/* {//TODO: MEJORAR ACA} */}
             {
                 isOpen &&
                 <TextField
                     label={placeHolderText()}
                     placeholder={`busqueda por ${typeOfSearch}`}
-                    onChange={(e) => { filterSetter(e.target.value) }}
+                    onChange={cleanAndSearch}
+                    value={filter}
                     fullWidth
                 />
             }

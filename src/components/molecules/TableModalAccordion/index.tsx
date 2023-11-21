@@ -10,11 +10,11 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import TableModalAccordionDetails from "../TableModalAccordionDetails";
 import SinaText from "@/components/atoms/SinaText";
-import { PFinales } from "@/application";
+import { BfDataProcessBeneficiariosFinales, PFinales } from "@/application";
 
 type AcordeonProps = {
   type: "beneficiarios" | "control" | "historico";
-  registros: PFinales[];
+  registros: BfDataProcessBeneficiariosFinales[];
 };
 
 const getTitleFromType = (type: AcordeonProps["type"]) => {

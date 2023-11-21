@@ -38,9 +38,8 @@ const LoginTemplate = () => {
   } = useLoginHook();
   const route = useRouter()
 
-  async function redirect(e: any) {
-    await handleSubmit(e)
-    route.push('/home')
+  function redirect(e: any) {
+    handleSubmit(e);
   }
 
   return (

@@ -3,9 +3,9 @@ import types from "./sinacardheader.module.css";
 import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 // import { DateRangePicker, LocalizationProvider, SingleInputDateRangeField  } from '@mui/x-date-pickers-pro';
 import SinaText from "../../atoms/SinaText";
-import { DeclaracionesContext } from "@/contexts/declaraciones.context";
 import { handleDownloadCSV } from "@/lib/utils";
 import { DatePicker, Space } from 'antd';
+import { NewDeclaracionesContext } from "@/contexts/new-declaraciones.context";
 
 // import locale from 'antd/es/date-picker/locale/es_Es';
 
@@ -13,12 +13,7 @@ import { DatePicker, Space } from 'antd';
 const { RangePicker } = DatePicker;
 
 export const SinCardHeader = () => {
-  const [orden, setOrden] = React.useState<any>(10);
-  const { state, loadDeclaracionesByDates } = useContext(DeclaracionesContext);
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setOrden(event.target.value);
-  };
+  const { allDeclaraciones, FilterByLastUpdated, FilterByLastUploaded, resetFilter, FilterByDateRange } = useContext(NewDeclaracionesContext)
 
   const [calendarValue, calendarValueSetter] = useState();
 
@@ -28,12 +23,31 @@ export const SinCardHeader = () => {
   }
 
   function onChangeCalendar(e: any) {
+    if (!e) { resetFilter() }
     calendarValueSetter(e)
-    const from = e[0] && dateStringifier(e[0])
-    const to = e[1] && dateStringifier(e[1])
-
+    let from = e[0] && dateStringifier(e[0])
+    let to = e[1] && dateStringifier(e[1])
     if (from && to) {
-      loadDeclaracionesByDates(from, to)
+      FilterByDateRange({
+        fechaInicio: from,
+        fechaFin: to
+      })
+    }
+  }
+
+  const [filterDeclaraciones, filterDeclaracionesBySetter] = useState<any>(1);
+
+
+  async function filterDeclaracionesBy({ target }: any) {
+    filterDeclaracionesBySetter(target.value)
+    if (target.value === 1) {
+      resetFilter();
+    }
+    if (target.value === 2) {
+      FilterByLastUpdated();
+    }
+    if (target.value === 3) {
+      FilterByLastUploaded();
     }
   }
 
@@ -43,9 +57,6 @@ export const SinCardHeader = () => {
         <SinaText size="l" lineHeight="off" fontWeight={700}>
           DECLARACIONES
         </SinaText>
-        <SinaText size="xs" lineHeight="off" spacing="on">
-          Lorem ipsum dolor sit amet consectetur.
-        </SinaText>
       </div>
       <div className={types.calendar_container}>
         <FormControl fullWidth>
@@ -53,20 +64,20 @@ export const SinCardHeader = () => {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={`${orden}`}
+            value={`${filterDeclaraciones}`}
             label="Mostrar"
-            onChange={handleChange}
+            onChange={filterDeclaracionesBy}
           >
-            <MenuItem value={10}>Totalidad</MenuItem>
-            <MenuItem value={20}>Última Actualización</MenuItem>
-            <MenuItem value={30}>Última Declaración</MenuItem>
+            <MenuItem value={1}>Totalidad</MenuItem>
+            <MenuItem value={2}>Última Actualización</MenuItem>
+            <MenuItem value={3}>Última Declaración</MenuItem>
           </Select>
         </FormControl>
         <RangePicker onCalendarChange={onChangeCalendar} value={calendarValue} />
         <Button
           variant="contained"
           className={types.downloadButton}
-          onClick={() => handleDownloadCSV(state.declaraciones)}
+          onClick={() => handleDownloadCSV(allDeclaraciones)}
         >
           descargar
         </Button>

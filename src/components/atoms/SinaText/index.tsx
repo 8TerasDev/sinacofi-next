@@ -1,10 +1,6 @@
 import React from 'react'
 import localFont from 'next/font/local';
 
-// export const gilbertFont = localFont({ src: './GilbertBold.woff'});
-
-// TODO: Sacar fontWeight del size para hacerlo mas versatil.
-
 const sizeStyles = {
     xxxs: {
         fontSize: "10px",

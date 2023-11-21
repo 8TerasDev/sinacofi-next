@@ -1,28 +1,24 @@
-import { PrismaClient } from "@prisma/client";
+//import { PrismaClient } from "@prisma/client";
+import { prisma } from "./newclient.prisma";
 
-export async function verifyCredentials(
-  correoInput: string,
-  passwordInput: string
-) {
-  console.time("verifyCredentials");
-  const prisma = new PrismaClient();
+export async function verifyCredentials(username: string, password: string) {
   try {
-    const empleado = await prisma.empleado.findFirst({
-      where: {
-        email: correoInput,
-        password: passwordInput,
-      },
+    const user = await prisma.accounts_user.findFirst({
+      where: { username },
     });
-
-    if (empleado) {
-      return true; // Las credenciales son correctas.
-    } else {
-      return false; // Las credenciales son incorrectas.
+    if (!user) {
+      return null;
     }
+    const cleanUser = {
+      ...user,
+      id: `${user.id}`,
+      bank_id: `${user.bank_id}`,
+    };
+
+    return cleanUser;
   } catch (error) {
-    return false;
+    console.error("Error al verificar credenciales:", error);
+    throw error;
   } finally {
-    await prisma.$disconnect();
-    console.timeEnd("verifyCredentials");
   }
 }

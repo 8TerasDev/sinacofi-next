@@ -19,7 +19,8 @@ RUN yarn install --frozen-lockfile
 COPY . .
 
 # Copy the appropriate .env file based on the build-time environment variable
-COPY .env.${ENV_FILE} ./.env
+COPY .env ./.env
+
 
 # Build your Next.js app using the environment variables from the file
 RUN yarn build

@@ -1,6 +1,7 @@
 import React, { useReducer } from 'react';
 import { base_pruebas } from '../../data_sinacofi/bbdd';
 import { PJuridicas } from '@/application';
+import { compareFechaEnvioArchivo, compareFechaHoraCreacion } from '@/lib/utils';
 // Define the shape of your state and action if necessary
 type DeclaracionesState = PJuridicas[]; // Assuming base_pruebas is defined elsewhere
 type DeclaracionesAction = { type: 'ADD'; payload: any } |
@@ -22,22 +23,38 @@ export const declaracionesReducer = (state: any, action: any) => {
         case "FILTER_BY_FOLIO":
             return {
                 ...state,
+                filter: {
+                    filterBy: 'FOLIO',
+                    filterInput: action.payload,
+                },
                 declaraciones: state.declaraciones.filter((item: PJuridicas) => item.correlativo_declaracion === action.payload)
             };
         case "FILTER_BY_PERSONA_JURIDICA":
             return {
                 ...state,
+                filter: {
+                    filterBy: 'PERSONA JURIDICA',
+                    filterInput: action.payload,
+                },
                 declaraciones: state.declaraciones.filter((item: PJuridicas) => item.rut_no === action.payload)
             };
         case "SORT_BY_FECHA_CREACION":
+            const sorted1Declaraciones = [...state.declaraciones].sort((a, b) =>
+                compareFechaHoraCreacion(a, b, action.payload ? 'asc' : 'desc'));
+
+            // Retorna un nuevo objeto de estado con el arreglo ordenado
             return {
                 ...state,
-                declaraciones: action.payload
+                declaraciones: sorted1Declaraciones
             };
         case "SORT_BY_FECHA_CARGA":
+            const sortedDeclaraciones = [...state.declaraciones].sort((a, b) =>
+                compareFechaEnvioArchivo(a, b, action.payload ? 'asc' : 'desc'));
+
+            // Retorna un nuevo objeto de estado con el arreglo ordenado
             return {
                 ...state,
-                declaraciones: action.payload
+                declaraciones: sortedDeclaraciones
             };
         case "RESET":
             return state;

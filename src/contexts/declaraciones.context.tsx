@@ -7,8 +7,9 @@ import { getDeclaracionesByCorrelativos, getDelcaracionesByCorrelativos } from '
 
 export const DeclaracionesContext = createContext<any>({});
 
-export const DeclaracionesProvider = ({ children }: any) => {
 
+
+export const DeclaracionesProvider = ({ children }: any) => {
     const [isLoading, isLoadingSetter] = useState<boolean>(false)
     const [state, dispatch] = useReducer(declaracionesReducer, { declaraciones: [] });
 
@@ -22,7 +23,7 @@ export const DeclaracionesProvider = ({ children }: any) => {
             })
     }
 
-    function loadDeclaracionesByDates(startDate: string, endDate: string) {
+    function loadDeclaracionesByDates(startDate: Date, endDate: Date) {
         fetchDeclaracionesByDates(startDate, endDate)
             .then(
                 declaraciones => dispatch({ type: "INIT", payload: declaraciones })
@@ -41,8 +42,7 @@ export const DeclaracionesProvider = ({ children }: any) => {
 
         }
     }
-
-    useEffect(() => {
+    function loadFirstDeclaracion() {
         isLoadingSetter(true)
         if (state.declaraciones.length == 0) {
             fetchDeclaraciones()
@@ -53,8 +53,11 @@ export const DeclaracionesProvider = ({ children }: any) => {
                     isLoadingSetter(false)
                 })
         }
-    }, [])
+    }
 
+    useEffect(() => {
+        loadFirstDeclaracion()
+    }, [])
     return (
         <DeclaracionesContext.Provider value={{
             state,

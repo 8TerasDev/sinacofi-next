@@ -1,7 +1,8 @@
 import { PFinales } from "@/application";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "./newclient.prisma";
+//import { PrismaClient } from "@prisma/client";
 import axios from "axios";
-const prisma = new PrismaClient();
+//const prisma = new PrismaClient();
 
 export async function getAllPFinales(
   correlativo_declaracion: string
@@ -28,13 +29,13 @@ export async function fetchDeclaraciones() {
 }
 
 export async function fetchDeclaracionesByDates(
-  startDate: string,
-  endDate: string
+  startDate: Date,
+  endDate: Date
 ) {
   try {
     const url = `${API_URL_PJ}?startdate=${encodeURIComponent(
-      startDate
-    )}&enddate=${encodeURIComponent(endDate)}`;
+      `${startDate}`
+    )}&enddate=${encodeURIComponent(`${endDate}`)}`;
     const { data } = await axios.get(url);
     const declaraciones = data.declaraciones;
     return declaraciones;

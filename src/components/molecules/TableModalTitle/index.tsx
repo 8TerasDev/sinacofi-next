@@ -5,11 +5,10 @@ import SinaText from "../../atoms/SinaText";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import { Declaracion, PJuridicas } from "@/application";
-
-const TableModalTitle: React.FC<{ declaracion: PJuridicas }> = ({
+import { BfDataProcessDeclaraciones, Declaracion, PJuridicas } from "@/application";
+export const TableModalTitle = ({
   declaracion,
-}) => {
+}: { declaracion?: BfDataProcessDeclaraciones | null }) => {
   return (
     <Box
       component="header"
@@ -24,7 +23,6 @@ const TableModalTitle: React.FC<{ declaracion: PJuridicas }> = ({
         height: "11vh",
         borderRadius: 2,
         borderBottomRightRadius: 0,
-        bgcolor: "#f7f7f7",
       }}
     >
       <Grid item xs={8} container direction="column">
@@ -48,7 +46,7 @@ const TableModalTitle: React.FC<{ declaracion: PJuridicas }> = ({
               <SinaText size="xs" color="var(--gray-text)">
                 Declaración de{" "}
                 {declaracion &&
-                  `${declaracion.fechahora_creacion}`}
+                  `${declaracion.fecha_declaracion}`.slice(0, 10)}
               </SinaText>
             </Box>
           </Grid>
@@ -61,19 +59,17 @@ const TableModalTitle: React.FC<{ declaracion: PJuridicas }> = ({
             <Box display="flex" alignItems="center">
               <AttachFileIcon fontSize="small" />
               <SinaText size="xs" color="var(--gray-text)">
-                Folio : {declaracion && declaracion.correlativo_declaracion}
+                Folio : {declaracion && declaracion.num_declaracion}
               </SinaText>
             </Box>
           </Grid>
         </Grid>
-        <Grid item>
+        <Grid item sx={{ marginTop: "1rem" }}>
           <SinaText size="sl" lineHeight="off">
-            {declaracion && declaracion.razon_social}
+            {declaracion && declaracion.bf_data_process_personasjuridicas?.[0]?.razon_social}
           </SinaText>
         </Grid>
       </Grid>
     </Box>
   );
 };
-
-export default TableModalTitle;

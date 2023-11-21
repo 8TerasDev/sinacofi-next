@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Divider, Grid, Modal, Paper, Container } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import TableModalTitle from "../../molecules/TableModalTitle";
 import TableModalDetails from "../../molecules/TableModalDetails";
 import TableModalAccordion from "../../molecules/TableModalAccordion";
 import TableModalCloseButton from "../../atoms/TableModalCloseButton";
 import TableModalFooter from "@/components/molecules/TableModalFooter";
-import { Declaracion, PJuridicas } from "@/application";
-import axios from "axios";
+
+import { TableModalTitle } from "@/components/molecules/TableModalTitle";
+import { BfDataProcessDeclaraciones } from "@/application";
 
 const theme = createTheme({
   palette: {
@@ -20,28 +20,15 @@ const theme = createTheme({
   },
 });
 
-interface SinaTableModalProps {
-  declaracion: PJuridicas;
-  isOpen: boolean;
-  handleClose: () => void;
-  onNextDeclaracion: () => void;
-  onPrevDeclaracion: () => void;
-}
-export async function fetchPFinales(correlativo_declaracion: string) {
-  try {
-    const { data } = await axios.get('/api/pfinales', {
-      params: {
-        correlativo_declaracion
-      }
-    });
-    console.log({ data })
-    const pfinales = data.pfinales;
 
-    return pfinales;
-  } catch (error) {
-    console.error('Hubo un error al obtener las pfinales:', error);
-    throw error;
-  }
+
+type SinaTableModalProps = {
+  declaracion: BfDataProcessDeclaraciones | null;
+  isOpen: any;
+  handleClose: any;
+  onNextDeclaracion: any;
+  onPrevDeclaracion: any;
+  handleDelete: any;
 }
 
 export const SinaTableModal = ({
@@ -49,21 +36,23 @@ export const SinaTableModal = ({
   isOpen,
   handleClose,
   onNextDeclaracion,
-  onPrevDeclaracion
-}: any) => {
+  onPrevDeclaracion,
+  handleDelete
+}: SinaTableModalProps) => {
+
+
 
   const [beneficiarios, beneficiariosSetter] = useState<any[]>([]);
   const [controlEfectivo, controlEfectivoSetter] = useState<any[]>([]);
 
   useEffect(() => {
-    fetchPFinales(declaracion?.correlativo_declaracion!)
-      .then(pfinales => {
-        const control = pfinales.filter((item: any) => item.tipo_beneficiario_final === "02")
-        const finales = pfinales.filter((item: any) => item.tipo_beneficiario_final === "01")
-        controlEfectivoSetter(control)
-        beneficiariosSetter(finales)
-      })
-  }, [isOpen])
+    const cleanBeneficiarios = declaracion?.bf_data_process_beneficiariosfinales?.filter(beneficiarios_finales => beneficiarios_finales.tipo === "bf") || []
+    const cleanControl = declaracion?.bf_data_process_beneficiariosfinales?.filter(beneficiarios_finales => beneficiarios_finales.tipo === "ce") || []
+    beneficiariosSetter(cleanBeneficiarios)
+    controlEfectivoSetter(cleanControl)
+
+  }, [declaracion])
+
   return (
     <ThemeProvider theme={theme}>
       <Modal
@@ -130,6 +119,7 @@ export const SinaTableModal = ({
             declaracion={declaracion}
             controlEfectivo={controlEfectivo}
             beneficiarios={beneficiarios}
+            handleDelete={() => handleDelete(declaracion)}
           />
         </Paper>
       </Modal>
