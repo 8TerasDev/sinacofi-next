@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
 async function createNewUser() {
-  let prisma: PrismaClient = undefined
+  let prisma: PrismaClient | undefined = undefined
   try {
     prisma = new PrismaClient();
     const newAdmin = await prisma.accounts_user.create({
