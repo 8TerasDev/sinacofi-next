@@ -1,19 +1,16 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import { Button, CircularProgress, FormControl, Grid, Modal, Paper, Stack, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material';
+import { Button, CircularProgress, Modal, Paper, Stack } from '@mui/material';
 import Image from 'next/image';
 import sinacofi_logo from '../../assets/images/sinacofi_logo.png';
 import { useRouter } from 'next/navigation';
 import { Home } from '@mui/icons-material';
 import SinaText from '@/components/atoms/SinaText';
 import axios from 'axios';
-import { encryption } from '@/lib/utils';
 import { CreateUserForm } from '@/components/organisms/CreateUserForm';
 import { CreateBankForm } from '@/components/organisms/CreateBankForm';
 import { useGetProfile } from '@/custom-hooks/useGetProfile';
 import { useGetUsers } from '@/custom-hooks/useGetUsers';
-import { Table } from 'antd';
-import { DataGrid } from '@mui/x-data-grid';
 import { AdminStack } from '@/components/organisms/Admin';
 import { useGetBanks } from '@/custom-hooks/useGetBanks';
 
@@ -72,8 +69,10 @@ const AdminPage = () => {
   const [type, setType] = useState('');
   const route = useRouter();
   const { data, isLoading: loading } = useGetProfile();
-  const { data: usersData, isLoading: usersLoading } = useGetUsers(isLoading);
-  const { data: banksData, isLoading: banksLoading } = useGetBanks(isLoading);
+  const { data: usersData, isLoading: usersLoading } = useGetUsers();
+  const { data: banksData, isLoading: banksLoading } = useGetBanks();
+  const [bankDataList, setBankDataList] = useState(banksData);
+  const [userDataList, setUserDataList] = useState(usersData);
 
   useEffect(()=>{
     // TODO. REFACTOR. Better use Middleware
@@ -94,12 +93,21 @@ const AdminPage = () => {
   const handleCreateBank = async (e: any) => {
     const [nombre , codigo] = e.target;
     const date = new Date();
-    const data = await axios.post(
-      `api/createbank`,{
-      nombre: nombre.value,
-      codigo: codigo.value,
-      created_at: date.toISOString(),
-    })
+    try{
+      const banks = await axios.post(
+        `api/createbank`,{
+        nombre: nombre.value,
+        codigo: codigo.value,
+        created_at: date.toISOString(),
+      });
+      //console.log('banks', banks)
+      const banksList = JSON.parse(banks.data);
+      setBankDataList(banksList);
+    }
+    catch(err){
+      console.log(err)
+    }
+
   }
 
   const handleCreateUser = async (e:any) => {
@@ -115,19 +123,27 @@ const AdminPage = () => {
     // TODO. Do it when DJANDO AUTH is done !
     // const encryptedPassword = encryption(password);
     const date = new Date();
-    await axios.post(
-      `api/createuser`,{
-      username,
-      first_name,
-      last_name,
-      email,
-      is_superuser: false,
-      is_staff: false,
-      is_active: true,
-      bank_id,
-      password,
-      date_joined: date.toISOString()
-    });
+    try{
+      const newUsers = await axios.post(
+        `api/createuser`,{
+        username,
+        first_name,
+        last_name,
+        email,
+        is_superuser: false,
+        is_staff: false,
+        is_active: true,
+        bank_id,
+        password,
+        date_joined: date.toISOString()
+      });
+      const newUsersList = newUsers.data;
+      setUserDataList(JSON.parse(newUsersList));
+    }
+    catch(err){
+      console.log(err)
+    }
+
   }
 
   const handleSubmit = async (e:any) => {
@@ -192,8 +208,8 @@ const AdminPage = () => {
             showTable={showUsers}
             tableColumns={preColumnsUsers}
             setShowTable={setShowUsers}
-            dataTable={usersData}
-            banks={banksData}
+            dataTable={userDataList || usersData}
+            banks={bankDataList || banksData}
           />}
           <Stack height={'15px'} />
           {!showUsers && <AdminStack 
@@ -202,7 +218,7 @@ const AdminPage = () => {
             showTable={showBanks}
             tableColumns={preColumnsBanks}
             setShowTable={setShowBanks}
-            dataTable={banksData}
+            dataTable={bankDataList || banksData}
           />}
         </Stack>
         <Modal
@@ -218,7 +234,7 @@ const AdminPage = () => {
               </Stack>
               {type === 'createuser' && 
                 <CreateUserForm 
-                  banks={banksData}
+                  banks={bankDataList || banksData}
                   handleSubmit={handleSubmit} 
                   setOpenModal={setOpenModal}/>}
               {type === 'createbank' && <CreateBankForm handleSubmit={handleSubmit} setOpenModal={setOpenModal}/>}
