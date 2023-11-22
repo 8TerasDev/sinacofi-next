@@ -99,7 +99,8 @@ const AdminPage = () => {
         nombre: nombre.value,
         codigo: codigo.value,
         created_at: date.toISOString(),
-      })
+      });
+      console.log('banks', banks)
       const banksList = JSON.parse(banks.data);
       setBankDataList(banksList);
     }

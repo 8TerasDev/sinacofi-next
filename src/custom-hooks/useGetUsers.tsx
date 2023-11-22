@@ -24,13 +24,11 @@ export const useGetUsers = (load?:any) => {
       setIsError(error as any);
     }
     finally{
-      //console.log('done')
       setIsLoading(false);
     }
   }
   useEffect(()=>{
       getUsers();
-   
   },[])
 
   return {isLoading, isError, data}

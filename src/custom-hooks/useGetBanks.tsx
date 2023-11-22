@@ -17,7 +17,7 @@ export const useGetBanks = (load?:any) => {
         }
       });
       const dataParsed = JSON.parse(data);
-      //console.log(dataParsed)
+      console.log(dataParsed)
       setData(dataParsed);
     }
     catch(error){
