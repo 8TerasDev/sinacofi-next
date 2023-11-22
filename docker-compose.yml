@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  webapp:
+    build: .
+    image: sinacofi_web
+    container_name: sinacofi_web
+    env_file:
+     - .env
+    ports:
+      - "8081:3000"

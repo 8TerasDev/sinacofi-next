@@ -1,122 +1,136 @@
-"use client"
-import React, { useEffect, useState } from 'react';
-import { Button, CircularProgress, FormControl, Grid, Modal, Paper, Stack, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material';
-import Image from 'next/image';
-import sinacofi_logo from '../../assets/images/sinacofi_logo.png';
-import { useRouter } from 'next/navigation';
-import { Home } from '@mui/icons-material';
-import SinaText from '@/components/atoms/SinaText';
-import axios from 'axios';
-import { encryption } from '@/lib/utils';
-import { CreateUserForm } from '@/components/organisms/CreateUserForm';
-import { CreateBankForm } from '@/components/organisms/CreateBankForm';
-import { useGetProfile } from '@/custom-hooks/useGetProfile';
-import { useGetUsers } from '@/custom-hooks/useGetUsers';
-import { Table } from 'antd';
-import { DataGrid } from '@mui/x-data-grid';
-import { AdminStack } from '@/components/organisms/Admin';
-import { useGetBanks } from '@/custom-hooks/useGetBanks';
+"use client";
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  CircularProgress,
+  FormControl,
+  Grid,
+  Modal,
+  Paper,
+  Stack,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+} from "@mui/material";
+import Image from "next/image";
+import sinacofi_logo from "../../assets/images/sinacofi_logo.png";
+import { useRouter } from "next/navigation";
+import { Home } from "@mui/icons-material";
+import SinaText from "@/components/atoms/SinaText";
+import axios from "axios";
+import { encryption } from "@/lib/utils";
+import { CreateUserForm } from "@/components/organisms/CreateUserForm";
+import { CreateBankForm } from "@/components/organisms/CreateBankForm";
+import { useGetProfile } from "@/custom-hooks/useGetProfile";
+import { useGetUsers } from "@/custom-hooks/useGetUsers";
+import { Table } from "antd";
+import { DataGrid } from "@mui/x-data-grid";
+import { AdminStack } from "@/components/organisms/Admin";
+import { useGetBanks } from "@/custom-hooks/useGetBanks";
+import { setBasePath } from "@/contexts/path.context";
 
 // TODO: Create a customHook / actions in store to createUsers/Banks
 
 export type CreateFormsProps = {
-  handleSubmit: (input:any) => void;
-  setOpenModal: (input:boolean) => void;
+  handleSubmit: (input: any) => void;
+  setOpenModal: (input: boolean) => void;
   banks?: any;
-}
-
+};
 
 const preColumnsUsers = [
   {
-    field:'username',
-    name: 'Username'
-  }, 
-  {
-    field:'first_name',
-    name: 'Nombre',
+    field: "username",
+    name: "Username",
   },
   {
-    field:'last_name',
-    name: 'Apellido',
+    field: "first_name",
+    name: "Nombre",
   },
   {
-    field:'email',
-    name: 'Email'
+    field: "last_name",
+    name: "Apellido",
   },
   {
-    field:'is_staff',
-    name: 'Es Staff'
+    field: "email",
+    name: "Email",
   },
   {
-    field: 'bank_id',
-    name: 'Banco'
-  }
+    field: "is_staff",
+    name: "Es Staff",
+  },
+  {
+    field: "bank_id",
+    name: "Banco",
+  },
 ];
-const preColumnsBanks = [  
+const preColumnsBanks = [
   {
-    field:'nombre',
-    name: 'Nombre'
+    field: "nombre",
+    name: "Nombre",
   },
   {
-    field:'codigo',
-    name: 'Codigo'
-  }
-]; 
-
+    field: "codigo",
+    name: "Codigo",
+  },
+];
 
 const AdminPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [showUsers , setShowUsers] = useState(false);
-  const [showBanks , setShowBanks] = useState(false);
-  const [type, setType] = useState('');
+  const [showUsers, setShowUsers] = useState(false);
+  const [showBanks, setShowBanks] = useState(false);
+  const [type, setType] = useState("");
   const route = useRouter();
   const { data, isLoading: loading } = useGetProfile();
   const { data: usersData, isLoading: usersLoading } = useGetUsers(isLoading);
   const { data: banksData, isLoading: banksLoading } = useGetBanks(isLoading);
 
-  useEffect(()=>{
+  useEffect(() => {
+    setBasePath(document.location.pathname);
+  },[])
+  useEffect(() => {
     // TODO. REFACTOR. Better use Middleware
-    if(data){
+    if (data) {
       // @ts-ignore
-      !data.isAdmin && route.push('/home');
+      !data.isAdmin && route.push(`/home`);
       setIsLoading(loading);
     }
-  },[data])
+  }, [data]);
 
-  const handleModal = (modalType:string) => {
+  const handleModal = (modalType: string) => {
     setIsLoading(true);
     setType(modalType);
     setOpenModal(true);
     setIsLoading(false);
-  }
+  };
 
   const handleCreateBank = async (e: any) => {
-    const [nombre , codigo] = e.target;
+    const [nombre, codigo] = e.target;
     const date = new Date();
-    const data = await axios.post(
-      `api/createbank`,{
+    const data = await axios.post(`api/createbank`, {
       nombre: nombre.value,
       codigo: codigo.value,
       created_at: date.toISOString(),
-    })
-  }
+    });
+  };
 
-  const handleCreateUser = async (e:any) => {
+  const handleCreateUser = async (e: any) => {
     const [
-      {value: username},
-      {value: first_name},
-      {value: last_name},
-      {value: email},
-      {value: bank_id},
-      {value: password}
+      { value: username },
+      { value: first_name },
+      { value: last_name },
+      { value: email },
+      { value: bank_id },
+      { value: password },
     ] = e.target;
 
     // TODO. Do it when DJANDO AUTH is done !
     // const encryptedPassword = encryption(password);
     const date = new Date();
-    await axios.post(
-      `api/createuser`,{
+    await axios.post(`api/createuser`, {
       username,
       first_name,
       last_name,
@@ -126,108 +140,145 @@ const AdminPage = () => {
       is_active: true,
       bank_id,
       password,
-      date_joined: date.toISOString()
+      date_joined: date.toISOString(),
     });
-  }
+  };
 
-  const handleSubmit = async (e:any) => {
+  const handleSubmit = async (e: any) => {
     setIsLoading(true);
     setOpenModal(false);
     e.preventDefault();
-    try{
-      if(type === 'createbank'){
+    try {
+      if (type === "createbank") {
         const res = await handleCreateBank(e);
       }
-      if(type === 'createuser'){
+      if (type === "createuser") {
         const res = await handleCreateUser(e);
       }
-    }
-    catch(err){
-      console.log('Error',err);
-    }
-    finally{
+    } catch (err) {
+      console.log("Error", err);
+    } finally {
       setIsLoading(false);
     }
+  };
 
-  }
+  if (isLoading || usersLoading || banksLoading)
+    return (
+      <Stack
+        flex={1}
+        height={"100vh"}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        <CircularProgress />
+      </Stack>
+    );
 
-  if(isLoading || usersLoading || banksLoading) return (
-    <Stack flex={1} height={'100vh'} justifyContent={'center'} alignItems={'center'}>
-      <CircularProgress/>
-    </Stack>)
-
-  return(
-    <Stack flex={1} height={'100vh'} padding={'15px'}>
-      <Stack 
-        borderRadius={'5px'}
-        justifyContent={'space-between'} flexDirection={'row'} padding={'20px 40px'} boxShadow={'2px 4px 20px 2px rgba(0, 0, 0, 0.3);'}>
+  return (
+    <Stack flex={1} height={"100vh"} padding={"15px"}>
+      <Stack
+        borderRadius={"5px"}
+        justifyContent={"space-between"}
+        flexDirection={"row"}
+        padding={"20px 40px"}
+        boxShadow={"2px 4px 20px 2px rgba(0, 0, 0, 0.3);"}
+      >
         <Button
           variant='contained'
           color='success'
-          startIcon={<Home/>}
-          onClick={()=>route.push('/home')}>
+          startIcon={<Home />}
+          onClick={() => route.push(`/home`)}
+        >
           HOME
         </Button>
-        <Stack justifyContent={'center'}>
-          <SinaText size='mWide'>
-            ADMINISTRADOR
-          </SinaText>
+        <Stack justifyContent={"center"}>
+          <SinaText size='mWide'>ADMINISTRADOR</SinaText>
         </Stack>
-        <Image src={sinacofi_logo} alt="" width={180} />
+        <Image src={sinacofi_logo} alt='' width={180} />
       </Stack>
-      <Stack height={'15px'} />
+      <Stack height={"15px"} />
       <Stack
-        justifyContent={'center'} 
-        alignItems={'center'} 
-        paddingTop={'10px'} 
-        >
+        justifyContent={"center"}
+        alignItems={"center"}
+        paddingTop={"10px"}
+      >
         <Stack
-          borderRadius={'5px'}
-          justifyContent={'space-around'} 
-          width={'100%'} padding={'30px'} 
-          boxShadow={'2px 4px 20px 2px rgba(0, 0, 0, 0.3);'}>
-          {!showBanks && <AdminStack 
-            title={'ADMINISTRAR USUARIOS'}
-            handleModal={()=>handleModal('createuser')}
-            showTable={showUsers}
-            tableColumns={preColumnsUsers}
-            setShowTable={setShowUsers}
-            dataTable={usersData}
-            banks={banksData}
-          />}
-          <Stack height={'15px'} />
-          {!showUsers && <AdminStack 
-            title={'ADMINISTRAR BANCOS'}
-            handleModal={()=>handleModal('createbank')}
-            showTable={showBanks}
-            tableColumns={preColumnsBanks}
-            setShowTable={setShowBanks}
-            dataTable={banksData}
-          />}
+          borderRadius={"5px"}
+          justifyContent={"space-around"}
+          width={"100%"}
+          padding={"30px"}
+          boxShadow={"2px 4px 20px 2px rgba(0, 0, 0, 0.3);"}
+        >
+          {!showBanks && (
+            <AdminStack
+              title={"ADMINISTRAR USUARIOS"}
+              handleModal={() => handleModal("createuser")}
+              showTable={showUsers}
+              tableColumns={preColumnsUsers}
+              setShowTable={setShowUsers}
+              dataTable={usersData}
+              banks={banksData}
+            />
+          )}
+          <Stack height={"15px"} />
+          {!showUsers && (
+            <AdminStack
+              title={"ADMINISTRAR BANCOS"}
+              handleModal={() => handleModal("createbank")}
+              showTable={showBanks}
+              tableColumns={preColumnsBanks}
+              setShowTable={setShowBanks}
+              dataTable={banksData}
+            />
+          )}
         </Stack>
         <Modal
-          sx={{ justifyContent:'center', display:'flex', alignItems:'center'}}
+          sx={{
+            justifyContent: "center",
+            display: "flex",
+            alignItems: "center",
+          }}
           open={openModal}
-          onClose={()=>setOpenModal(false)}>
-            <Paper sx={{height:'80%', width:'80%', padding:'20px', overflow:'hidden', display:'flex', flexDirection:'column'}}>
-              <Stack justifyContent={'center'} alignItems={'center'} padding={'20px'}>
-                <SinaText size='mWide'>
-                  {type === 'createuser' && 'Crear Usuario' }
-                  {type === 'createbank' && 'Crear Banco' }
-                </SinaText>
-              </Stack>
-              {type === 'createuser' && 
-                <CreateUserForm 
-                  banks={banksData}
-                  handleSubmit={handleSubmit} 
-                  setOpenModal={setOpenModal}/>}
-              {type === 'createbank' && <CreateBankForm handleSubmit={handleSubmit} setOpenModal={setOpenModal}/>}
-            </Paper>
+          onClose={() => setOpenModal(false)}
+        >
+          <Paper
+            sx={{
+              height: "80%",
+              width: "80%",
+              padding: "20px",
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <Stack
+              justifyContent={"center"}
+              alignItems={"center"}
+              padding={"20px"}
+            >
+              <SinaText size='mWide'>
+                {type === "createuser" && "Crear Usuario"}
+                {type === "createbank" && "Crear Banco"}
+              </SinaText>
+            </Stack>
+            {type === "createuser" && (
+              <CreateUserForm
+                banks={banksData}
+                handleSubmit={handleSubmit}
+                setOpenModal={setOpenModal}
+              />
+            )}
+            {type === "createbank" && (
+              <CreateBankForm
+                handleSubmit={handleSubmit}
+                setOpenModal={setOpenModal}
+              />
+            )}
+          </Paper>
         </Modal>
       </Stack>
     </Stack>
-
-  )
-}
+  );
+};
 
 export default AdminPage;

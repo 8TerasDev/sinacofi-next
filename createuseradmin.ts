@@ -1,8 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 
 async function createNewUser() {
-  const prisma = new PrismaClient();
+  let prisma: PrismaClient
   try {
+    prisma = new PrismaClient();
     const newAdmin = await prisma.accounts_user.create({
       data: {
         password: "admin", // Aquí debes poner una contraseña encriptada en un escenario real
@@ -21,7 +22,9 @@ async function createNewUser() {
     console.error("Error al obtener las declaraciones:", error);
     return [];
   } finally {
-    await prisma.$disconnect();
+    if (prisma) {
+      await prisma.$disconnect();
+    }
   }
 }
 

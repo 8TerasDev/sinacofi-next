@@ -1,6 +1,13 @@
 /** @type {import('next').NextConfig} */
+const basePath = process.env.BASE_PATH ?? "";
+const config = {
+  basePath: basePath,
+  env: {
+    basePath,
+  },
+};
 const nextConfig = {
-  basePath: process.env.BASE_PATH || "/",
+  ...config,
 };
 
 module.exports = nextConfig;
