@@ -234,7 +234,7 @@ const AdminPage = () => {
               </Stack>
               {type === 'createuser' && 
                 <CreateUserForm 
-                  banks={banksData}
+                  banks={bankDataList || banksData}
                   handleSubmit={handleSubmit} 
                   setOpenModal={setOpenModal}/>}
               {type === 'createbank' && <CreateBankForm handleSubmit={handleSubmit} setOpenModal={setOpenModal}/>}
