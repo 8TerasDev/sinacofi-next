@@ -9,9 +9,14 @@ export const useGetUsers = (load?:any) => {
   const getUsers = async () => {
     setIsLoading(true);
     try{
-      const { data } = await axios.get("/api/users/getUsers");
+      const { data } = await axios.get("/api/users/getUsers",{
+        headers:{
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        }
+      });
       const dataParsed = JSON.parse(data);
-      //console.log('users',dataParsed)
       setData(dataParsed);
     }
     catch(error){
@@ -24,11 +29,9 @@ export const useGetUsers = (load?:any) => {
     }
   }
   useEffect(()=>{
-    if(!load){
       getUsers();
-    }
-    
-  },[load])
+   
+  },[])
 
   return {isLoading, isError, data}
 }

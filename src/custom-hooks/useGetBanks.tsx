@@ -6,10 +6,16 @@ export const useGetBanks = (load?:any) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  const getUsers = async () => {
+  const getBanks = async () => {
     setIsLoading(true);
     try{
-      const { data } = await axios.get("/api/banks/getBanks");
+      const { data } = await axios.get("/api/banks/getBanks",{
+        headers:{
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        }
+      });
       const dataParsed = JSON.parse(data);
       //console.log(dataParsed)
       setData(dataParsed);
@@ -22,11 +28,8 @@ export const useGetBanks = (load?:any) => {
     }
   }
   useEffect(()=>{
-    if(!load){
-      getUsers();
-    }
-    
-  },[load])
+      getBanks();
+  },[])
 
   return {isLoading, isError, data}
 }

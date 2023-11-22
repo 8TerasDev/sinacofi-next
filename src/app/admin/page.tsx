@@ -94,12 +94,14 @@ const AdminPage = () => {
     const [nombre , codigo] = e.target;
     const date = new Date();
     try{
-      const data = await axios.post(
+      const banks = await axios.post(
         `api/createbank`,{
         nombre: nombre.value,
         codigo: codigo.value,
         created_at: date.toISOString(),
       })
+      const banksList = JSON.parse(banks.data);
+      setBankDataList(banksList);
     }
     catch(err){
       console.log(err)
@@ -135,8 +137,7 @@ const AdminPage = () => {
         date_joined: date.toISOString()
       });
       const newUsersList = newUsers.data;
-      setUserDataList(newUsersList);
-      console.log('newUsers', JSON.parse(newUsers.data))
+      setUserDataList(JSON.parse(newUsersList));
     }
     catch(err){
       console.log(err)
@@ -206,8 +207,8 @@ const AdminPage = () => {
             showTable={showUsers}
             tableColumns={preColumnsUsers}
             setShowTable={setShowUsers}
-            dataTable={usersData}
-            banks={banksData}
+            dataTable={userDataList || usersData}
+            banks={bankDataList || banksData}
           />}
           <Stack height={'15px'} />
           {!showUsers && <AdminStack 
@@ -216,7 +217,7 @@ const AdminPage = () => {
             showTable={showBanks}
             tableColumns={preColumnsBanks}
             setShowTable={setShowBanks}
-            dataTable={banksData}
+            dataTable={bankDataList || banksData}
           />}
         </Stack>
         <Modal
