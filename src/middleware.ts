@@ -16,7 +16,10 @@ export async function middleware(request: NextRequest) {
         const nextPath = `${request.nextUrl.basePath}${request.nextUrl.pathname}`
 
         // TODO: if isLogged -> go to Home.
-        if(auth || !config.matcher.some(m => m.toLowerCase() == nextPath.toLowerCase())) return NextResponse.next();
+        if (auth || !config.matcher.some(m => m.toLowerCase() == nextPath.toLowerCase())) return NextResponse.next();
+        if (config.matcher.some(m => m.toLowerCase() == nextPath.toLowerCase())) {
+            return NextResponse.redirect(new URL(`${request.nextUrl.basePath}/`, request.url))
+        }
         return NextResponse.redirect(new URL(`/`, request.url))
 
         // if(!whiteListPaths.includes(path) || !auth){
