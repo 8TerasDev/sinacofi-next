@@ -7,6 +7,9 @@ WORKDIR /usr/src/app
 
 # Use ARG to define the build-time environment variable that specifies which .env file to use
 ARG ENV_FILE
+ARG BASE_PATH
+
+ENV BASE_PATH=BASE_PATH
 
 # Copy package.json and yarn.lock files
 COPY package.json ./
