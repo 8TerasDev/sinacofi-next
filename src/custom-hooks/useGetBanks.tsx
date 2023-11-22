@@ -11,6 +11,7 @@ export const useGetBanks = (load:any) => {
     try{
       const { data } = await axios.get("/api/banks/getBanks");
       const dataParsed = JSON.parse(data);
+      console.log(dataParsed)
       setData(dataParsed);
     }
     catch(error){

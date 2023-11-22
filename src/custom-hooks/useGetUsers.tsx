@@ -11,12 +11,15 @@ export const useGetUsers = (load:any) => {
     try{
       const { data } = await axios.get("/api/users/getUsers");
       const dataParsed = JSON.parse(data);
+      console.log('users',dataParsed)
       setData(dataParsed);
     }
     catch(error){
+      console.log(error)
       setIsError(error as any);
     }
     finally{
+      console.log('done')
       setIsLoading(false);
     }
   }
