@@ -13,14 +13,16 @@ export async function middleware(request: NextRequest) {
         const auth = cookies.get("auth");
         //const path = request.nextUrl.pathname;
 
+        const nextPath = `${request.nextUrl.basePath}${request.nextUrl.pathname}`
+
         // TODO: if isLogged -> go to Home.
-        if(auth) return NextResponse.next();
-        return NextResponse.redirect(new URL('/', request.url))
+        if(auth || !config.matcher.some(m => m.toLowerCase() == nextPath.toLowerCase())) return NextResponse.next();
+        return NextResponse.redirect(new URL(`/`, request.url))
 
         // if(!whiteListPaths.includes(path) || !auth){
         //     return NextResponse.redirect(new URL('/', request.url))
         // }
-        
+
     } catch (error) {
         console.log(error)
         //return NextResponse.redirect(new URL('/', request.url))
@@ -32,8 +34,8 @@ export async function middleware(request: NextRequest) {
 // TODO
 export const config = {
     matcher: [
-        '/home',
-        '/admin',
+        `${process.env.BASE_PATH}/home`,
+        `${process.env.BASE_PATH}/admin`,
         // TODO: Run always middleware
         //'/((?!api|_next/static|_next/image|favicon.ico).*)',
     ]

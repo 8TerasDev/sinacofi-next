@@ -6,10 +6,7 @@ FROM node:20-alpine as builder
 WORKDIR /usr/src/app
 
 # Use ARG to define the build-time environment variable that specifies which .env file to use
-ARG ENV_FILE
-ARG BASE_PATH
 
-ENV BASE_PATH=BASE_PATH
 
 # Copy package.json and yarn.lock files
 COPY package.json ./
@@ -26,7 +23,7 @@ COPY .env ./.env
 
 
 # Build your Next.js app using the environment variables from the file
-RUN yarn build
+RUN source .env && yarn build
 
 # Step 2: Serve the Next.js application
 FROM node:20-alpine as runner
@@ -36,6 +33,7 @@ WORKDIR /usr/src/app
 # Copy the built assets from the builder stage
 COPY --from=builder /usr/src/app/.next ./.next
 COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY --from=builder /usr/src/app/next.config.js ./next.config.js
 COPY --from=builder /usr/src/app/public ./public
 COPY --from=builder /usr/src/app/package.json ./package.json
 
@@ -47,4 +45,4 @@ EXPOSE 3000
 
 # Define the command to run your app using CMD which defines your runtime
 # Here we will use the Next.js start script which starts the production server
-CMD ["yarn", "start"]
+ENTRYPOINT ["yarn", "start"]

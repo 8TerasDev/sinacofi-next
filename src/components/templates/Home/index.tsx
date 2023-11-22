@@ -1,36 +1,37 @@
 "use client";
 
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState } from "react";
+import axios from "axios";
 
-import SinaDrawer from '../../molecules/SinaDrawer';
-import ContainerFull from '../../atoms/ContainerFull';
-import DrawerBody from '../../organisms/DrawerBody';
-import SinaAppBar from '../../molecules/SinaAppBar';
-import SinaMainCard from '../../organisms/SinaMainCard';
-import SinaTable from '../../organisms/SinaTable';
-import { Declaracion, PJuridicas } from '@/application';
-import { MainLayout } from '@/components/atoms/MainLayout';
-import { CircularProgress, Stack } from '@mui/material';
-import SinaCardHeader from '../../molecules/SinaCardHeader';
-import { EmptyTable } from '@/components/organisms/EmptyTable';
-import { useRouter } from 'next/navigation';
-import { NewDeclaracionesContext } from '@/contexts/new-declaraciones.context';
+import SinaDrawer from "../../molecules/SinaDrawer";
+import ContainerFull from "../../atoms/ContainerFull";
+import DrawerBody from "../../organisms/DrawerBody";
+import SinaAppBar from "../../molecules/SinaAppBar";
+import SinaMainCard from "../../organisms/SinaMainCard";
+import SinaTable from "../../organisms/SinaTable";
+import { Declaracion, PJuridicas } from "@/application";
+import { MainLayout } from "@/components/atoms/MainLayout";
+import { CircularProgress, Stack } from "@mui/material";
+import SinaCardHeader from "../../molecules/SinaCardHeader";
+import { EmptyTable } from "@/components/organisms/EmptyTable";
+import { useRouter } from "next/navigation";
+import { NewDeclaracionesContext } from "@/contexts/new-declaraciones.context";
 
 interface HomeTemplateProps {
-  isLoading: boolean,
-  state: any
+  isLoading: boolean;
+  state: any;
 }
 
 const HomeTemplate = ({ isLoading, state }: HomeTemplateProps) => {
-  const { declaraciones } = useContext(NewDeclaracionesContext)
+  const { declaraciones } = useContext(NewDeclaracionesContext);
 
   const [isOpen, isOpenSetter] = useState(true);
   const route = useRouter();
   const isAdmin = true;
 
   const handleAdmin = () => {
-    isAdmin && route.push('/admin');
-  }
+    isAdmin && route.push(`/admin`);
+  };
 
   return (
     <MainLayout>
@@ -39,21 +40,23 @@ const HomeTemplate = ({ isLoading, state }: HomeTemplateProps) => {
         <DrawerBody isOpen={isOpen} isOpenSetter={isOpenSetter} />
       </SinaDrawer>
       <SinaMainCard>
-        {isLoading ?
-          <Stack justifyContent={'center'} alignItems={'center'} flex={1}>
+        {isLoading ? (
+          <Stack justifyContent={"center"} alignItems={"center"} flex={1}>
             <CircularProgress />
-          </Stack> :
+          </Stack>
+        ) : (
           <Stack flex={1}>
             <SinaCardHeader />
-            {declaraciones && declaraciones.length !== 0 
-              ? <SinaTable /> 
-              : <EmptyTable /> 
-            }
+            {declaraciones && declaraciones.length !== 0 ? (
+              <SinaTable />
+            ) : (
+              <EmptyTable />
+            )}
           </Stack>
-        }
+        )}
       </SinaMainCard>
     </MainLayout>
-  )
-}
+  );
+};
 
-export default HomeTemplate
+export default HomeTemplate;
