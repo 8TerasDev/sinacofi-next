@@ -24,7 +24,10 @@ export const useGetUsers = (load:any) => {
     }
   }
   useEffect(()=>{
-    getUsers();
+    if(!load){
+      getUsers();
+    }
+    
   },[load])
 
   return {isLoading, isError, data}
