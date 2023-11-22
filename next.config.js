@@ -5,6 +5,14 @@ const config = {
   env: {
     basePath,
   },
+  async rewrites() {
+    return [
+      {
+        source: "/",
+        destination: basePath,
+      },
+    ];
+  },
 };
 const nextConfig = {
   ...config,
