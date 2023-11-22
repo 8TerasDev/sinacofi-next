@@ -69,8 +69,10 @@ const AdminPage = () => {
   const [type, setType] = useState('');
   const route = useRouter();
   const { data, isLoading: loading } = useGetProfile();
-  const { data: usersData, isLoading: usersLoading } = useGetUsers(isLoading);
-  const { data: banksData, isLoading: banksLoading } = useGetBanks(isLoading);
+  const { data: usersData, isLoading: usersLoading } = useGetUsers();
+  const { data: banksData, isLoading: banksLoading } = useGetBanks();
+  const [bankDataList, setBankDataList] = useState(banksData);
+  const [userDataList, setUserDataList] = useState(usersData);
 
   useEffect(()=>{
     // TODO. REFACTOR. Better use Middleware
@@ -119,7 +121,7 @@ const AdminPage = () => {
     // const encryptedPassword = encryption(password);
     const date = new Date();
     try{
-      await axios.post(
+      const newUsers = await axios.post(
         `api/createuser`,{
         username,
         first_name,
@@ -132,6 +134,9 @@ const AdminPage = () => {
         password,
         date_joined: date.toISOString()
       });
+      const newUsersList = newUsers.data;
+      setUserDataList(newUsersList);
+      console.log('newUsers', JSON.parse(newUsers.data))
     }
     catch(err){
       console.log(err)
