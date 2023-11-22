@@ -1,10 +1,6 @@
-// /** @type {import('next').NextConfig} */
-// const nextConfig = {
-//   basePath: process.env.BASE_PATH || "/",
-// };
-
-// module.exports = nextConfig;
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  basePath: process.env.BASE_PATH || "/",
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
