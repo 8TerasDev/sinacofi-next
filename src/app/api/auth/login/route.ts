@@ -4,6 +4,7 @@ import { serialize } from "cookie";
 import { cookies } from "next/headers";
 import { verifyCredentials } from "@/lib/queries.prisma";
 import { prisma } from "@/lib/newclient.prisma";
+import { verifyPassword } from "@/lib/backend.utils";
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,6 +12,16 @@ export async function POST(req: NextRequest) {
     const { username, password } = body;
 
     const user = await verifyCredentials(username, password);
+    const valid = await verifyPassword(password, user?.password || "");
+    if (!valid) {
+      console.log("contraseña invalida");
+      return new Response(
+        JSON.stringify({ error: "Invalid username or password" }),
+        {
+          status: 400,
+        }
+      );
+    }
 
     if (!user) {
       console.log("usuario no existe");

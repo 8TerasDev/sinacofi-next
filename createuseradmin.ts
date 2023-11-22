@@ -1,20 +1,23 @@
+import { encryptPassword } from "@/lib/backend.utils";
 import { PrismaClient } from "@prisma/client";
-
+const SINACOFIUSER = "sinacofiadmin";
+const SINACOFIPASS = "1Q2w3e4R";
 async function createNewUser() {
-  let prisma: PrismaClient | undefined = undefined
+  let prisma: PrismaClient | undefined = undefined;
   try {
     prisma = new PrismaClient();
+    const hashedPassword = await encryptPassword(SINACOFIPASS);
     const newAdmin = await prisma.accounts_user.create({
       data: {
-        password: "admin", // Aquí debes poner una contraseña encriptada en un escenario real
+        password: hashedPassword,
         is_superuser: true,
-        username: "admin",
-        first_name: "admin",
-        last_name: "admin",
-        email: "admin@admin.com",
+        username: SINACOFIUSER,
+        first_name: SINACOFIUSER,
+        last_name: SINACOFIUSER,
+        email: "superadmin@admin.com",
         is_staff: true,
         is_active: true,
-        date_joined: new Date(), // Esto asigna la fecha y hora actual
+        date_joined: new Date(),
       },
     });
     return newAdmin;
