@@ -8,20 +8,27 @@ export const useGetProfile = () => {
 
   const getProfile = async () => {
     setIsLoading(true);
-    try{
-      const { data } = await axios.get("/api/auth/getprofile");
+    try {
+      const config = {
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+      }
+      const { data } = await axios.get("/api/auth/getprofile",config);
       setData(data.user);
     }
-    catch(error){
+    catch (error) {
       setIsError(error as any);
     }
-    finally{
+    finally {
       setIsLoading(false);
     }
   }
-  useEffect(()=>{
+  useEffect(() => {
     getProfile();
-  },[])
+  }, [])
 
-  return {isLoading, isError, data}
+  return { isLoading, isError, data }
 }

@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const SINACOFIUSER = "sinacofiadmin";
 const SINACOFIPASS = "1Q2w3e4R";
 
-async function createNewUser() {
+export async function createNewUser() {
   let prisma: PrismaClient | undefined = undefined;
   try {
     prisma = new PrismaClient();
@@ -32,4 +32,4 @@ async function createNewUser() {
   }
 }
 
-createNewUser().then((newAdmin) => console.log(newAdmin));
+// createNewUser().then((newAdmin) => console.log(newAdmin));

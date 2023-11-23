@@ -20,7 +20,14 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, handleClick, data }) => {
 
   const handleLogout = async () => {
     try {
-      await axios.post("api/auth/logout");
+      const config = {
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+      }
+      await axios.post("api/auth/logout", config);
       router.push(`/`);
     } catch (err) {
       console.log(err);
@@ -86,7 +93,7 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, handleClick, data }) => {
               placeholder='+56 9 XXXX XXXX'
               value='+54 9 123456789'
               disabled
-              //TODO: Add input mask for formatting (needs an additional library or custom code)
+            //TODO: Add input mask for formatting (needs an additional library or custom code)
             />
           </form>
           <SinaText size='xsWide'>Institución</SinaText>

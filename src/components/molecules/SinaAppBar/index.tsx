@@ -7,35 +7,42 @@ import { Person } from "@mui/icons-material";
 import axios from "axios";
 
 
-const SinaAppBar = ({handleAdmin}:any) => {
+const SinaAppBar = ({ handleAdmin }: any) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const getProfile = async () => {
-    try{
-      const { data } = await axios.get("/api/auth/getprofile");
+    try {
+      const config = {
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+      }
+      const { data } = await axios.get("/api/auth/getprofile", config);
       setIsAdmin(data.user.isAdmin);
     }
-    catch(error){
+    catch (error) {
       console.log(error)
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getProfile();
-  },[])
-   
+  }, [])
+
   return (
     <div className={styles.sinappbar_container}>
-      {isAdmin &&       
+      {isAdmin &&
         <Stack padding={'5px'}>
-          <Button 
-          startIcon={<Person/>}
-          onClick={handleAdmin} variant="contained" color="success">
+          <Button
+            startIcon={<Person />}
+            onClick={handleAdmin} variant="contained" color="success">
             Administrador
           </Button>
         </Stack>
       }
       <Stack alignItems={'flex-end'} width={'100%'}>
-        <Image src={sinacofi_logo} alt="" width={180} /> 
+        <Image src={sinacofi_logo} alt="" width={180} />
       </Stack>
     </div>
   );

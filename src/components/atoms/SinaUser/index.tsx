@@ -11,24 +11,31 @@ type Props = {};
 const SinaUser = ({ isOpen }: any) => {
   const { isModalOpen, handleClick } = useModalHandle();
   const [data, setData] = useState({
-    name:'',
+    name: '',
     lastName: '',
-    email:'',
+    email: '',
     bank: '',
   });
   const getProfile = async () => {
-    try{
-      const { data } = await axios.get("/api/auth/getprofile");
+    try {
+      const config = {
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+      }
+      const { data } = await axios.get("/api/auth/getprofile", config);
       setData(data.user);
     }
-    catch(error){
+    catch (error) {
       console.log(error)
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getProfile();
-  },[])
+  }, [])
   return (
     <>
       {isOpen && (
