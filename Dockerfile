@@ -38,7 +38,6 @@ COPY --from=builder /usr/src/app/public ./public
 COPY --from=builder /usr/src/app/package.json ./package.json
 
 # Copy the appropriate .env file
-COPY --from=builder /usr/src/app/.env ./.env
 
 # Your app binds to port 3000 so you'll use the EXPOSE instruction to have it mapped by the docker daemon
 EXPOSE 3000
