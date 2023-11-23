@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -13,7 +13,7 @@ import styles from "./sinatable.module.css";
 import { BfDataProcessDeclaraciones } from "@/application";
 import SinaTypography from "@/components/atoms/SinaTypography";
 import { SinaTableModal } from "../SinaTableModal";
-import { disablePJuridicasAxios } from "@/common/pjuridica";
+import { disable as disableDeclaracionById } from "@/common/declaraciones";
 import { DeleteModal } from "../DeleteModal";
 import RenderTable from "./RenderTable";
 import { NewDeclaracionesContext } from "@/contexts/new-declaraciones.context";
@@ -40,8 +40,12 @@ const SinaTable = () => {
   } = useContext(NewDeclaracionesContext);
 
   const [openModal, openModalSetter] = useState<boolean>(false);
-  const [currentDeclaracion, setCurrentDeclaracion] = useState();
+  const [currentDeclaracion, setCurrentDeclaracion] = useState<any>();
   const [openDeleteModal, openDeleteModalSetter] = useState<boolean>(false);
+  const [data, setData] = useState(declaraciones);
+  useEffect(() => {
+    setData(declaraciones);
+  }, [declaraciones]);
 
   const handleDeleteModal = (declaracion: any) => {
     openDeleteModalSetter((openDeleteModal) => !openDeleteModal);
@@ -55,10 +59,15 @@ const SinaTable = () => {
     assignDeclaraciones(declaracion);
   };
 
-  const disableDeclaracion = (declaracion: any) => {
-    disablePJuridicasAxios(declaracion.correlativo);
-    // reloadDeclaraciones()
-  };
+  const disableDeclaracion = useCallback(
+    async (_: any) => {
+      await disableDeclaracionById(currentDeclaracion.id);
+      openModalSetter(false);
+      openDeleteModalSetter(false);
+      setData(data.filter((item: any) => item.id != currentDeclaracion.id));
+    },
+    [currentDeclaracion]
+  );
 
   return (
     <>
@@ -108,7 +117,7 @@ const SinaTable = () => {
             </TableHead>
             <TableBody>
               <RenderTable
-                declaraciones={declaraciones}
+                declaraciones={data}
                 handleDeleteModal={handleDeleteModal}
                 openModalWithDeclaracion={openModalWithDeclaracion}
               />
@@ -117,11 +126,11 @@ const SinaTable = () => {
           <TablePagination
             rowsPerPageOptions={[10, 25, 50]}
             component='div'
-            count={totalDeclaraciones} // Debe ser el número total de elementos
+            count={data?.length ?? 0} // Debe ser el número total de elementos
             rowsPerPage={rowsPerPage} // Número de filas por página
             page={Math.min(
               currentPage,
-              Math.ceil(totalDeclaraciones / rowsPerPage) - 1
+              Math.ceil(data?.length ?? 0 / rowsPerPage) - 1
             )} // Asegurando que la página no sea mayor que el total de páginas
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
@@ -145,9 +154,10 @@ const SinaTable = () => {
       <DeleteModal
         open={openDeleteModal}
         handleClose={() => openDeleteModalSetter(false)}
-        handleDelete={() => {
-          //console.log(currentDeclaracion);
-          currentDeclaracion && disableDeclaracion(currentDeclaracion);
+        handleDelete={async () => {
+          if (currentDeclaracion) {
+            await disableDeclaracion(currentDeclaracion);
+          }
         }}
       />
     </>

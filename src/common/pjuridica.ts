@@ -3,10 +3,10 @@ import axios from '@/common/http-client';
 const API_URL_PJ = "/api/pjuridica";
 const API_URL_PJ_BY = "/api/pjuridicaby";
 
-export async function disablePJuridicasAxios(correlativo_declaracion: string) {
+export async function disablePJuridicasAxios(id: number) {
     try {
         // Realiza una solicitud POST al endpoint de la API con el correlativo de declaración como cuerpo
-        const response = await axios.post(API_URL_PJ, { correlativo_declaracion });
+        const response = await axios.post(API_URL_PJ, { id });
         // Retorna la respuesta de la API
         return response.data;
     } catch (error) {

@@ -92,13 +92,15 @@ export async function getAllPJuridicasByDates(
 }
 
 export async function disablePJuridicas(
-  correlativo_declaracion: string
+  id: string
 ): Promise<PJuridicas[] | any> {
   try {
     // Actualiza todos los registros que tengan el correlativo_declaracion proporcionado
     const updateResponse = await prisma.p_juridicas.updateMany({
       where: {
-        correlativo_declaracion: correlativo_declaracion,
+        id: {
+          equals: id
+        },
       },
       data: {
         disabled: true,
