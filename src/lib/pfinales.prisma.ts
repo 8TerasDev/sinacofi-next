@@ -19,7 +19,14 @@ const API_URL_PF = "/api/pfinales";
 
 export async function fetchDeclaraciones() {
   try {
-    const { data } = await axios.get(API_URL_PJ);
+    const config = {
+      headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+      },
+    };
+    const { data } = await axios.get(API_URL_PJ, config);
     const declaraciones = data.declaraciones;
     return declaraciones;
   } catch (error) {
@@ -36,7 +43,14 @@ export async function fetchDeclaracionesByDates(
     const url = `${API_URL_PJ}?startdate=${encodeURIComponent(
       `${startDate}`
     )}&enddate=${encodeURIComponent(`${endDate}`)}`;
-    const { data } = await axios.get(url);
+    const config = {
+      headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+      },
+    };
+    const { data } = await axios.get(url, config);
     const declaraciones = data.declaraciones;
     return declaraciones;
   } catch (error) {
@@ -75,8 +89,16 @@ export async function getDelcaracionesByRutBeneficiario(
   rut_beneficiario: string
 ) {
   try {
+    const config = {
+      headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+      },
+      data: { rut_beneficiario },
+    };
     // Realiza una solicitud POST al endpoint de la API con el correlativo de declaración como cuerpo
-    const response = await axios.post(API_URL_PF, { rut_beneficiario });
+    const response = await axios.post(API_URL_PF, config);
     // Retorna la respuesta de la API
     return transformArray(response.data.declaraciones);
   } catch (error) {

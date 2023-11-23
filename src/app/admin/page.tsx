@@ -92,7 +92,7 @@ const AdminPage = () => {
 
   useEffect(() => {
     setBasePath(document.location.pathname);
-  },[])
+  }, [])
   useEffect(() => {
     // TODO. REFACTOR. Better use Middleware
     if (data) {
@@ -112,18 +112,26 @@ const AdminPage = () => {
   const handleCreateBank = async (e: any) => {
     const [nombre, codigo] = e.target;
     const date = new Date();
-    try{
+    try {
+      const config = {
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+        data: {
+          nombre: nombre.value,
+          codigo: codigo.value,
+          created_at: date.toISOString(),
+        }
+      };
       const banks = await axios.post(
-        `api/createbank`,{
-        nombre: nombre.value,
-        codigo: codigo.value,
-        created_at: date.toISOString(),
-      });
+        `api/createbank`, config);
       //console.log('banks', banks)
       const banksList = JSON.parse(banks.data);
       setBankDataList(banksList);
     }
-    catch(err){
+    catch (err) {
       console.log(err)
     }
 
@@ -142,24 +150,32 @@ const AdminPage = () => {
     // TODO. Do it when DJANDO AUTH is done !
     // const encryptedPassword = encryption(password);
     const date = new Date();
-    try{
+    try {
+      const config = {
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+        data: {
+          username,
+          first_name,
+          last_name,
+          email,
+          is_superuser: false,
+          is_staff: false,
+          is_active: true,
+          bank_id,
+          password,
+          date_joined: date.toISOString()
+        }
+      };
       const newUsers = await axios.post(
-        `api/createuser`,{
-        username,
-        first_name,
-        last_name,
-        email,
-        is_superuser: false,
-        is_staff: false,
-        is_active: true,
-        bank_id,
-        password,
-        date_joined: date.toISOString()
-      });
+        `api/createuser`, config);
       const newUsersList = newUsers.data;
       setUserDataList(JSON.parse(newUsersList));
     }
-    catch(err){
+    catch (err) {
       console.log(err)
     }
 
@@ -225,12 +241,12 @@ const AdminPage = () => {
       >
         <Stack
           borderRadius={'5px'}
-          justifyContent={'space-around'} 
-          width={'100%'} padding={'30px'} 
+          justifyContent={'space-around'}
+          width={'100%'} padding={'30px'}
           boxShadow={'2px 4px 20px 2px rgba(0, 0, 0, 0.3);'}>
-          {!showBanks && <AdminStack 
+          {!showBanks && <AdminStack
             title={'ADMINISTRAR USUARIOS'}
-            handleModal={()=>handleModal('createuser')}
+            handleModal={() => handleModal('createuser')}
             showTable={showUsers}
             tableColumns={preColumnsUsers}
             setShowTable={setShowUsers}
@@ -238,9 +254,9 @@ const AdminPage = () => {
             banks={bankDataList || banksData}
           />}
           <Stack height={'15px'} />
-          {!showUsers && <AdminStack 
+          {!showUsers && <AdminStack
             title={'ADMINISTRAR BANCOS'}
-            handleModal={()=>handleModal('createbank')}
+            handleModal={() => handleModal('createbank')}
             showTable={showBanks}
             tableColumns={preColumnsBanks}
             setShowTable={setShowBanks}
@@ -254,21 +270,21 @@ const AdminPage = () => {
             alignItems: "center",
           }}
           open={openModal}
-          onClose={()=>setOpenModal(false)}>
-            <Paper sx={{height:'80%', width:'80%', padding:'20px', overflow:'hidden', display:'flex', flexDirection:'column'}}>
-              <Stack justifyContent={'center'} alignItems={'center'} padding={'20px'}>
-                <SinaText size='mWide'>
-                  {type === 'createuser' && 'Crear Usuario' }
-                  {type === 'createbank' && 'Crear Banco' }
-                </SinaText>
-              </Stack>
-              {type === 'createuser' && 
-                <CreateUserForm 
-                  banks={bankDataList || banksData}
-                  handleSubmit={handleSubmit} 
-                  setOpenModal={setOpenModal}/>}
-              {type === 'createbank' && <CreateBankForm handleSubmit={handleSubmit} setOpenModal={setOpenModal}/>}
-            </Paper>
+          onClose={() => setOpenModal(false)}>
+          <Paper sx={{ height: '80%', width: '80%', padding: '20px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            <Stack justifyContent={'center'} alignItems={'center'} padding={'20px'}>
+              <SinaText size='mWide'>
+                {type === 'createuser' && 'Crear Usuario'}
+                {type === 'createbank' && 'Crear Banco'}
+              </SinaText>
+            </Stack>
+            {type === 'createuser' &&
+              <CreateUserForm
+                banks={bankDataList || banksData}
+                handleSubmit={handleSubmit}
+                setOpenModal={setOpenModal} />}
+            {type === 'createbank' && <CreateBankForm handleSubmit={handleSubmit} setOpenModal={setOpenModal} />}
+          </Paper>
         </Modal>
       </Stack>
     </Stack>

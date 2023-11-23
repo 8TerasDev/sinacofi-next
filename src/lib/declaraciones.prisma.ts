@@ -53,7 +53,14 @@ export async function getAllDeclaraciones() {
 
 export async function getAllDeclaracionesClientSide() {
   try {
-    const { data } = await axios.get("api/declaraciones");
+    const config = {
+      headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+      },
+    };
+    const { data } = await axios.get("api/declaraciones", config);
     return data.declaraciones;
   } catch (error) {
     console.error("Error al obtener las declaraciones:", error);

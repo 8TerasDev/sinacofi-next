@@ -11,34 +11,38 @@ const SinaAppBar = ({ handleAdmin }: any) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const getProfile = async () => {
     try {
-      const { data } = await axios.get("/api/auth/getprofile");
+      const config = {
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+      }
+      const { data } = await axios.get("/api/auth/getprofile", config);
       setIsAdmin(data.user.isAdmin);
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   useEffect(() => {
     setBasePath(document.location.pathname);
     getProfile();
-  }, []);
+  }, [])
 
   return (
     <div className={styles.sinappbar_container}>
-      {isAdmin && (
-        <Stack padding={"5px"}>
+      {isAdmin &&
+        <Stack padding={'5px'}>
           <Button
             startIcon={<Person />}
-            onClick={handleAdmin}
-            variant='contained'
-            color='success'
-          >
+            onClick={handleAdmin} variant="contained" color="success">
             Administrador
           </Button>
         </Stack>
-      )}
-      <Stack alignItems={"flex-end"} width={"100%"}>
-        <Image src={sinacofi_logo} alt='' width={180} />
+      }
+      <Stack alignItems={'flex-end'} width={'100%'}>
+        <Image src={sinacofi_logo} alt="" width={180} />
       </Stack>
     </div>
   );
