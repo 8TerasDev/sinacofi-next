@@ -1,4 +1,4 @@
-import { encryptPassword } from "@/lib/backend.utils";
+import { encryptPassword } from "./src/lib/backend.utils";
 import { PrismaClient } from "@prisma/client";
 const SINACOFIUSER = "sinacofiadmin";
 const SINACOFIPASS = "1Q2w3e4R";
