@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
         }
       );
     }
-    const bank = user.bank_id ? await getBankById(user.bank_id) : {}
+    const bank: any = user.bank_id ? await getBankById(user.bank_id as unknown as any) : {}
     const token = jwt.sign(
       {
         username,

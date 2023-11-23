@@ -4,8 +4,11 @@ import { getBankByCode } from "@/lib/banks/getBankByCode.prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
+
   try {
+
     const data: CreateBankProps = await req.json();
+
     const bank = await getBankByCode(data.codigo)
     if (bank != undefined) {
       throw new Error('Codigo banco registrado')
