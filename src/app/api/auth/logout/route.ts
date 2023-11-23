@@ -3,7 +3,7 @@ import { verify } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
 import { serialize } from "cookie";
 import { cookies } from "next/headers";
-import { verifyCredentials } from "@/lib/queries.prisma";
+import { findByUsername } from "@/lib/queries.prisma";
 
 export async function POST(req: NextRequest) {
   try {

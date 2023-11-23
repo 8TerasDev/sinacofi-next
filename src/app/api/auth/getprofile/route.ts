@@ -1,8 +1,6 @@
 import { NextRequest } from "next/server";
 import { verify } from "jsonwebtoken";
-import { serialize } from "cookie";
-import { cookies } from "next/headers";
-import { verifyCredentials } from "@/lib/queries.prisma";
+
 
 export async function GET(req: NextRequest) {
   try {
@@ -16,9 +14,14 @@ export async function GET(req: NextRequest) {
     }
 
     const user = await verify(`${auth?.value}`, "secret")
-    return new Response(JSON.stringify({ user }))
-  } catch (error) {
-    return new Response(JSON.stringify({ error }), {
+    return Response.json({ user })
+  } catch (error: any) {
+    if (error.name && error.name === "TokenExpiredError") {
+      return Response.json({ "error": "token expired" }, {
+        status: 401,
+      });
+    }
+    return Response.json({ error }, {
       status: 500,
     });
   }

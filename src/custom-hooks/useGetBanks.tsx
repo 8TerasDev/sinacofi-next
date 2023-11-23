@@ -1,5 +1,5 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import axios from "@/common/http-client";
+import  { useEffect, useState } from "react";
 
 export const useGetBanks = (load?: any) => {
   const [data, setData] = useState();
@@ -9,28 +9,17 @@ export const useGetBanks = (load?: any) => {
   const getBanks = async () => {
     setIsLoading(true);
     try {
-      const config = {
-        headers: {
-          "Cache-Control": "no-cache, no-store, must-revalidate",
-          Pragma: "no-cache",
-          Expires: "0",
-        },
-      }
-      const { data } = await axios.get("/api/banks/getBanks", config);
-      const dataParsed = JSON.parse(data);
-      //console.log(dataParsed)
-      setData(dataParsed);
-    }
-    catch (error) {
+      const { data } = await axios.get("/api/banks/getBanks");
+      setData(data);
+    } catch (error) {
       setIsError(error as any);
-    }
-    finally {
+    } finally {
       setIsLoading(false);
     }
-  }
+  };
   useEffect(() => {
     getBanks();
-  }, [])
+  }, []);
 
-  return { isLoading, isError, data }
-}
+  return { isLoading, isError, data };
+};

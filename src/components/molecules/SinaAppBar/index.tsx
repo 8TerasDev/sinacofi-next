@@ -4,8 +4,7 @@ import styles from "./sinaappbar.module.css";
 import { Button, Stack } from "@mui/material";
 import sinacofi_logo from "../../../assets/images/sinacofi_logo.png";
 import { Person } from "@mui/icons-material";
-import axios from "axios";
-import { setBasePath } from "@/contexts/path.context";
+import axios from '@/common/http-client';
 
 const SinaAppBar = ({ handleAdmin }: any) => {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -26,7 +25,6 @@ const SinaAppBar = ({ handleAdmin }: any) => {
   }
 
   useEffect(() => {
-    setBasePath(document.location.pathname);
     getProfile();
   }, [])
 

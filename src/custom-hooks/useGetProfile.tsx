@@ -1,5 +1,5 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import axios from "@/common/http-client";
+import React, { useEffect, useState } from "react";
 
 export const useGetProfile = () => {
   const [data, setData] = useState();
@@ -9,26 +9,17 @@ export const useGetProfile = () => {
   const getProfile = async () => {
     setIsLoading(true);
     try {
-      const config = {
-        headers: {
-          "Cache-Control": "no-cache, no-store, must-revalidate",
-          Pragma: "no-cache",
-          Expires: "0",
-        },
-      }
-      const { data } = await axios.get("/api/auth/getprofile",config);
+      const { data } = await axios.get("/api/auth/getprofile");
       setData(data.user);
-    }
-    catch (error) {
+    } catch (error) {
       setIsError(error as any);
-    }
-    finally {
+    } finally {
       setIsLoading(false);
     }
-  }
+  };
   useEffect(() => {
     getProfile();
-  }, [])
+  }, []);
 
-  return { isLoading, isError, data }
-}
+  return { isLoading, isError, data };
+};

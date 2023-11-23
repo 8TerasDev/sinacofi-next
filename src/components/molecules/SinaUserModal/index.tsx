@@ -6,7 +6,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import SinaText from "../../atoms/SinaText";
 import { useRouter } from "next/navigation";
 import { cookies } from "next/headers";
-import axios from "axios";
+import axios from "@/common/http-client";
 
 interface UserModalProps {
   isOpen: boolean;
@@ -16,7 +16,7 @@ interface UserModalProps {
 
 const UserModal: React.FC<UserModalProps> = ({ isOpen, handleClick, data }) => {
   const router = useRouter();
-  const { name, lastName, email, bank } = data;
+  const { name, lastName, email, bank, bank_code } = data;
 
   const handleLogout = async () => {
     try {
@@ -26,7 +26,7 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, handleClick, data }) => {
           Pragma: "no-cache",
           Expires: "0",
         },
-      }
+      };
       await axios.post("api/auth/logout", config);
       router.push(`/`);
     } catch (err) {
@@ -87,33 +87,19 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, handleClick, data }) => {
               value={email}
               disabled
             />
-            <TextField
-              label='Número de Teléfono'
-              variant='standard'
-              placeholder='+56 9 XXXX XXXX'
-              value='+54 9 123456789'
-              disabled
-            //TODO: Add input mask for formatting (needs an additional library or custom code)
-            />
           </form>
           <SinaText size='xsWide'>Institución</SinaText>
           <form className={styles.formData}>
             <TextField
               label='Banco'
               variant='standard'
-              value='Santander'
+              value={bank ?? "-"}
               disabled
             />
             <TextField
               label='Código del Banco'
               variant='standard'
-              value='0026'
-              disabled
-            />
-            <TextField
-              label='Teléfono Sucursal'
-              variant='standard'
-              value='123456789'
+              value={bank_code ?? "-"}
               disabled
             />
           </form>

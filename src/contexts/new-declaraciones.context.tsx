@@ -1,7 +1,7 @@
 "use client";
-import axios from "axios";
+import axios from "@/common/http-client";
 import { BfDataProcessDeclaraciones } from "@/application";
-import { getAllDeclaracionesClientSide } from "@/lib/declaraciones.prisma";
+import { getAllDeclaracionesClientSide } from "@/common/declaraciones";
 import React, {
   createContext,
   useContext,
@@ -10,7 +10,6 @@ import React, {
   useState,
 } from "react";
 import { TypeSearchContext } from "./typesearch.context";
-import { setBasePath } from "./path.context";
 
 export const NewDeclaracionesContext = createContext<any>({});
 
@@ -29,9 +28,6 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
     BfDataProcessDeclaraciones[] | null
   >(null);
 
-  useEffect(() => {
-    setBasePath(document.location.pathname);
-  }, []);
   const [typeOffilter, typeOffilterSetter] = useState<typeOffilterEnum | null>(
     null
   );
