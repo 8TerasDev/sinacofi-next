@@ -10,6 +10,7 @@ const SinaTableCtaIcons = ({ handleDownload, handleDelete, declaracion }: any) =
     bf_data_process_beneficiariosfinales: beneficiarios,
     bf_data_process_personasjuridicas: pjuridicas
   } = declaracion;
+  const razonSocial = pjuridicas[0].razon_social;
   return (
     <TableCell>
       <PDFDownloadLink
@@ -20,7 +21,7 @@ const SinaTableCtaIcons = ({ handleDownload, handleDelete, declaracion }: any) =
             beneficiarios={beneficiarios} 
             />
         }
-        fileName="declaracion.pdf"
+        fileName={`Declaracion-${razonSocial}.pdf`}
       >
         <IconButton>
           <Download />
