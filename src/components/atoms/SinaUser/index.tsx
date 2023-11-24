@@ -55,13 +55,7 @@ const SinaUser = ({ isOpen }: any) => {
           </div>
         </div>
       )}
-      {!isOpen && (
-        <img
-          className={styles.profile_details_images}
-          src='https://placehold.co/45x45'
-          alt=''
-        />
-      )}
+      {!isOpen && <Avatar sx={{ bgcolor: deepOrange[400] }}>{data.name.slice(0,2).toUpperCase()}</Avatar>}
     </>
   );
 };
