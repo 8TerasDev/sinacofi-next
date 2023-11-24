@@ -29,7 +29,8 @@ const TableModalFooter = ({
   const {
     firstDeclaracion,
     lastDeclaracion,
-  } = useContext(NewDeclaracionesContext)
+  } = useContext(NewDeclaracionesContext);
+  const razonSocial = declaracion.bf_data_process_personasjuridicas[0].razon_social;
   return (
     <Box
       component="footer"
@@ -75,7 +76,7 @@ const TableModalFooter = ({
                 controlEfectivo={controlEfectivo}
                 beneficiarios={beneficiarios} />
             }
-            fileName="declaracion.pdf">
+            fileName={`Declaracion-${razonSocial}.pdf`}>
             <Button
               startIcon={<DownloadIcon color="secondary" />}
               sx={{ height: "4vh", mr: "2vh" }}

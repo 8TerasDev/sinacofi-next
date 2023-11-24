@@ -65,22 +65,22 @@ const stylesInfo = StyleSheet.create({
   },
 })
 type Props = {
-  declaracion: PJuridicas,
+  declaracion: any,
   controlEfectivo: any,
   beneficiarios: any
 }
-export const PDFTableInfo = ({ declaracion }: { declaracion: PJuridicas }) => {
+export const PDFTableInfo = ({ declaracion }: any) => {
   const {
-    rut_no: rut,
+    rut,
+    identificacion_rep_legal: rutRep,
     domicilio,
     telefono,
     ciudad,
     lugar_de_constitucion: constitucion,
     nombre_rep_legal: nombreRep,
-    tipo_sociedad: tipo,
-    fechahora_creacion: fecha,
+    tipo_de_sociedad: tipo,
+    created_at: fecha,
   } = declaracion || {};
-  const rutRep = rut;
   return (
     <View style={stylesInfo.container}>
       <View style={stylesInfo.tableColumn}>
@@ -180,7 +180,7 @@ export const PDFTable = ({ title, registros }: any) => (
                 RUT / Identificación
               </Text>
               <Text style={{ fontSize: '10px' }}>
-                {registro.cni_id_rut_benef_final}
+                {registro.identificacion}
               </Text>
             </View>
             <View style={{ flexDirection: 'column', flex: 1 }}>
@@ -188,7 +188,7 @@ export const PDFTable = ({ title, registros }: any) => (
                 Participación
               </Text>
               <Text style={{ fontSize: '10px' }}>
-                {registro.porc_participacion}
+                {registro.participacion}
               </Text>
             </View>
           </View>
@@ -208,9 +208,9 @@ export const DeclaracionPDF = ({
         <View style={{ width: '100%', padding: '20px', justifyContent: 'center', alignItems: 'center' }}>
           <Text style={{ fontSize: '30px', textAlign: 'center' }}> DECLARACIONES </Text>
         </View>
-        <PDFTableInfo declaracion={declaracion} />
-        <PDFTable title="Beneficiarios Finales" registros={beneficiarios} />
-        <PDFTable title="Control Efectivo" registros={controlEfectivo} />
+        <PDFTableInfo declaracion={declaracion.bf_data_process_personasjuridicas[0]} />
+        {beneficiarios?.length > 0 && <PDFTable title="Beneficiarios Finales" registros={beneficiarios} />}
+        {controlEfectivo?.length > 0 && <PDFTable title="Control Efectivo" registros={controlEfectivo} />}
       </Page>
     </Document>
   )
