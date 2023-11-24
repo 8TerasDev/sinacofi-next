@@ -11,7 +11,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     const user = getSessionUser(req)
     validateAdminPermission(user)
     const data: CreateBankProps = await req.json();
-
+    (data as any).status = 'ACTIVE'
     const bank = await getBankByCode(data.codigo)
     if (bank != undefined) {
       throw new Error('Codigo banco registrado')

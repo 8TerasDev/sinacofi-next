@@ -2,10 +2,16 @@ import { prisma } from "../newclient.prisma";
 
 export const getUsers = async () => {
   try {
-    const users = await prisma.accounts_user.findMany();
+    const users = await prisma.accounts_user.findMany({
+      orderBy: [
+        {
+          status: 'asc',
+        },
+      ],
+    });
     const stringUsers = users.map((user: any) => {
-      // @ts-ignore
-      delete user.id;
+
+      user.id = user.id.toString();
       // @ts-ignore
       delete user.password;
 

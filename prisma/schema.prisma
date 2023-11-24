@@ -78,6 +78,7 @@ model accounts_user {
   is_active                      Boolean
   date_joined                    DateTime                         @db.Timestamptz(6)
   bank_id                        BigInt?
+  status                         String?                          @db.VarChar(10)
   bf_data_process_bank           bf_data_process_bancos?          @relation(fields: [bank_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "accounts_user_bank_id_c7ab1b89_fk_bf_data_process_bank_id")
   accounts_user_groups           accounts_user_groups[]
   accounts_user_user_permissions accounts_user_user_permissions[]
@@ -190,6 +191,8 @@ model bf_data_process_declaraciones {
   @@index([num_declaracion], map: "bf_data_process_declaraciones_num_declaracion_39382cf9")
   @@index([num_declaracion], map: "bf_data_process_declaraciones_num_declaracion_39382cf9_like")
   @@index([banco_id], map: "bf_data_process_declaraciones_banco_id_7b827fc9")
+  @@index([codigo_banco], map: "bf_data_process_declaraciones_codigo_banco_d7622443")
+  @@index([codigo_banco], map: "bf_data_process_declaraciones_codigo_banco_d7622443_like")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -280,6 +283,8 @@ model bf_data_process_bancos {
   nombre                        String?                         @db.VarChar(128)
   codigo                        String?                         @db.VarChar(4)
   created_at                    DateTime?                       @db.Timestamptz(6)
+  status                        String?                         @db.VarChar(10)
+  deleted                       Boolean
   accounts_user                 accounts_user[]
   bf_data_process_declaraciones bf_data_process_declaraciones[]
 }
@@ -294,6 +299,11 @@ model bf_data_process_filelog {
   codigo_banco   String?   @db.VarChar(4)
   errors         Boolean
   message        String?   @db.VarChar(256)
+
+  @@index([codigo_banco], map: "bf_data_process_filelog_codigo_banco_24772a7d")
+  @@index([codigo_banco], map: "bf_data_process_filelog_codigo_banco_24772a7d_like")
+  @@index([file_name], map: "bf_data_process_filelog_file_name_83594ae7")
+  @@index([file_name], map: "bf_data_process_filelog_file_name_83594ae7_like")
 }
 
 model bf_data_process_linelog {
@@ -305,6 +315,9 @@ model bf_data_process_linelog {
   error_message  String?   @db.VarChar(256)
   created_at     DateTime? @db.Timestamptz(6)
   updated_at     DateTime? @db.Timestamptz(6)
+
+  @@index([file_name], map: "bf_data_process_linelog_file_name_bb4fdc28")
+  @@index([file_name], map: "bf_data_process_linelog_file_name_bb4fdc28_like")
 }
 
 /// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
@@ -324,4 +337,6 @@ model bf_data_process_personasjuridicas {
   bf_data_process_declaraciones bf_data_process_declaraciones @relation(fields: [declaracion_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "bf_data_process_pers_declaracion_id_cb383968_fk_bf_data_p")
 
   @@index([declaracion_id], map: "bf_data_process_personasjuridicas_declaracion_id_cb383968")
+  @@index([rut], map: "bf_data_process_personasjuridicas_rut_a684af59")
+  @@index([rut], map: "bf_data_process_personasjuridicas_rut_a684af59_like")
 }
