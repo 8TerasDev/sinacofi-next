@@ -19,6 +19,7 @@ export async function createNewUser() {
         is_staff: true,
         is_active: true,
         date_joined: new Date(),
+        status: 'ACTIVE'
       },
     });
     return newAdmin;
