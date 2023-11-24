@@ -1,7 +1,7 @@
 "use client";
 import React, { useContext, useEffect, useState } from 'react'
 import SearchIcon from '@mui/icons-material/Search';
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, Stack } from '@mui/material';
 import { TypeOfSearch, useTypeSearch } from '../../../custom-hooks/typeSearchHook';
 import SinaText from '@/components/atoms/SinaText';
 import { TypeSearchContext } from '@/contexts/typesearch.context';
@@ -56,19 +56,23 @@ const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
 
     return (
         <>
-            {isOpen && < SinaText > Busca una declaración por:</SinaText >}
-            {
-                isOpen &&
-                <TextField
-                    label={placeHolderText()}
-                    placeholder={`busqueda por ${typeOfSearch}`}
-                    onChange={cleanAndSearch}
-                    value={filter}
-                    fullWidth
-                />
-            }
-            {isOpen && <Button variant="contained" fullWidth onClick={handleSearchByParams}>Buscar</Button>}
+            {isOpen && 
+                <>
+                    < SinaText > Busca una declaración por:</SinaText >
+                    <TextField
+                        label={placeHolderText()}
+                        placeholder={`busqueda por ${typeOfSearch}`}
+                        onChange={cleanAndSearch}
+                        value={filter}
+                        fullWidth
+                    />
+                    <Stack flexDirection={'row'} width={'100%'} justifyContent={'space-between'}>
+                        <Button variant="contained" sx={{width:'45%'}} onClick={handleSearchByParams}>Buscar</Button>
+                        <Button variant="contained" color='inherit' sx={{width:'45%'}} onClick={()=>resetFilter()}>Borrar</Button>
+                    </Stack>
 
+                </>
+            }
             {!isOpen && <Button variant="contained" onClick={() => { isOpenSetter(true) }}><SearchIcon /></Button>}
         </>
     )
