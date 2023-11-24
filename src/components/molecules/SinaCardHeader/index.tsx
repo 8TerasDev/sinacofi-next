@@ -11,8 +11,7 @@ import ES from 'antd/locale/es_ES';
 const { RangePicker } = DatePicker;
 
 export const SinCardHeader = () => {
-  const { allDeclaraciones, FilterByLastUpdated, FilterByLastUploaded, resetFilter, FilterByDateRange } = useContext(NewDeclaracionesContext)
-  const {data: userData} = useGetProfile();
+  const { declaraciones, FilterByLastUpdated, FilterByLastUploaded, resetFilter, FilterByDateRange } = useContext(NewDeclaracionesContext)
   const [calendarValue, calendarValueSetter] = useState();
 
   function dateStringifier(value: any) {
@@ -81,7 +80,7 @@ export const SinCardHeader = () => {
         <Button
           variant="contained"
           className={types.downloadButton}
-          onClick={() => handleDownloadCSV(allDeclaraciones)}
+          onClick={() => handleDownloadCSV(declaraciones)}
         >
           descargar
         </Button>
