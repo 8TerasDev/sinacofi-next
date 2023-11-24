@@ -9,10 +9,10 @@ const TableModalAccordionDetails = ({ registros }: { registros: BfDataProcessBen
     <>
       {registros.map((registro, index) => (
         <React.Fragment key={index}>
-          <Grid container spacing={2} sx={{ p: '0 1vw' }}>
+          <Grid container spacing={2} sx={{ paddingY: '10px' }}>
             {/* Primera fila */}
             <Grid item xs={5}>
-              <SinaText color='var(--gray-text)' size="xxs">
+              <SinaText color='var(--gray-text)' size="xxs" fontWeight={700}>
                 Nombre Completo
               </SinaText>
               <SinaText size="xs">
@@ -21,7 +21,7 @@ const TableModalAccordionDetails = ({ registros }: { registros: BfDataProcessBen
             </Grid>
 
             <Grid item xs={3}>
-              <SinaText color='var(--gray-text)' size="xxs">
+              <SinaText color='var(--gray-text)' size="xxs" fontWeight={700}>
                 RUT / Identificación
               </SinaText>
               <SinaText size="xs">
@@ -30,7 +30,7 @@ const TableModalAccordionDetails = ({ registros }: { registros: BfDataProcessBen
             </Grid>
 
             <Grid item xs={4}>
-              <SinaText color='var(--gray-text)' size="xxs">
+              <SinaText color='var(--gray-text)' size="xxs" fontWeight={700}>
                 Participación
               </SinaText>
               <SinaText size="xs">
