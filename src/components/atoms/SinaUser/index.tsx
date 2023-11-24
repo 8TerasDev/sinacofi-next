@@ -6,6 +6,7 @@ import ModalPopover from "../../molecules/SinaUserModal";
 import styles from "./sinauser.module.css";
 import axios from "@/common/http-client";
 import { Avatar } from "@mui/material";
+import { deepOrange } from '@mui/material/colors';
 
 type Props = {};
 
@@ -34,7 +35,7 @@ const SinaUser = ({ isOpen }: any) => {
       {isOpen && (
         <div className={styles.profile_container}>
           <div className={styles.profile_details}>
-            <Avatar>{data.name.slice(0,2)}</Avatar>
+            <Avatar sx={{ bgcolor: deepOrange[400] }}>{data.name.slice(0,2).toUpperCase()}</Avatar>
             <div>
               <h1 className={styles.profile_details_text}>Hola, {data.name}</h1>
               <p className={styles.profile_details_sub_text}>
