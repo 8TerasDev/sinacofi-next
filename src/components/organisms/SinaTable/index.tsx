@@ -66,7 +66,7 @@ const SinaTable = () => {
       openDeleteModalSetter(false);
       setData(data.filter((item: any) => item.id != currentDeclaracion.id));
     },
-    [currentDeclaracion]
+    [currentDeclaracion, data]
   );
 
   return (
