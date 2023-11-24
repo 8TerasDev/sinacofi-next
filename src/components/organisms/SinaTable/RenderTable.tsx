@@ -18,7 +18,6 @@ const RenderTable = ({ declaraciones, handleDeleteModal, openModalWithDeclaracio
                 <SinaTableCtaIcons
                     declaracion={declaracion}
                     handleDelete={() => handleDeleteModal(declaracion)}
-                    handleDownload={() => { }}
                 />
                 <TableCell>{declaracion.num_declaracion}</TableCell>
                 <TableCell>

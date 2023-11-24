@@ -1,23 +1,21 @@
 import React from "react";
-import { TableCell, IconButton, Button } from "@mui/material";
+import { TableCell, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Download from "@mui/icons-material/Download";
 import { DeclaracionPDF } from "@/components/molecules/PDFViewer";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 
-const SinaTableCtaIcons = ({ handleDownload, handleDelete, declaracion }: any) => {
-  const {
-    bf_data_process_beneficiariosfinales: beneficiarios,
-    bf_data_process_personasjuridicas: pjuridicas
-  } = declaracion;
-  const razonSocial = pjuridicas[0].razon_social;
+const SinaTableCtaIcons = ({ handleDelete, declaracion }: any) => {
+  const beneficiarios = declaracion?.bf_data_process_beneficiariosfinales?.filter(beneficiarios_finales => beneficiarios_finales.tipo === "bf") || []
+  const controlEfectivo = declaracion?.bf_data_process_beneficiariosfinales?.filter(beneficiarios_finales => beneficiarios_finales.tipo === "ce") || []
+  const razonSocial = declaracion.bf_data_process_personasjuridicas[0].razon_social;
   return (
     <TableCell>
       <PDFDownloadLink
         document={
           <DeclaracionPDF
             declaracion={declaracion}
-            controlEfectivo={pjuridicas}
+            controlEfectivo={controlEfectivo}
             beneficiarios={beneficiarios} 
             />
         }
