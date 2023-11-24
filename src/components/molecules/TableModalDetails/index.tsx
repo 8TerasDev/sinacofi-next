@@ -3,6 +3,7 @@ import React from "react";
 import { Grid, Stack } from "@mui/material";
 import SinaText from "../../atoms/SinaText";
 import { BfDataProcessDeclaraciones, PJuridicas } from "@/application";
+import dayjs from "dayjs";
 function formatISODateToDateTime(isoString: any) {
   // Crear un objeto Date con la cadena ISO
   const date = new Date(isoString);
@@ -64,7 +65,7 @@ const TableModalDetails = ({ declaracion }: { declaracion: BfDataProcessDeclarac
       <Grid item xs={6} paddingBottom='10px'>
         <SinaText size="xxs" fontWeight={700}>Fecha de carga</SinaText>
         <SinaText size="xs">
-          {`${formatISODateToDateTime(fechahora_creacion)}`}
+          {`${dayjs(fechahora_creacion).format('DD/MM/YYYY hh:mm')}`}
         </SinaText>
       </Grid>
     </Grid>

@@ -2,13 +2,13 @@
 
 import { BfDataProcessDeclaraciones, PJuridicas } from "@/application";
 import { pbkdf2Sync, randomBytes } from "crypto";
-export const convertDate = (date: string | Date) => {
-  const newDate = new Date(date);
-  const day = newDate.getDay() + 1;
-  const month = newDate.getMonth() + 1;
-  const year = newDate.getFullYear();
-  return `${day}-${month}-${year}`;
-};
+// export const convertDate = (date: string | Date) => {
+//   const newDate = new Date(date);
+//   const day = newDate.getDate();
+//   const month = newDate.getMonth() + 1;
+//   const year = newDate.getFullYear();
+//   return `${day}/${month}/${year}`;
+// };
 
 export const compareFechaHoraCreacion = (
   a: PJuridicas,
