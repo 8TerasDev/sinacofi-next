@@ -1,17 +1,22 @@
 import SinaText from "@/components/atoms/SinaText";
 import { Box, Button, Modal, Paper, Stack } from "@mui/material";
 import React from "react";
-type DeleteModalProps = {
+
+type ConfirmModalProps = {
   open: boolean;
+  title: string;
+  message: string;
   handleClose: () => void;
   handleDelete: () => void;
 };
 
-export const DeleteModal = ({
+export const ConfirmModal = ({
   open,
+  title,
+  message,
   handleClose,
   handleDelete,
-}: DeleteModalProps) => (
+}: ConfirmModalProps) => (
   <Modal
     sx={{
       display: "flex",
@@ -33,12 +38,10 @@ export const DeleteModal = ({
     >
       <Stack sx={{ paddingBottom: 2 }}>
         <SinaText size='sl' fontWeight={700}>
-          Eliminar declaración
+          {title}
         </SinaText>
         <Box sx={{ height: "13px" }} />
-        <SinaText size='xs'>
-          Al confirmar esta acción el registro de declaración será eliminado.
-        </SinaText>
+        <SinaText size='xs'>{message}</SinaText>
         <Box sx={{ height: "7px" }} />
         <SinaText size='xs' fontWeight={500}>
           ¿Estás seguro de eliminar este registro?

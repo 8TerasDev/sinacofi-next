@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import {
   Alert,
   Button,
+  Chip,
   CircularProgress,
   Modal,
   Paper,
@@ -14,6 +15,8 @@ import sinacofi_logo from "../../assets/images/sinacofi_logo.png";
 import { useRouter } from "next/navigation";
 import { Home } from "@mui/icons-material";
 import SinaText from "@/components/atoms/SinaText";
+import DeleteIcon from "@mui/icons-material/Delete";
+import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import axios from "@/common/http-client";
 import { CreateUserForm } from "@/components/organisms/CreateUserForm";
 import { CreateBankForm } from "@/components/organisms/CreateBankForm";
@@ -21,6 +24,9 @@ import { useGetProfile } from "@/custom-hooks/useGetProfile";
 import { useGetUsers } from "@/custom-hooks/useGetUsers";
 import { AdminStack } from "@/components/organisms/Admin";
 import { useGetBanks } from "@/custom-hooks/useGetBanks";
+import ButtonConfirm from "@/components/organisms/ButtonConfirm";
+import { deleteBankById, enableBankById } from "@/common/bank";
+import { deleteUserById, enableUserById } from "@/common/user";
 
 // TODO: Create a customHook / actions in store to createUsers/Banks
 
@@ -30,7 +36,48 @@ export type CreateFormsProps = {
   banks?: any;
 };
 
+const isActive = (row: any) => row.status === "ACTIVE";
+
 const preColumnsUsers = [
+  {
+    field: "acciones",
+    name: "Acciones",
+    sortable: false,
+    renderCell: ({ row }: any) => (
+      <ButtonConfirm
+        icon={isActive(row) ? <DeleteIcon /> : <RestoreFromTrashIcon />}
+        title={`${row.first_name} ${row.last_name}`}
+        message={
+          isActive(row)
+            ? "Al desactivar el usaurio este no podra usarse"
+            : "Esta acción permitira que el usuario pueda usarse nuevamente"
+        }
+        handleDelete={async () => {
+          if (isActive(row)) {
+            await row.disableUser(row);
+          } else {
+            await row.enableUser(row);
+          }
+        }}
+      />
+    ),
+  },
+  {
+    field: "status",
+    name: "Status",
+    sortable: false,
+    renderCell: ({ row }: any) => {
+      return (
+        row.status && (
+          <Chip
+            label={row.status.toLowerCase()}
+            color={row.status === "ACTIVE" ? "success" : undefined}
+            variant='outlined'
+          />
+        )
+      );
+    },
+  },
   {
     field: "username",
     name: "Username",
@@ -57,6 +104,45 @@ const preColumnsUsers = [
   },
 ];
 const preColumnsBanks = [
+  {
+    field: "acciones",
+    name: "Acciones",
+    sortable: false,
+    renderCell: ({ row }: any) => (
+      <ButtonConfirm
+        icon={isActive(row) ? <DeleteIcon /> : <RestoreFromTrashIcon />}
+        title={row.nombre}
+        message={
+          isActive(row)
+            ? "Al desactivar el banco no podra crear nuevos o usar usuarios con este banco"
+            : "Esta acción permitira que el banco pueda usarse nuevamente"
+        }
+        handleDelete={async () => {
+          if (isActive(row)) {
+            await row.disableBank(row);
+          } else {
+            await row.enableBank(row);
+          }
+        }}
+      />
+    ),
+  },
+  {
+    field: "status",
+    name: "Status",
+    sortable: false,
+    renderCell: ({ row }: any) => {
+      return (
+        row.status && (
+          <Chip
+            label={row.status.toLowerCase()}
+            color={row.status === "ACTIVE" ? "success" : undefined}
+            variant='outlined'
+          />
+        )
+      );
+    },
+  },
   {
     field: "nombre",
     name: "Nombre",
@@ -189,6 +275,56 @@ const AdminPage = () => {
     setError(false);
   };
 
+  const updateBankData = (_row: any) => {
+    const data: any[] = [...(bankDataList || banksData || [])];
+    const prev: any = data[_row.id];
+    data[_row.id] = { ...prev, ..._row };
+    setBankDataList(data as any);
+  };
+  const updateUserData = (_row: any) => {
+    const data: any[] = [...(userDataList || usersData || [])];
+    const prev: any = data[_row.id];
+    data[_row.id] = { ...prev, ..._row };
+    setUserDataList(data as any);
+  };
+
+  const errorWrapper = (callback: any) => {
+    return async (args: any) => {
+      try {
+        return await callback(args);
+      } catch (ex: any) {
+        debugger;
+        setError(ex.message);
+      }
+    };
+  };
+
+  const enableBank = errorWrapper(async (row: any) => {
+    await enableBankById(row?._id);
+    updateBankData({ ...row, status: "ACTIVE" });
+  });
+  const enableUser = errorWrapper(async (row: any) => {
+    await enableUserById(row?._id);
+    updateUserData({ ...row, status: "ACTIVE" });
+  });
+  const disableBank = errorWrapper(async (row: any) => {
+    await deleteBankById(row?._id);
+    updateBankData({ ...row, status: "DISABLED" });
+  });
+  const disableUser = errorWrapper(async (row: any) => {
+    await deleteUserById(row?._id);
+    updateUserData({ ...row, status: "DISABLED" });
+  });
+
+  const addSetters = (row: any) => ({
+    ...row,
+    disableUser: disableUser,
+    enableUser: enableUser,
+    disableBank: disableBank,
+    enableBank: enableBank,
+    setError: setError,
+  });
+
   return (
     <Stack flex={1} height={"100vh"} padding={"15px"}>
       <Snackbar
@@ -240,7 +376,7 @@ const AdminPage = () => {
               showTable={showUsers}
               tableColumns={preColumnsUsers}
               setShowTable={setShowUsers}
-              dataTable={userDataList || usersData}
+              dataTable={(userDataList || usersData || []).map(addSetters)}
               banks={bankDataList || banksData}
             />
           )}
@@ -252,7 +388,7 @@ const AdminPage = () => {
               showTable={showBanks}
               tableColumns={preColumnsBanks}
               setShowTable={setShowBanks}
-              dataTable={bankDataList || banksData}
+              dataTable={(bankDataList || banksData || []).map(addSetters)}
             />
           )}
         </Stack>
@@ -287,7 +423,9 @@ const AdminPage = () => {
             </Stack>
             {type === "createuser" && (
               <CreateUserForm
-                banks={bankDataList || banksData}
+                banks={(bankDataList || banksData || []).filter(
+                  (b: any) => b.status == "ACTIVE"
+                )}
                 handleSubmit={handleSubmit}
                 setOpenModal={setOpenModal}
               />

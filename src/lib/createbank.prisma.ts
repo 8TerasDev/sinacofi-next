@@ -9,6 +9,7 @@ export type CreateBankProps = {
 export const createBank = async (data: CreateBankProps) => {
   try {
 
+    (data as any).deleted = false
     const newBank = await prisma.bf_data_process_bancos.create({ data });
     return newBank
   }

@@ -12,6 +12,15 @@ export async function POST(req: NextRequest) {
     const { username, password } = body;
 
     const user = await findByUsername(username);
+    if (user.status != 'ACTIVE') {
+      console.log("User status invalid");
+      return Response.json(
+        { error: "Invalid username or password" },
+        {
+          status: 400,
+        }
+      );
+    }
     const valid = await verifyPassword(password, user?.password || "");
     if (!valid) {
       console.log("contraseña invalida");

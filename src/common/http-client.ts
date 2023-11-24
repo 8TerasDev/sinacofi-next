@@ -14,11 +14,14 @@ export function getBasePath() {
     return `/${paths[0]}`;
 }
 
-const client = axios.create();
+const client = axios.create({
+    validateStatus: (status) => status < 400
+});
+
 
 client.interceptors.request.use((config) => {
     config.baseURL = getBasePath()
-    config.validateStatus = (status) => status < 400
+
     return config
 })
 
