@@ -23,6 +23,7 @@ enum typeOffilterEnum {
 }
 
 export const NewDeclaracionesProvider = ({ children }: any) => {
+  const [isLoading, setIsLoading] = useState(true);
   const { resetFiltertypeOfSearch } = useContext(TypeSearchContext);
   const [declaraciones, declaracionesSetter] = useState<
     BfDataProcessDeclaraciones[] | null
@@ -295,13 +296,16 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
   };
 
   useEffect(() => {
+    setIsLoading(true)
     getAllDeclaracionesClientSide().then((declaraciones) => {
       declaracionesSetter(declaraciones);
     })
     .catch(err=>console.log(err))
+    .finally(()=>setIsLoading(false))
   }, []);
 
   const valueContext = {
+    isLoading,
     declaraciones: declaracionesWithFilter(),
     totalDeclaraciones,
     orderByFechaDeclaracion,

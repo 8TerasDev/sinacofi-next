@@ -1,6 +1,7 @@
 import HomeTemplate from '@/components/templates/Home';
 import React, { useContext } from 'react'
 import { DeclaracionesContext } from '@/contexts/declaraciones.context';
+import Loading from '@/app/loading';
 
 const HomeView = () => {
 

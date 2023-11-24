@@ -17,6 +17,7 @@ export const DeclaracionesProvider = ({ children }: any) => {
   });
 
   function reloadDeclaraciones() {
+    isLoadingSetter(true);
     fetchDeclaraciones()
       .then((declaraciones) =>
         dispatch({ type: "INIT", payload: declaraciones })
@@ -27,6 +28,7 @@ export const DeclaracionesProvider = ({ children }: any) => {
   }
 
   function loadDeclaracionesByDates(startDate: Date, endDate: Date) {
+    isLoadingSetter(true);
     fetchDeclaracionesByDates(startDate, endDate)
       .then((declaraciones) =>
         dispatch({ type: "INIT", payload: declaraciones })
@@ -44,7 +46,6 @@ export const DeclaracionesProvider = ({ children }: any) => {
     } catch (error) {}
   }
   function loadFirstDeclaracion() {
-    isLoadingSetter(true);
     if (state.declaraciones.length == 0) {
       fetchDeclaraciones()
         .then((declaraciones) =>
@@ -57,6 +58,7 @@ export const DeclaracionesProvider = ({ children }: any) => {
   }
 
   useEffect(() => {
+    isLoadingSetter(true);
     loadFirstDeclaracion();
   }, []);
   return (

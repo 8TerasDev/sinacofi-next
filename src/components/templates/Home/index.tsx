@@ -22,8 +22,10 @@ interface HomeTemplateProps {
   state: any;
 }
 
-const HomeTemplate = ({ isLoading, state }: HomeTemplateProps) => {
-  const { declaraciones } = useContext(NewDeclaracionesContext);
+const HomeTemplate = ({ state }: HomeTemplateProps) => {
+  const { declaraciones, 
+    isLoading 
+  } = useContext(NewDeclaracionesContext);
 
   const [isOpen, isOpenSetter] = useState(true);
   const route = useRouter();
