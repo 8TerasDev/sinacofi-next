@@ -78,7 +78,7 @@ const RowTable = ({
             </PDFDownloadLink>
           )}
         </span>
-        {declaracion.num_declaracion}
+        {declaracion.codigo_banco} {declaracion.num_declaracion}
       </TableCell>
       <TableCell>
         <Button onClick={() => openModalWithDeclaracion(declaracion)}>

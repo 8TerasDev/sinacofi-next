@@ -2,6 +2,7 @@
 
 import { BfDataProcessDeclaraciones, PJuridicas } from "@/application";
 import { pbkdf2Sync, randomBytes } from "crypto";
+import dayjs from "dayjs";
 // export const convertDate = (date: string | Date) => {
 //   const newDate = new Date(date);
 //   const day = newDate.getDate();
@@ -49,7 +50,7 @@ const createCSV = (data: any) => {
         final = final + `${data[i - 1][key]},`;
       }
     });
-    final = final + "\n";
+    final = final.slice(0,-1) + "\n";
   }
   return final;
 };
@@ -61,10 +62,9 @@ export const handleDownloadCSV = (data: BfDataProcessDeclaraciones[]) => {
       codigo_banco: declaracion.codigo_banco,
       correlativo: declaracion.correlativo,
       status: declaracion.status,
-      fecha_subida: declaracion.fecha_subida,
+      fecha_subida: dayjs(declaracion.fecha_subida).format("DD/MM/YYYY"),
       num_declaracion: declaracion.num_declaracion,
-      fecha_declaracion: declaracion.fecha_declaracion,
-      bank_id: declaracion.bank_id,
+      fecha_declaracion: dayjs(declaracion.fecha_declaracion).format("DD/MM/YYYY"),
     };
   });
 
