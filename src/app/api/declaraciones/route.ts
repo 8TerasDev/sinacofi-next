@@ -8,8 +8,15 @@ import { processError } from "@/lib/error";
 export async function GET(req: NextRequest) {
 
   try {
-    getSessionUser(req)
-    const declaraciones = await getAllDeclaraciones();
+    const user = getSessionUser(req)
+    const declaracionesWithoutFilterBankCode = await getAllDeclaraciones();
+    const declaraciones = declaracionesWithoutFilterBankCode.map(( declaracion ) => {
+      const bankCode = user?.bank_code === declaracion.codigo_banco ? 
+      declaracion.codigo_banco : 'XXXX';
+      return {...declaracion, codigo_banco: bankCode }
+    })
+
+    console.log('declaracionessss', declaraciones)
 
     return Response.json({ declaraciones });
   } catch (error: any) {

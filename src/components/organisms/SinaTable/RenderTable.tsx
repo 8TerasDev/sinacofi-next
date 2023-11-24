@@ -2,7 +2,6 @@
 import { BfDataProcessDeclaraciones, Declaracion } from "@/application";
 import SinaTableCtaIcons from "@/components/atoms/SinaTableCtaIcons";
 import { DeclaracionPDF } from "@/components/molecules/PDFViewer";
-import { useGetProfile } from "@/custom-hooks/useGetProfile";
 import { Button, TableCell, TableRow } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import dayjs from "dayjs";
@@ -34,11 +33,7 @@ const RowTable = ({
   declaracion,
   handleDeleteModal,
   openModalWithDeclaracion,
-  userBank
 }: any) => {
-
-  const bankCode = userBank === declaracion.codigo_banco ? 
-  declaracion.codigo_banco : 'XXXX'; 
   const [startDownload, setStartDownload] = useState(false);
   const documentRef = useRef<any>(undefined);
   useEffect(() => {
@@ -83,7 +78,7 @@ const RowTable = ({
             </PDFDownloadLink>
           )}
         </span>
-        {bankCode} {declaracion.num_declaracion}
+        {declaracion.codigo_banco} {declaracion.num_declaracion}
       </TableCell>
       <TableCell>
         <Button onClick={() => openModalWithDeclaracion(declaracion)}>
@@ -102,8 +97,7 @@ const RenderTable = ({
   handleDeleteModal,
   openModalWithDeclaracion,
 }: RenderTableProps) => {
-  const { data: userData} = useGetProfile();
-  if (!declaraciones || !userData)
+  if (!declaraciones)
     return (
       <TableRow>
         <TableCell colSpan={5}>Fetch Data...</TableCell>
@@ -117,7 +111,6 @@ const RenderTable = ({
     );
   return declaraciones.map((declaracion: BfDataProcessDeclaraciones) => (
     <RowTable
-      userBank={userData?.bank_code}
       key={declaracion.id}
       declaracion={declaracion}
       handleDeleteModal={handleDeleteModal}

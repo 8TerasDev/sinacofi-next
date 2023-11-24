@@ -64,7 +64,6 @@ export const handleDownloadCSV = (data: BfDataProcessDeclaraciones[]) => {
       fecha_subida: declaracion.fecha_subida,
       num_declaracion: declaracion.num_declaracion,
       fecha_declaracion: declaracion.fecha_declaracion,
-      bank_id: declaracion.bank_id,
     };
   });
 

@@ -297,7 +297,8 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
   useEffect(() => {
     getAllDeclaracionesClientSide().then((declaraciones) => {
       declaracionesSetter(declaraciones);
-    });
+    })
+    .catch(err=>console.log(err))
   }, []);
 
   const valueContext = {

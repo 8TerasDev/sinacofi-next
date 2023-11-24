@@ -1,20 +1,17 @@
 import React, { useContext, useState } from "react";
 import types from "./sinacardheader.module.css";
 import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
-// import { DateRangePicker, LocalizationProvider, SingleInputDateRangeField  } from '@mui/x-date-pickers-pro';
 import SinaText from "../../atoms/SinaText";
 import { handleDownloadCSV } from "@/lib/utils";
-import { DatePicker, Space } from 'antd';
+import { DatePicker } from 'antd';
 import { NewDeclaracionesContext } from "@/contexts/new-declaraciones.context";
-
-// import locale from 'antd/es/date-picker/locale/es_Es';
-
+import { useGetProfile } from "@/custom-hooks/useGetProfile";
 
 const { RangePicker } = DatePicker;
 
 export const SinCardHeader = () => {
   const { allDeclaraciones, FilterByLastUpdated, FilterByLastUploaded, resetFilter, FilterByDateRange } = useContext(NewDeclaracionesContext)
-
+  const {data: userData} = useGetProfile();
   const [calendarValue, calendarValueSetter] = useState();
 
   function dateStringifier(value: any) {
