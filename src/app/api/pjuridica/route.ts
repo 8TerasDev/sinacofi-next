@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { NextRequest } from "next/server";
 import {
   disablePJuridicas,
@@ -29,8 +30,8 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { correlativo_declaracion } = body;
-    const actualizadas = await disablePJuridicas(correlativo_declaracion);
+    const { id } = body;
+    const actualizadas = await disablePJuridicas(id);
     return Response.json({ actualizadas });
   } catch (error) {
     return new Response(JSON.stringify({ error }), {

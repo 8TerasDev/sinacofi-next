@@ -7,11 +7,10 @@ export const POST = async (req: NextRequest) => {
   try {
     const data: CreateUserProps = await req.json();
     data.password = await encryptPassword(data.password);
-    const newUser = await createUser(data);
+    await createUser(data);
     const newUsers = await getUsers();
-    const newUsersString = JSON.stringify(newUsers);
-    return Response.json(newUsersString);
-  } catch (err) {
-    return Response.json(err);
+    return Response.json(newUsers);
+  } catch (err: any) {
+    return Response.json({ message: err.message }, { status: 500 });
   }
 };

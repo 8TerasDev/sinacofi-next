@@ -39,6 +39,7 @@ export const config = {
     matcher: [
         `${process.env.BASE_PATH}/home`,
         `${process.env.BASE_PATH}/admin`,
+        `${process.env.BASE_PATH}/api/*`,
         // TODO: Run always middleware
         //'/((?!api|_next/static|_next/image|favicon.ico).*)',
     ]

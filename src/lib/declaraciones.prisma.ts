@@ -1,10 +1,12 @@
-import { PrismaClient } from "@prisma/client";
-import axios from "axios";
+import { prisma } from "./newclient.prisma";
 
 export async function getAllDeclaraciones() {
-  const prisma = new PrismaClient();
+
   try {
     const declaraciones = await prisma.bf_data_process_declaraciones.findMany({
+      where: {
+        status: 'ACTIVE'
+      },
       include: {
         bf_data_process_personasjuridicas: true,
         bf_data_process_beneficiariosfinales: true,
@@ -46,24 +48,29 @@ export async function getAllDeclaraciones() {
   } catch (error) {
     console.error("Error al obtener las declaraciones:", error);
     return [];
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
-export async function getAllDeclaracionesClientSide() {
+
+export async function disableDeclaracion(
+  id: number
+) {
   try {
-    const config = {
-      headers: {
-        "Cache-Control": "no-cache, no-store, must-revalidate",
-        Pragma: "no-cache",
-        Expires: "0",
+    // Actualiza todos los registros que tengan el correlativo_declaracion proporcionado
+    const updateResponse = await prisma.bf_data_process_declaraciones.update({
+      where: {
+        id
       },
-    };
-    const { data } = await axios.get("api/declaraciones", config);
-    return data.declaraciones;
+      data: {
+        status: 'DISABLED',
+      },
+    });
+
+    // updateMany devuelve un objeto con un conteo de cuántos registros fueron actualizados
+    return updateResponse;
   } catch (error) {
-    console.error("Error al obtener las declaraciones:", error);
+    // Maneja la excepción si algo sale mal
+    console.error("Error al deshabilitar p_juridicas:", error);
     throw error;
   }
 }

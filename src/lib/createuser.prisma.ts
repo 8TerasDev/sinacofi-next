@@ -15,18 +15,15 @@ export type CreateUserProps = {
   date_joined: Date,
 }
 
-export const createUser = async (data: CreateUserProps ) => {
+export const createUser = async (data: CreateUserProps) => {
   try {
     data.bank_id = BigInt(data.bank_id);
-    const newUser = await prisma.accounts_user.create({data})
+    const newUser = await prisma.accounts_user.create({ data })
     return newUser;
   }
-  catch(err){
+  catch (err) {
     console.log(err)
-    return 'error'
+    throw err
   }
-  // finally {
-  //   await prisma.$disconnect();
-  // }
 
 }

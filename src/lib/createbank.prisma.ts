@@ -6,12 +6,14 @@ export type CreateBankProps = {
   created_at: Date,
 }
 
-export const createBank = async ( data: CreateBankProps) => {
+export const createBank = async (data: CreateBankProps) => {
   try {
-    const newBank = await prisma.bf_data_process_bancos.create({data});
+
+    const newBank = await prisma.bf_data_process_bancos.create({ data });
     return newBank
   }
-  catch(err){
-    return err;
+  catch (err) {
+    throw err;
   }
 }
+

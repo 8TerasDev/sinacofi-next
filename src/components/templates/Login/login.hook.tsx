@@ -1,6 +1,6 @@
 "use client";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axios from "@/common/http-client";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
@@ -19,7 +19,11 @@ async function fetcher(valueForm: valueForm) {
       },
       data: payload,
     };
-    const { data } = await axios(config);
+    const res = await axios(config);
+    const { data } = res;
+    if (res.status >= 400) {
+      throw new Error("Invalid request");
+    }
     return data;
   } catch (error: any) {
     throw new Error(error.message);

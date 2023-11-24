@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Image from 'next/image'
+import Image from "next/image";
 import styles from "./sinaappbar.module.css";
 import { Button, Stack } from "@mui/material";
-import sinacofi_logo from '../../../assets/images/sinacofi_logo.png'
+import sinacofi_logo from "../../../assets/images/sinacofi_logo.png";
 import { Person } from "@mui/icons-material";
-import axios from "axios";
-
+import axios from '@/common/http-client';
 
 const SinaAppBar = ({ handleAdmin }: any) => {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -20,9 +19,8 @@ const SinaAppBar = ({ handleAdmin }: any) => {
       }
       const { data } = await axios.get("/api/auth/getprofile", config);
       setIsAdmin(data.user.isAdmin);
-    }
-    catch (error) {
-      console.log(error)
+    } catch (error) {
+      console.log(error);
     }
   }
 

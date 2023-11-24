@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useContext, useState } from "react";
-import axios from "axios";
+import axios from '@/common/http-client';
 
 import SinaDrawer from "../../molecules/SinaDrawer";
 import ContainerFull from "../../atoms/ContainerFull";

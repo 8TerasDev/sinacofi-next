@@ -2,21 +2,21 @@ import { NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 import { serialize } from "cookie";
 import { cookies } from "next/headers";
-import { verifyCredentials } from "@/lib/queries.prisma";
-import { prisma } from "@/lib/newclient.prisma";
+import { findByUsername } from "@/lib/queries.prisma";
 import { verifyPassword } from "@/lib/backend.utils";
+import { getBankById } from "@/lib/banks/getBankById.prisma";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { username, password } = body;
 
-    const user = await verifyCredentials(username, password);
+    const user = await findByUsername(username);
     const valid = await verifyPassword(password, user?.password || "");
     if (!valid) {
       console.log("contraseña invalida");
-      return new Response(
-        JSON.stringify({ error: "Invalid username or password" }),
+      return Response.json(
+        { error: "Invalid username or password" },
         {
           status: 400,
         }
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
         }
       );
     }
-
+    const bank: any = user.bank_id ? await getBankById(user.bank_id as unknown as any) : {}
     const token = jwt.sign(
       {
         username,
@@ -41,7 +41,8 @@ export async function POST(req: NextRequest) {
         name: user.last_name,
         lastName: user.last_name,
         email: user.email,
-        bank: user.bank_id,
+        bank: bank?.nombre,
+        bank_code: bank?.code,
       },
       "secret",
       {
