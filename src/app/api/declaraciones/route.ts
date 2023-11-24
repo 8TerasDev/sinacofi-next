@@ -15,9 +15,6 @@ export async function GET(req: NextRequest) {
       declaracion.codigo_banco : 'XXXX';
       return {...declaracion, codigo_banco: bankCode }
     })
-
-    console.log('declaracionessss', declaraciones)
-
     return Response.json({ declaraciones });
   } catch (error: any) {
     return processError(error)
