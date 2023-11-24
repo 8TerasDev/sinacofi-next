@@ -2,6 +2,7 @@
 import { BfDataProcessDeclaraciones, Declaracion } from "@/application";
 import SinaTableCtaIcons from "@/components/atoms/SinaTableCtaIcons";
 import { DeclaracionPDF } from "@/components/molecules/PDFViewer";
+import { convertDate } from "@/lib/utils";
 import { Button, TableCell, TableRow } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -85,8 +86,8 @@ const RowTable = ({
             ""}
         </Button>
       </TableCell>
-      <TableCell>{`${declaracion.fecha_declaracion}`.slice(0, 10)}</TableCell>
-      <TableCell>{`${declaracion.fecha_subida}`.slice(0, 10)}</TableCell>
+      <TableCell>{convertDate(declaracion.fecha_declaracion)}</TableCell>
+      <TableCell>{convertDate(declaracion.fecha_subida)}</TableCell>
     </TableRow>
   );
 };
