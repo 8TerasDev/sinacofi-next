@@ -1,14 +1,31 @@
 import React from "react";
-import { TableCell, IconButton } from "@mui/material";
+import { TableCell, IconButton, Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Download from "@mui/icons-material/Download";
+import { DeclaracionPDF } from "@/components/molecules/PDFViewer";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 
-const SinaTableCtaIcons = ({ handleDownload, handleDelete }: any) => {
+const SinaTableCtaIcons = ({ handleDownload, handleDelete, declaracion }: any) => {
+  const {
+    bf_data_process_beneficiariosfinales: beneficiarios,
+    bf_data_process_personasjuridicas: pjuridicas
+  } = declaracion;
   return (
     <TableCell>
-      <IconButton onClick={handleDownload}>
-        <Download />
-      </IconButton>
+      <PDFDownloadLink
+        document={
+          <DeclaracionPDF
+            declaracion={declaracion}
+            controlEfectivo={pjuridicas}
+            beneficiarios={beneficiarios} 
+            />
+        }
+        fileName="declaracion.pdf"
+      >
+        <IconButton>
+          <Download />
+        </IconButton>
+      </PDFDownloadLink>
       <IconButton onClick={handleDelete}>
         <DeleteIcon />
       </IconButton>
