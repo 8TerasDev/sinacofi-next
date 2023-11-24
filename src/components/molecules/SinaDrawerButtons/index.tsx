@@ -67,8 +67,8 @@ const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
                         fullWidth
                     />
                     <Stack flexDirection={'row'} width={'100%'} justifyContent={'space-between'}>
-                        <Button variant="contained" sx={{width:'45%'}} onClick={handleSearchByParams}>Buscar</Button>
-                        <Button variant="contained" color='inherit' sx={{width:'45%'}} onClick={()=>resetFilter()}>Borrar</Button>
+                        <Button variant="contained" disabled={filter === '' } sx={{width:'45%'}} onClick={handleSearchByParams}>Buscar</Button>
+                        <Button variant="contained" disabled={filter === '' } color='inherit' sx={{width:'45%'}} onClick={()=>resetFilter()}>Borrar</Button>
                     </Stack>
 
                 </>
