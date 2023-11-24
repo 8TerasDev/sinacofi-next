@@ -3,9 +3,10 @@ import types from "./sinacardheader.module.css";
 import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import SinaText from "../../atoms/SinaText";
 import { handleDownloadCSV } from "@/lib/utils";
-import { DatePicker } from 'antd';
+import { ConfigProvider, DatePicker } from 'antd';
 import { NewDeclaracionesContext } from "@/contexts/new-declaraciones.context";
 import { useGetProfile } from "@/custom-hooks/useGetProfile";
+import ES from 'antd/locale/es_ES';
 
 const { RangePicker } = DatePicker;
 
@@ -31,7 +32,6 @@ export const SinCardHeader = () => {
       })
     }
   }
-
   const [filterDeclaraciones, filterDeclaracionesBySetter] = useState<any>(1);
 
 
@@ -70,11 +70,14 @@ export const SinCardHeader = () => {
             <MenuItem value={3}>Última Declaración</MenuItem>
           </Select>
         </FormControl>
-        <RangePicker 
-          format={'DD/MM/YYYY'}
-          onCalendarChange={onChangeCalendar} 
-          value={calendarValue} 
-        />
+        <ConfigProvider locale={ES}>
+          <RangePicker 
+            format={'DD/MM/YYYY'}
+            onCalendarChange={onChangeCalendar} 
+            value={calendarValue}
+          />
+        </ConfigProvider>
+
         <Button
           variant="contained"
           className={types.downloadButton}
