@@ -149,7 +149,7 @@ export const PDFTableInfo = ({ declaracion }: { declaracion: PJuridicas }) => {
         <Text style={{ fontSize: "10px" }}>{tipo}</Text>
       </View>
       <View style={stylesInfo.tableColumn}>
-        <Text style={stylesInfo.tableColumnTitle}>Fecha de cargaa</Text>
+        <Text style={stylesInfo.tableColumnTitle}>Fecha de carga</Text>
         <Text style={{ fontSize: "10px" }}>{fecha && `${fecha}`}</Text>
       </View>
     </View>
