@@ -38,11 +38,11 @@ export async function POST(req: NextRequest) {
         username,
         password,
         isAdmin: user.is_superuser,
-        name: user.last_name,
+        name: user.first_name,
         lastName: user.last_name,
         email: user.email,
         bank: bank?.nombre,
-        bank_code: bank?.code,
+        bank_code: bank?.codigo,
       },
       "secret",
       {

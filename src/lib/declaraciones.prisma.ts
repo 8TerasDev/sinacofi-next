@@ -1,12 +1,13 @@
+import { idID } from "@mui/material/locale";
 import { prisma } from "./newclient.prisma";
 
 export async function getAllDeclaraciones() {
-
+  const whereCond: any = {
+    status: 'ACTIVE'
+  }
   try {
     const declaraciones = await prisma.bf_data_process_declaraciones.findMany({
-      where: {
-        status: 'ACTIVE'
-      },
+      where: whereCond,
       include: {
         bf_data_process_personasjuridicas: true,
         bf_data_process_beneficiariosfinales: true,

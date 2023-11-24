@@ -6,6 +6,8 @@ import {
   getAllPJuridicasByDates,
 } from "@/lib/pjuridica.prisma";
 import { PJuridicas } from "@/application";
+import { getSessionUser } from "@/lib/security";
+import { processError } from "@/lib/error";
 
 export async function GET(req: NextRequest) {
   try {
@@ -29,13 +31,12 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    getSessionUser(req)
     const body = await req.json();
     const { id } = body;
     const actualizadas = await disablePJuridicas(id);
     return Response.json({ actualizadas });
   } catch (error) {
-    return new Response(JSON.stringify({ error }), {
-      status: 500,
-    });
+    return processError(error)
   }
 }

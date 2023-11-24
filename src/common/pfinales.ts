@@ -9,19 +9,21 @@ function transformArray(arrayOfObjects: any) {
 const API_URL_PJ = "/api/pjuridica";
 const API_URL_PF = "/api/pfinales";
 
-export async function fetchDeclaraciones() {
+export async function fetchDeclaraciones(intent = 0) {
     try {
-        const config = {
-            headers: {
-                "Cache-Control": "no-cache, no-store, must-revalidate",
-                Pragma: "no-cache",
-                Expires: "0",
-            },
-        };
-        const { data } = await axios.get(API_URL_PJ, config);
-        const declaraciones = data.declaraciones;
-        return declaraciones;
+        const { data, status } = await axios.get(API_URL_PJ);
+        if (status < 400) {
+            const declaraciones = data.declaraciones ?? [];
+            return declaraciones;
+        } else {
+            const res: any = await fetchDeclaraciones(intent + 1)
+            return res
+        }
     } catch (error) {
+        if (intent < 3) {
+            const res: any = await fetchDeclaraciones(intent + 1)
+            return res
+        }
         console.error("Hubo un error al obtener las declaraciones:", error);
         return [];
     }

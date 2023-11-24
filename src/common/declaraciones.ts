@@ -1,16 +1,15 @@
 import axios from '@/common/http-client';
 
-export async function getAllDeclaracionesClientSide() {
+export async function getAllDeclaracionesClientSide(intent = 0) {
     try {
-        const config = {
-            headers: {
-                "Cache-Control": "no-cache, no-store, must-revalidate",
-                Pragma: "no-cache",
-                Expires: "0",
-            },
-        };
-        const { data } = await axios.get("api/declaraciones", config);
-        return data.declaraciones;
+        const { data, status } = await axios.get("api/declaraciones");
+        if (status < 400) {
+            const declaraciones = data.declaraciones ?? [];
+            return declaraciones;
+        } else {
+            const res: any = await getAllDeclaracionesClientSide(intent + 1)
+            return res
+        }
     } catch (error) {
         console.error("Error al obtener las declaraciones:", error);
         throw error;
