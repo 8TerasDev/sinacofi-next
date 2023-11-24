@@ -5,6 +5,7 @@ import useModalHandle from "../../../custom-hooks/useModalHandle";
 import ModalPopover from "../../molecules/SinaUserModal";
 import styles from "./sinauser.module.css";
 import axios from "@/common/http-client";
+import { Avatar } from "@mui/material";
 
 type Props = {};
 
@@ -33,11 +34,7 @@ const SinaUser = ({ isOpen }: any) => {
       {isOpen && (
         <div className={styles.profile_container}>
           <div className={styles.profile_details}>
-            <img
-              className={styles.profile_details_images}
-              src='https://placehold.co/45x45'
-              alt=''
-            />
+            <Avatar>{data.name.slice(0,2)}</Avatar>
             <div>
               <h1 className={styles.profile_details_text}>Hola, {data.name}</h1>
               <p className={styles.profile_details_sub_text}>
