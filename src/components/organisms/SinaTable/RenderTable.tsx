@@ -2,9 +2,9 @@
 import { BfDataProcessDeclaraciones, Declaracion } from "@/application";
 import SinaTableCtaIcons from "@/components/atoms/SinaTableCtaIcons";
 import { DeclaracionPDF } from "@/components/molecules/PDFViewer";
-import { convertDate } from "@/lib/utils";
 import { Button, TableCell, TableRow } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
+import dayjs from "dayjs";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
 type RenderTableProps = {
@@ -86,8 +86,8 @@ const RowTable = ({
             ""}
         </Button>
       </TableCell>
-      <TableCell>{convertDate(declaracion.fecha_declaracion)}</TableCell>
-      <TableCell>{convertDate(declaracion.fecha_subida)}</TableCell>
+      <TableCell>{dayjs(declaracion.fecha_declaracion).format("DD/MM/YYYY")}</TableCell>
+      <TableCell>{dayjs(declaracion.fecha_subida).format("DD/MM/YYYY")}</TableCell>
     </TableRow>
   );
 };

@@ -203,6 +203,7 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
   }
 
   function filtrarDeclaracionesPorRangoDeFechas() {
+    // TODO. FIX RANGE. BUG: SELECT FROM 12/09 TO 12/09.
     const { fechaInicio, fechaFin } = rangeFilter;
     if (!declaraciones) return [];
 
