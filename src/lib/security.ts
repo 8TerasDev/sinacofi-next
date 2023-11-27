@@ -22,7 +22,7 @@ class PermissionError extends Error {
 }
 
 export const validateAdminPermission = (user: any) => {
-    if (!user.isAdmin) {
+    if ( !(user.isAdmin || user.isBankAdmin) ) {
         throw new PermissionError("El usuario no tiene los permisos necesarios")
     }
 }

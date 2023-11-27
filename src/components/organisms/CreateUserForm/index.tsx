@@ -17,6 +17,7 @@ export const CreateUserForm = ({
   handleSubmit,
   setOpenModal,
   banks,
+  isBankAdmin,
 }: CreateFormsProps) => {
   const [bank, setBank] = useState("none");
   return (
@@ -44,29 +45,31 @@ export const CreateUserForm = ({
               />
             </Grid>
           ))}
-          <Grid item sm={4} padding={"10px"}>
-            <InputLabel id='select-label' sx={{ visibility: "hidden" }}>
-              Banco
-            </InputLabel>
-            <Select
-              labelId='select-label'
-              id='select'
-              label='Banco'
-              fullWidth
-              placeholder='Banco'
-              value={bank}
-              onChange={(e) => setBank(e.target.value)}
-            >
-              <MenuItem disabled value='none'>
+          {!isBankAdmin && 
+            <Grid item sm={4} padding={"10px"}>
+              <InputLabel id='select-label' sx={{ visibility: "hidden" }}>
                 Banco
-              </MenuItem>
-              {banks.map((bank: any, index: any) => (
-                <MenuItem key={index} value={bank.id}>
-                  {bank.nombre}
+              </InputLabel>
+              <Select
+                labelId='select-label'
+                id='select'
+                label='Banco'
+                fullWidth
+                placeholder='Banco'
+                value={bank}
+                onChange={(e) => setBank(e.target.value)}
+              >
+                <MenuItem disabled value='none'>
+                  Banco
                 </MenuItem>
-              ))}
-            </Select>
-          </Grid>
+                {banks.map((bank: any, index: any) => (
+                  <MenuItem key={index} value={bank.id}>
+                    {bank.nombre}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Grid>
+          }
           <Grid item sm={4} padding={"10px"}>
             <TextField
               required

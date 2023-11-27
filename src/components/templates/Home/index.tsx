@@ -18,11 +18,11 @@ const HomeTemplate = () => {
   const [isOpen, isOpenSetter] = useState(true);
   const route = useRouter();
 
-  const handleAdmin = () => route.push(`/admin`);
+  const handleAdmin = (page:string) => route.push(page);
 
   return (
     <MainLayout>
-      <SinaAppBar handleAdmin={handleAdmin} />
+      <SinaAppBar handleAdmin={handleAdmin}/>
       <SinaDrawer isOpen={isOpen} isOpenSetter={isOpenSetter}>
         <DrawerBody isOpen={isOpen} isOpenSetter={isOpenSetter} />
       </SinaDrawer>

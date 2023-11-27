@@ -6,8 +6,13 @@ import sinacofi_logo from "../../../assets/images/sinacofi_logo.png";
 import { Person } from "@mui/icons-material";
 import axios from '@/common/http-client';
 
-const SinaAppBar = ({ handleAdmin }: any) => {
+const SinaAppBar = ({handleAdmin}) => {
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isBankAdmin, setIsBankAdmin] = useState(false);
+  const BANK_ADMIN_URL = isBankAdmin ? '/bankadmin' : '';
+  const ADMIN_URL = isAdmin ? '/admin' : ''; 
+  const URL = `${BANK_ADMIN_URL}${ADMIN_URL}`;
+
   const getProfile = async () => {
     try {
       const config = {
@@ -19,6 +24,7 @@ const SinaAppBar = ({ handleAdmin }: any) => {
       }
       const { data } = await axios.get("/api/auth/getprofile", config);
       setIsAdmin(data.user.isAdmin);
+      setIsBankAdmin(data.user.isBankAdmin)
     } catch (error) {
       console.log(error);
     }
@@ -30,11 +36,11 @@ const SinaAppBar = ({ handleAdmin }: any) => {
 
   return (
     <div className={styles.sinappbar_container}>
-      {isAdmin &&
+      {(isAdmin || isBankAdmin) &&
         <Stack padding={'5px'}>
           <Button
             startIcon={<Person />}
-            onClick={handleAdmin} variant="contained" color="success">
+            onClick={()=>handleAdmin(URL)} variant="contained" color="success">
             Administrador
           </Button>
         </Stack>
