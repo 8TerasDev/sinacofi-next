@@ -5,7 +5,6 @@ import { TextField, Button, Stack } from '@mui/material';
 import { TypeOfSearch, useTypeSearch } from '../../../custom-hooks/typeSearchHook';
 import SinaText from '@/components/atoms/SinaText';
 import { TypeSearchContext } from '@/contexts/typesearch.context';
-import { DeclaracionesContext } from '@/contexts/declaraciones.context';
 import { NewDeclaracionesContext } from '@/contexts/new-declaraciones.context';
 
 
