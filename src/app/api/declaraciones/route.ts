@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
     const lastDeclarationId = await getLastDeclaration(user?.bank_code);
     const declaraciones = declaracionesWithoutFilterBankCode.map(( declaracion ) => {
       const isSameBank = user?.bank_code === declaracion.codigo_banco;
-      const bankCode = isSameBank ? declaracion.codigo_banco : 'XXXX';
+      const bankCode = (isSameBank || user.isAdmin) ? declaracion.codigo_banco : 'XXXX';
       const isLastDeclaration = declaracion.id === lastDeclarationId;
       return {...declaracion, codigo_banco: bankCode, isSameBank, isLastDeclaration }
     })
