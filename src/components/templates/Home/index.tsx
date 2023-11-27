@@ -17,15 +17,12 @@ const HomeTemplate = () => {
 
   const [isOpen, isOpenSetter] = useState(true);
   const route = useRouter();
-  const isAdmin = true;
 
-  const handleAdmin = () => {
-    isAdmin && route.push(`/admin`);
-  };
+  const handleAdmin = () => route.push(`/admin`);
 
   return (
     <MainLayout>
-      <SinaAppBar handleAdmin={isAdmin && handleAdmin} />
+      <SinaAppBar handleAdmin={handleAdmin} />
       <SinaDrawer isOpen={isOpen} isOpenSetter={isOpenSetter}>
         <DrawerBody isOpen={isOpen} isOpenSetter={isOpenSetter} />
       </SinaDrawer>

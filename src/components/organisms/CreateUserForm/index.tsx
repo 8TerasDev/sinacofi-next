@@ -19,7 +19,6 @@ export const CreateUserForm = ({
   banks,
 }: CreateFormsProps) => {
   const [bank, setBank] = useState("none");
-  // console.log(banks)
   return (
     <FormControl
       variant='filled'

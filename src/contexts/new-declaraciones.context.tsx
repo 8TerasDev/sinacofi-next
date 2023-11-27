@@ -1,12 +1,10 @@
 "use client";
-import axios from "@/common/http-client";
 import { BfDataProcessDeclaraciones } from "@/application";
 import { getAllDeclaracionesClientSide } from "@/common/declaraciones";
 import React, {
   createContext,
   useContext,
   useEffect,
-  useReducer,
   useState,
 } from "react";
 import { TypeSearchContext } from "./typesearch.context";
@@ -23,7 +21,7 @@ enum typeOffilterEnum {
 }
 
 export const NewDeclaracionesProvider = ({ children }: any) => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const { resetFiltertypeOfSearch } = useContext(TypeSearchContext);
   const [declaraciones, declaracionesSetter] = useState<
     BfDataProcessDeclaraciones[] | null
@@ -300,7 +298,10 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
     getAllDeclaracionesClientSide().then((declaraciones) => {
       declaracionesSetter(declaraciones);
     })
-    .catch(err=>console.log(err))
+    .catch(err=>{
+      console.log(err);
+      setIsLoading(false)
+    })
     .finally(()=>setIsLoading(false))
   }, []);
 

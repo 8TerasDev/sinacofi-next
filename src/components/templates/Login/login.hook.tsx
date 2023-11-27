@@ -41,10 +41,8 @@ const useLoginHook = () => {
     mutationFn: async (valueForm: valueForm) => await fetcher(valueForm),
     onSuccess: () => {
       route.push(`/home`);
-      console.log("success login");
     },
     onError: (error) => {
-      console.log("error login", { error });
       handleCleanForm();
     },
   });

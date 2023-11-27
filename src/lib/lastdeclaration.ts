@@ -2,7 +2,7 @@ import { processError } from "./error";
 import { prisma } from "./newclient.prisma";
 
 export const getLastDeclaration = async (bankId: any) => {
-  try{
+  try {
     const lastDeclaration = await prisma.bf_data_process_declaraciones.findFirst({
       where: {
         codigo_banco: bankId,
@@ -15,6 +15,6 @@ export const getLastDeclaration = async (bankId: any) => {
     return lastDeclaration?.id.toString();
   }
   catch(error){
-    return processError(error)
+    return processError('No se ha podido obtener la ultima declaracion subida')
   }
 }
