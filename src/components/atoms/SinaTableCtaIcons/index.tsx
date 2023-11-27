@@ -3,15 +3,15 @@ import { TableCell, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Download from "@mui/icons-material/Download";
 
-const SinaTableCtaIcons = ({ handleDownload, handleDelete }: any) => {
+const SinaTableCtaIcons = ({ handleDownload, handleDelete, isLastDeclaration }: any) => {
   return (
     <TableCell>
       <IconButton onClick={handleDownload}>
         <Download />
       </IconButton>
-      <IconButton onClick={handleDelete}>
+      {isLastDeclaration && <IconButton onClick={handleDelete}>
         <DeleteIcon />
-      </IconButton>
+      </IconButton>}
     </TableCell>
   );
 };

@@ -4,16 +4,19 @@ import { NextRequest } from "next/server";
 import { disableDeclaracion, getAllDeclaraciones } from "@/lib/declaraciones.prisma";
 import { getSessionUser } from "@/lib/security";
 import { processError } from "@/lib/error";
+import { getLastDeclaration } from "@/lib/lastdeclaration";
 
 export async function GET(req: NextRequest) {
 
   try {
     const user = getSessionUser(req)
     const declaracionesWithoutFilterBankCode = await getAllDeclaraciones();
+    const lastDeclarationId = await getLastDeclaration(user?.bank_code);
     const declaraciones = declaracionesWithoutFilterBankCode.map(( declaracion ) => {
-      const bankCode = user?.bank_code === declaracion.codigo_banco ? 
-      declaracion.codigo_banco : 'XXXX';
-      return {...declaracion, codigo_banco: bankCode }
+      const isSameBank = user?.bank_code === declaracion.codigo_banco;
+      const bankCode = isSameBank ? declaracion.codigo_banco : 'XXXX';
+      const isLastDeclaration = declaracion.id === lastDeclarationId;
+      return {...declaracion, codigo_banco: bankCode, isSameBank, isLastDeclaration }
     })
     return Response.json({ declaraciones });
   } catch (error: any) {

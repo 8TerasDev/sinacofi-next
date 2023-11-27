@@ -50,10 +50,11 @@ const RowTable = ({
       setStartDownload(false);
     }, 200);
   }, [startDownload]);
-
+  
   return (
     <TableRow key={declaracion.id}>
       <SinaTableCtaIcons
+        isLastDeclaration={declaracion.isLastDeclaration} 
         handleDelete={() => handleDeleteModal(declaracion)}
         handleDownload={() => {
           setStartDownload(() => {
