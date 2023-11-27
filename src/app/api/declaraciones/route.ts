@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
     })
     return Response.json({ declaraciones });
   } catch (error: any) {
-    return processError(error)
+    return processError('No se ha podido obtener las declaraciones ')
   }
 }
 
@@ -32,8 +32,6 @@ export async function POST(req: NextRequest) {
     const actualizadas = await disableDeclaracion(id);
     return Response.json({ actualizadas });
   } catch (error) {
-    return new Response(JSON.stringify({ error }), {
-      status: 500,
-    });
+    return processError('No se ha podido deshabilitar la declaracion')
   }
 }

@@ -32,5 +32,3 @@ export async function createNewUser() {
     }
   }
 }
-
-// createNewUser().then((newAdmin) => console.log(newAdmin));
