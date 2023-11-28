@@ -7,7 +7,7 @@ import { processError } from "@/lib/error";
 export const GET = async (req: NextRequest) => {
   try {
     const user = getSessionUser(req)
-    //validateAdminPermission(user)
+    validateAdminPermission(user)
     const users = await getUsers();
     return Response.json(users)
   }
