@@ -46,7 +46,7 @@ export const EditBankForm = ({
         color='success'
         variant='contained' 
         type='submit'>
-        CREAR
+        EDITAR
       </Button>
       <Button
         sx={{width:'40%'}}

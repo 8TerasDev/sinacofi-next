@@ -211,14 +211,12 @@ const AdminPage = () => {
 
   const handleEditBank = async (e: any) => {
     const [nombre, codigo] = e.target;
-    const date = new Date();
     try {
       const data = {
         nombre: nombre.value,
         codigo: codigo.value,
-        created_at: date.toISOString(),
       };
-      const { data: banks, status } = await axios.post(`api/createbank`, data);
+      const { data: banks } = await axios.put(`api/banks/${currentRow._id}`, data);
       setBankDataList(banks);
     
     } catch (err) {
