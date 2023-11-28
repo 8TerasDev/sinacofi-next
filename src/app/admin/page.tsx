@@ -1,7 +1,5 @@
 "use client";
-import React, { 
-  //useEffect, 
-  useState } from "react";
+import React, { useState } from "react";
 import {
   Alert,
   Button,
@@ -23,7 +21,6 @@ import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import axios from "@/common/http-client";
 import { CreateUserForm } from "@/components/organisms/CreateUserForm";
 import { CreateBankForm } from "@/components/organisms/CreateBankForm";
-// import { useGetProfile } from "@/custom-hooks/useGetProfile";
 import { useGetUsers } from "@/custom-hooks/useGetUsers";
 import { AdminStack } from "@/components/organisms/Admin";
 import { useGetBanks } from "@/custom-hooks/useGetBanks";
@@ -51,7 +48,7 @@ const preColumnsUsers = [
     sortable: false,
     renderCell: ({ row }: any) => (
       <Stack flexDirection={'row'} flex={1} justifyContent={'space-around'}>
-        <IconButton onClick={()=>{}} sx={{padding:0}}>
+        <IconButton onClick={()=>{}} sx={{padding:0}} disabled>
           <Edit color='action' />
         </IconButton>
         <ButtonConfirm
@@ -196,91 +193,6 @@ const AdminPage = () => {
     setUserDataList(newRows);
   }
 
-  const preColumnsUsers = [
-    {
-      field: "acciones",
-      headerName: "Acciones",
-      sortable: false,
-      renderCell: ({ row }: any) => (
-        <Stack flexDirection={'row'} flex={1} justifyContent={'space-around'}>
-          <IconButton onClick={async ()=> row.update(row.id)} sx={{padding:0}}>
-            <Edit color='action' />
-          </IconButton>
-          <ButtonConfirm
-            icon={isActive(row) ? <DeleteIcon /> : <RestoreFromTrashIcon />}
-            title={`${row.first_name} ${row.last_name}`}
-            message={
-              isActive(row)
-                ? "Al desactivar el usaurio este no podra usarse"
-                : "Esta acción permitira que el usuario pueda usarse nuevamente"
-            }
-            handleDelete={async () => {
-              if (isActive(row)) {
-                await row.disableUser(row);
-              } else {
-                await row.enableUser(row);
-              }
-            }}
-          />
-  
-        </Stack>
-      ),
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      sortable: false,
-      renderCell: ({ row }: any) => {
-        return (
-          row.status && (
-            <Chip
-              label={row.status.toLowerCase()}
-              color={row.status === "ACTIVE" ? "success" : undefined}
-              variant='outlined'
-            />
-          )
-        );
-      },
-    },
-    {
-      field: "username",
-      headerName: "Username",
-      editable: true,
-    },
-    {
-      field: "first_name",
-      headerName: "Nombre",
-      editable: true,
-    },
-    {
-      field: "last_name",
-      headerName: "Apellido",
-      editable: true,
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      editable: true,
-    },
-    {
-      field: "is_staff",
-      headerName: "Es Staff",
-      editable: true,
-    },
-    {
-      field: "bank_id",
-      headerName: "Banco",
-      editable: true,
-    },
-  ];
-  // useEffect(() => {
-  //   // TODO. REFACTOR. Better use Middleware
-  //   if (data) {
-  //     // @ts-ignore
-  //     !data.isAdmin && route.push(`/home`);
-  //     setIsLoading(loading);
-  //   }
-  // }, [data]);
 
   const handleModal = (modalType: string) => {
     setIsLoading(true);

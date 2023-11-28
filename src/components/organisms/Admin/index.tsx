@@ -1,14 +1,12 @@
 import SinaText from "@/components/atoms/SinaText";
-import { Button, CircularProgress, Paper, Stack } from "@mui/material";
+import { updateInfoUserById } from "@/lib/users/updateInfoUserById.prisma";
+import { Button, Paper, Stack } from "@mui/material";
 import { DataGrid, GridRowModes } from "@mui/x-data-grid";
 import React from "react";
 
 export const UserTableComponent = ({ rows, tableColumns, banks }: any) => {
   const columns = tableColumns.map((column: any) => ({
     ...column,
-    width: column.renderCell
-      ? undefined
-      : window.screen.width / (tableColumns.length + 1),
   }));
 
   const rows2 = rows.map((row: any, index: any) => {
@@ -28,12 +26,26 @@ export const UserTableComponent = ({ rows, tableColumns, banks }: any) => {
       hideFooter
       columns={columns}
       rows={rows2}
-      editMode='row'
-      // // rowModesModel={}
-      // onRowDoubleClick={}
-      // onRowEditStart={(e)=>console.log('a',e)}
-      // onRowEditStop={(e)=>console.log('b',e)}
-      // processRowUpdate={(e)=>console.log('process',e)}
+      onCellEditStop={(e)=>console.log(e)}
+      // editMode='row'
+
+
+
+      // // // rowModesModel={}
+      // // onRowDoubleClick={}
+      // // onRowEditStart={(e)=>console.log('a',e)}
+      // onRowEditStop={(info)=>{
+      //   const { field, row } = info;
+      //   const
+      //   console.log('b',e)
+      
+      // }}
+      // processRowUpdate={(info)=>{
+      //   const {bank_id, first_name, } = info
+      //   updateInfoUserById(e)
+      //   console.log('process',e)
+      // }
+      // }
     />
   );
 };

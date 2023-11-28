@@ -1,10 +1,10 @@
 import { prisma } from "../newclient.prisma";
 
-export const updateInfoUserById = async (newData) => {
+export const updateInfoUserById = async (newData:any) => {
   try{
     await prisma.accounts_user.update({
       where: {
-        id: BigInt(data.id)
+        id: BigInt(newData.id)
       },
       data: {
         ...newData
