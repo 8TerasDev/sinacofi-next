@@ -6,7 +6,7 @@ import sinacofi_logo from "../../../assets/images/sinacofi_logo.png";
 import { Person } from "@mui/icons-material";
 import axios from '@/common/http-client';
 
-const SinaAppBar = ({handleAdmin}) => {
+const SinaAppBar = ({handleAdmin}: any) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isBankAdmin, setIsBankAdmin] = useState(false);
   const BANK_ADMIN_URL = isBankAdmin ? '/bankadmin' : '';
