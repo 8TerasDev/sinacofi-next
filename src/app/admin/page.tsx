@@ -20,7 +20,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import axios from "@/common/http-client";
 import { CreateUserForm } from "@/components/organisms/CreateUserForm";
-import { CreateBankForm } from "@/components/organisms/CreateBankForm";
+import { CreateBankForm, EditBankForm } from "@/components/organisms/CreateBankForm";
 import { useGetUsers } from "@/custom-hooks/useGetUsers";
 import { AdminStack } from "@/components/organisms/Admin";
 import { useGetBanks } from "@/custom-hooks/useGetBanks";
@@ -120,22 +120,27 @@ const preColumnsBanks = [
     headerName: "Acciones",
     sortable: false,
     renderCell: ({ row }: any) => (
-      <ButtonConfirm
-        icon={isActive(row) ? <DeleteIcon /> : <RestoreFromTrashIcon />}
-        title={row.nombre}
-        message={
-          isActive(row)
-            ? "Al desactivar el banco no podra crear nuevos o usar usuarios con este banco"
-            : "Esta acción permitira que el banco pueda usarse nuevamente"
-        }
-        handleDelete={async () => {
-          if (isActive(row)) {
-            await row.disableBank(row);
-          } else {
-            await row.enableBank(row);
+      <Stack flexDirection={'row'} flex={1} justifyContent={'space-around'}>
+        <IconButton onClick={()=>row.updateBank(row)} sx={{padding:0}}>
+          <Edit color='action' />
+        </IconButton>
+        <ButtonConfirm
+          icon={isActive(row) ? <DeleteIcon /> : <RestoreFromTrashIcon />}
+          title={row.nombre}
+          message={
+            isActive(row)
+              ? "Al desactivar el banco no podra crear nuevos o usar usuarios con este banco"
+              : "Esta acción permitira que el banco pueda usarse nuevamente"
           }
-        }}
-      />
+          handleDelete={async () => {
+            if (isActive(row)) {
+              await row.disableBank(row);
+            } else {
+              await row.enableBank(row);
+            }
+          }}
+        />
+      </Stack>
     ),
   },
   {
@@ -200,6 +205,23 @@ const AdminPage = () => {
       } else {
         setError(banks.message);
       }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleEditBank = async (e: any) => {
+    const [nombre, codigo] = e.target;
+    const date = new Date();
+    try {
+      const data = {
+        nombre: nombre.value,
+        codigo: codigo.value,
+        created_at: date.toISOString(),
+      };
+      const { data: banks, status } = await axios.post(`api/createbank`, data);
+      setBankDataList(banks);
+    
     } catch (err) {
       console.log(err);
     }
@@ -283,7 +305,9 @@ const AdminPage = () => {
       }
       if (type === "edituser") {
         const res = await handleEditUser(e);
-        //const res = await handleCreateBank(e);
+      }
+      if (type === "editbank") {
+        const res = await handleEditBank(e);
       }
     } catch (err) {
       console.log("Error", err);
@@ -337,8 +361,10 @@ const AdminPage = () => {
   const updateUser = errorWrapper(async (row: any) => {
     handleModal('edituser')
     setCurrentRow(row);
-    // await updateInfoUserById(row?._id);
-    // updateUserData({ ...row, first_name:'testing' });
+  });
+  const updateBank = errorWrapper(async (row: any) => {
+    handleModal('editbank')
+    setCurrentRow(row);
   });
 
 
@@ -350,6 +376,7 @@ const AdminPage = () => {
     enableBank,
     setError,
     updateUser,
+    updateBank,
   });
 
   if (isLoading || usersLoading || banksLoading)
@@ -482,6 +509,13 @@ const AdminPage = () => {
               <CreateBankForm
                 handleSubmit={handleSubmit}
                 setOpenModal={setOpenModal}
+              />
+            )}
+            {type === "editbank" && (
+              <EditBankForm
+                handleSubmit={handleSubmit}
+                setOpenModal={setOpenModal}
+                currentRow={currentRow}
               />
             )}
           </Paper>
