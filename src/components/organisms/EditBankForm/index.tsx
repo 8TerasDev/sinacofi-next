@@ -2,12 +2,10 @@ import { CreateFormsProps } from '@/app/admin/page';
 import { FormControl, Stack, Grid, TextField, Button } from '@mui/material';
 import React from 'react';
 
-export const EditBankForm = ({
+export const CreateBankForm = ({
   handleSubmit,
   setOpenModal,
-  currentRow,
 }: CreateFormsProps) => {
-  const {nombre, codigo} = currentRow; 
   return(
     <FormControl 
       fullWidth
@@ -19,8 +17,7 @@ export const EditBankForm = ({
       <Stack overflow={'auto'}>
         <Grid container sx={{ justifyContent:'center', height:'100%', flex:1}} >
           <Grid item sm={4} padding={'10px'}>
-            <TextField
-              defaultValue={nombre}
+            <TextField 
               required 
               variant='filled'
               label='Nombre'
@@ -29,8 +26,7 @@ export const EditBankForm = ({
               />  
           </Grid>
           <Grid item sm={4} padding={'10px'}>
-            <TextField
-              defaultValue={codigo}
+            <TextField 
               required 
               variant='filled'
               label='Codigo'
