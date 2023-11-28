@@ -1,14 +1,11 @@
 import SinaText from "@/components/atoms/SinaText";
 import { Button, CircularProgress, Paper, Stack } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridRowModes } from "@mui/x-data-grid";
 import React from "react";
 
 export const UserTableComponent = ({ rows, tableColumns, banks }: any) => {
   const columns = tableColumns.map((column: any) => ({
-    field: column.field,
-    headerName: column.name,
-    renderCell: column.renderCell,
-    sortable: column.sortable,
+    ...column,
     width: column.renderCell
       ? undefined
       : window.screen.width / (tableColumns.length + 1),
@@ -31,7 +28,12 @@ export const UserTableComponent = ({ rows, tableColumns, banks }: any) => {
       hideFooter
       columns={columns}
       rows={rows2}
-      disableRowSelectionOnClick
+      editMode='row'
+      // // rowModesModel={}
+      // onRowDoubleClick={}
+      // onRowEditStart={(e)=>console.log('a',e)}
+      // onRowEditStop={(e)=>console.log('b',e)}
+      // processRowUpdate={(e)=>console.log('process',e)}
     />
   );
 };
@@ -44,17 +46,6 @@ export const AdminStack = ({
   banks,
   isLoading,
 }: any) => {
-
-  // if (isLoading) return (
-  //   <Stack
-  //     flex={1}
-  //     height={"100vh"}
-  //     justifyContent={"center"}
-  //     alignItems={"center"}
-  //   >
-  //     <CircularProgress />
-  //   </Stack>
-  // );
 
   return (
     <Stack>

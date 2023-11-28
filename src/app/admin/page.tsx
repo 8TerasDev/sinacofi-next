@@ -1,10 +1,13 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { 
+  //useEffect, 
+  useState } from "react";
 import {
   Alert,
   Button,
   Chip,
   CircularProgress,
+  IconButton,
   Modal,
   Paper,
   Snackbar,
@@ -13,20 +16,22 @@ import {
 import Image from "next/image";
 import sinacofi_logo from "../../assets/images/sinacofi_logo.png";
 import { useRouter } from "next/navigation";
-import { Home } from "@mui/icons-material";
+import { Edit, Home } from "@mui/icons-material";
 import SinaText from "@/components/atoms/SinaText";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import axios from "@/common/http-client";
 import { CreateUserForm } from "@/components/organisms/CreateUserForm";
 import { CreateBankForm } from "@/components/organisms/CreateBankForm";
-import { useGetProfile } from "@/custom-hooks/useGetProfile";
+// import { useGetProfile } from "@/custom-hooks/useGetProfile";
 import { useGetUsers } from "@/custom-hooks/useGetUsers";
 import { AdminStack } from "@/components/organisms/Admin";
 import { useGetBanks } from "@/custom-hooks/useGetBanks";
 import ButtonConfirm from "@/components/organisms/ButtonConfirm";
 import { deleteBankById, enableBankById } from "@/common/bank";
 import { deleteUserById, enableUserById } from "@/common/user";
+import { GridRowModes } from "@mui/x-data-grid";
+import { updateInfoUserById } from "@/lib/users/updateInfoUserById.prisma";
 
 // TODO: Create a customHook / actions in store to createUsers/Banks
 
@@ -42,30 +47,36 @@ const isActive = (row: any) => row.status === "ACTIVE";
 const preColumnsUsers = [
   {
     field: "acciones",
-    name: "Acciones",
+    headerName: "Acciones",
     sortable: false,
     renderCell: ({ row }: any) => (
-      <ButtonConfirm
-        icon={isActive(row) ? <DeleteIcon /> : <RestoreFromTrashIcon />}
-        title={`${row.first_name} ${row.last_name}`}
-        message={
-          isActive(row)
-            ? "Al desactivar el usaurio este no podra usarse"
-            : "Esta acción permitira que el usuario pueda usarse nuevamente"
-        }
-        handleDelete={async () => {
-          if (isActive(row)) {
-            await row.disableUser(row);
-          } else {
-            await row.enableUser(row);
+      <Stack flexDirection={'row'} flex={1} justifyContent={'space-around'}>
+        <IconButton onClick={()=>{}} sx={{padding:0}}>
+          <Edit color='action' />
+        </IconButton>
+        <ButtonConfirm
+          icon={isActive(row) ? <DeleteIcon /> : <RestoreFromTrashIcon />}
+          title={`${row.first_name} ${row.last_name}`}
+          message={
+            isActive(row)
+              ? "Al desactivar el usaurio este no podra usarse"
+              : "Esta acción permitira que el usuario pueda usarse nuevamente"
           }
-        }}
-      />
+          handleDelete={async () => {
+            if (isActive(row)) {
+              await row.disableUser(row);
+            } else {
+              await row.enableUser(row);
+            }
+          }}
+        />
+
+      </Stack>
     ),
   },
   {
     field: "status",
-    name: "Status",
+    headerName: "Status",
     sortable: false,
     renderCell: ({ row }: any) => {
       return (
@@ -81,33 +92,39 @@ const preColumnsUsers = [
   },
   {
     field: "username",
-    name: "Username",
+    headerName: "Username",
+    editable: true,
   },
   {
     field: "first_name",
-    name: "Nombre",
+    headerName: "Nombre",
+    editable: true,
   },
   {
     field: "last_name",
-    name: "Apellido",
+    headerName: "Apellido",
+    editable: true,
   },
   {
     field: "email",
-    name: "Email",
+    headerName: "Email",
+    editable: true,
   },
   {
     field: "is_staff",
-    name: "Es Staff",
+    headerName: "Es Staff",
+    editable: true,
   },
   {
     field: "bank_id",
-    name: "Banco",
+    headerName: "Banco",
+    editable: true,
   },
 ];
 const preColumnsBanks = [
   {
     field: "acciones",
-    name: "Acciones",
+    headerName: "Acciones",
     sortable: false,
     renderCell: ({ row }: any) => (
       <ButtonConfirm
@@ -130,7 +147,7 @@ const preColumnsBanks = [
   },
   {
     field: "status",
-    name: "Status",
+    headerName: "Status",
     sortable: false,
     renderCell: ({ row }: any) => {
       return (
@@ -146,11 +163,11 @@ const preColumnsBanks = [
   },
   {
     field: "nombre",
-    name: "Nombre",
+    headerName: "Nombre",
   },
   {
     field: "codigo",
-    name: "Codigo",
+    headerName: "Codigo",
   },
 ];
 
@@ -162,12 +179,100 @@ const AdminPage = () => {
   const [error, setError] = useState(false);
   const [type, setType] = useState("");
   const route = useRouter();
-  const { data, isLoading: loading } = useGetProfile();
+  // const { data, isLoading: loading } = useGetProfile();
   const { data: usersData, isLoading: usersLoading } = useGetUsers();
   const { data: banksData, isLoading: banksLoading } = useGetBanks();
   const [bankDataList, setBankDataList] = useState(banksData);
   const [userDataList, setUserDataList] = useState(usersData);
 
+  const handleEdit = (rowId) => {
+    console.log(rowId)
+    const newRows = userDataList && userDataList.map( (item ) => {
+      if(item.id === rowId){
+        return {...item, editable: true }
+      }
+      return item
+    });
+    setUserDataList(newRows);
+  }
+
+  const preColumnsUsers = [
+    {
+      field: "acciones",
+      headerName: "Acciones",
+      sortable: false,
+      renderCell: ({ row }: any) => (
+        <Stack flexDirection={'row'} flex={1} justifyContent={'space-around'}>
+          <IconButton onClick={async ()=> row.update(row.id)} sx={{padding:0}}>
+            <Edit color='action' />
+          </IconButton>
+          <ButtonConfirm
+            icon={isActive(row) ? <DeleteIcon /> : <RestoreFromTrashIcon />}
+            title={`${row.first_name} ${row.last_name}`}
+            message={
+              isActive(row)
+                ? "Al desactivar el usaurio este no podra usarse"
+                : "Esta acción permitira que el usuario pueda usarse nuevamente"
+            }
+            handleDelete={async () => {
+              if (isActive(row)) {
+                await row.disableUser(row);
+              } else {
+                await row.enableUser(row);
+              }
+            }}
+          />
+  
+        </Stack>
+      ),
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      sortable: false,
+      renderCell: ({ row }: any) => {
+        return (
+          row.status && (
+            <Chip
+              label={row.status.toLowerCase()}
+              color={row.status === "ACTIVE" ? "success" : undefined}
+              variant='outlined'
+            />
+          )
+        );
+      },
+    },
+    {
+      field: "username",
+      headerName: "Username",
+      editable: true,
+    },
+    {
+      field: "first_name",
+      headerName: "Nombre",
+      editable: true,
+    },
+    {
+      field: "last_name",
+      headerName: "Apellido",
+      editable: true,
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      editable: true,
+    },
+    {
+      field: "is_staff",
+      headerName: "Es Staff",
+      editable: true,
+    },
+    {
+      field: "bank_id",
+      headerName: "Banco",
+      editable: true,
+    },
+  ];
   // useEffect(() => {
   //   // TODO. REFACTOR. Better use Middleware
   //   if (data) {
@@ -260,20 +365,7 @@ const AdminPage = () => {
     }
   };
 
-  if (isLoading || usersLoading || banksLoading)
-    return (
-      <Stack
-        flex={1}
-        height={"100vh"}
-        justifyContent={"center"}
-        alignItems={"center"}
-      >
-        <CircularProgress />
-      </Stack>
-    );
-  const handleClose = () => {
-    setError(false);
-  };
+
 
   const updateBankData = (_row: any) => {
     const data: any[] = [...(bankDataList || banksData || [])];
@@ -315,16 +407,36 @@ const AdminPage = () => {
     await deleteUserById(row?._id);
     updateUserData({ ...row, status: "DISABLED" });
   });
+  const updateUser = errorWrapper(async (row: any) => {
+    await updateInfoUserById(row?._id);
+    updateUserData({ ...row, first_name:'testing' });
+  });
+
 
   const addSetters = (row: any) => ({
     ...row,
-    disableUser: disableUser,
-    enableUser: enableUser,
-    disableBank: disableBank,
-    enableBank: enableBank,
-    setError: setError,
+    disableUser,
+    enableUser,
+    disableBank,
+    enableBank,
+    setError,
+    updateUser,
   });
 
+  if (isLoading || usersLoading || banksLoading)
+    return (
+      <Stack
+        flex={1}
+        height={"100vh"}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        <CircularProgress />
+      </Stack>
+    );
+  const handleClose = () => {
+    setError(false);
+  };
   return (
     <Stack flex={1} height={"100vh"} padding={"15px"}>
       <Snackbar
@@ -369,28 +481,24 @@ const AdminPage = () => {
           padding={"30px"}
           boxShadow={"2px 4px 20px 2px rgba(0, 0, 0, 0.3);"}
         >
-          {!showBanks && (
-            <AdminStack
-              title={"ADMINISTRAR USUARIOS"}
-              handleModal={() => handleModal("createuser")}
-              showTable={showUsers}
-              tableColumns={preColumnsUsers}
-              setShowTable={setShowUsers}
-              dataTable={(userDataList || usersData || []).map(addSetters)}
-              banks={bankDataList || banksData}
-            />
-          )}
+          <AdminStack
+            title={"ADMINISTRAR USUARIOS"}
+            handleModal={() => handleModal("createuser")}
+            showTable={showUsers}
+            tableColumns={preColumnsUsers}
+            setShowTable={setShowUsers}
+            dataTable={(userDataList || usersData || []).map(addSetters)}
+            banks={bankDataList || banksData}
+          />
           <Stack height={"15px"} />
-          {!showUsers && (
-            <AdminStack
-              title={"ADMINISTRAR BANCOS"}
-              handleModal={() => handleModal("createbank")}
-              showTable={showBanks}
-              tableColumns={preColumnsBanks}
-              setShowTable={setShowBanks}
-              dataTable={(bankDataList || banksData || []).map(addSetters)}
-            />
-          )}
+          <AdminStack
+            title={"ADMINISTRAR BANCOS"}
+            handleModal={() => handleModal("createbank")}
+            showTable={showBanks}
+            tableColumns={preColumnsBanks}
+            setShowTable={setShowBanks}
+            dataTable={(bankDataList || banksData || []).map(addSetters)}
+          />
         </Stack>
         <Modal
           sx={{
