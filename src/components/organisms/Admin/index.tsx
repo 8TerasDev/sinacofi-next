@@ -28,26 +28,6 @@ export const UserTableComponent = ({ rows, tableColumns, banks }: any) => {
       hideFooter
       columns={columns}
       rows={rows2}
-      onCellEditStop={(e)=>console.log(e)}
-      // editMode='row'
-
-
-
-      // // // rowModesModel={}
-      // // onRowDoubleClick={}
-      // // onRowEditStart={(e)=>console.log('a',e)}
-      // onRowEditStop={(info)=>{
-      //   const { field, row } = info;
-      //   const
-      //   console.log('b',e)
-      
-      // }}
-      // processRowUpdate={(info)=>{
-      //   const {bank_id, first_name, } = info
-      //   updateInfoUserById(e)
-      //   console.log('process',e)
-      // }
-      // }
     />
   );
 };

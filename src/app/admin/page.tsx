@@ -29,6 +29,7 @@ import { deleteBankById, enableBankById } from "@/common/bank";
 import { deleteUserById, enableUserById } from "@/common/user";
 import { GridRowModes } from "@mui/x-data-grid";
 import { updateInfoUserById } from "@/lib/users/updateInfoUserById.prisma";
+import { EditUserForm } from "@/components/organisms/EditUserForm";
 
 // TODO: Create a customHook / actions in store to createUsers/Banks
 
@@ -37,6 +38,7 @@ export type CreateFormsProps = {
   setOpenModal: (input: boolean) => void;
   banks?: any;
   isBankAdmin?: boolean;
+  currentRow?: any;
 };
 
 const isActive = (row: any) => row.status === "ACTIVE";
@@ -48,7 +50,7 @@ const preColumnsUsers = [
     sortable: false,
     renderCell: ({ row }: any) => (
       <Stack flexDirection={'row'} flex={1} justifyContent={'space-around'}>
-        <IconButton onClick={()=>{}} sx={{padding:0}} disabled>
+        <IconButton onClick={()=>row.updateUser(row)} sx={{padding:0}}>
           <Edit color='action' />
         </IconButton>
         <ButtonConfirm
@@ -90,32 +92,26 @@ const preColumnsUsers = [
   {
     field: "username",
     headerName: "Username",
-    editable: true,
   },
   {
     field: "first_name",
     headerName: "Nombre",
-    editable: true,
   },
   {
     field: "last_name",
     headerName: "Apellido",
-    editable: true,
   },
   {
     field: "email",
     headerName: "Email",
-    editable: true,
   },
   {
     field: "is_staff",
     headerName: "Es Staff",
-    editable: true,
   },
   {
     field: "bank_id",
     headerName: "Banco",
-    editable: true,
   },
 ];
 const preColumnsBanks = [
@@ -173,6 +169,7 @@ const AdminPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showUsers, setShowUsers] = useState(false);
   const [showBanks, setShowBanks] = useState(false);
+  const [currentRow, setCurrentRow] = useState<any>();
   const [error, setError] = useState(false);
   const [type, setType] = useState("");
   const route = useRouter();
@@ -182,16 +179,16 @@ const AdminPage = () => {
   const [bankDataList, setBankDataList] = useState(banksData);
   const [userDataList, setUserDataList] = useState(usersData);
 
-  const handleEdit = (rowId) => {
-    console.log(rowId)
-    const newRows = userDataList && userDataList.map( (item ) => {
-      if(item.id === rowId){
-        return {...item, editable: true }
-      }
-      return item
-    });
-    setUserDataList(newRows);
-  }
+  // const handleEdit = (rowId) => {
+  //   console.log(rowId)
+  //   const newRows = userDataList && userDataList.map( (item ) => {
+  //     if(item.id === rowId){
+  //       return {...item, editable: true }
+  //     }
+  //     return item
+  //   });
+  //   setUserDataList(newRows);
+  // }
 
 
   const handleModal = (modalType: string) => {
@@ -270,6 +267,10 @@ const AdminPage = () => {
       if (type === "createuser") {
         const res = await handleCreateUser(e);
       }
+      if (type === "edituser") {
+        console.log('here')
+        //const res = await handleCreateBank(e);
+      }
     } catch (err) {
       console.log("Error", err);
     } finally {
@@ -320,8 +321,11 @@ const AdminPage = () => {
     updateUserData({ ...row, status: "DISABLED" });
   });
   const updateUser = errorWrapper(async (row: any) => {
-    await updateInfoUserById(row?._id);
-    updateUserData({ ...row, first_name:'testing' });
+    console.log(row)
+    handleModal('edituser')
+    setCurrentRow(row);
+    // await updateInfoUserById(row?._id);
+    // updateUserData({ ...row, first_name:'testing' });
   });
 
 
@@ -439,6 +443,7 @@ const AdminPage = () => {
               <SinaText size='mWide'>
                 {type === "createuser" && "Crear Usuario"}
                 {type === "createbank" && "Crear Banco"}
+                {type === "edituser" && "Editar Usuario"}
               </SinaText>
             </Stack>
             {type === "createuser" && (
@@ -448,6 +453,16 @@ const AdminPage = () => {
                 )}
                 handleSubmit={handleSubmit}
                 setOpenModal={setOpenModal}
+              />
+            )}
+            {type === "edituser" && (
+              <EditUserForm
+                banks={(bankDataList || banksData || []).filter(
+                  (b: any) => b.status == "ACTIVE"
+                )}
+                handleSubmit={handleSubmit}
+                setOpenModal={setOpenModal}
+                currentRow={currentRow}
               />
             )}
             {type === "createbank" && (
