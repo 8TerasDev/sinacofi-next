@@ -1,6 +1,6 @@
 import { prisma } from "../newclient.prisma";
 
-export const updateInfoBankById = async (data) => {
+export const updateInfoBankById = async (data: any) => {
   try{
     await prisma.bf_data_process_bancos.update({
       where: {
