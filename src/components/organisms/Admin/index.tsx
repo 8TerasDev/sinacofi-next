@@ -5,8 +5,10 @@ import { DataGrid, GridRowModes } from "@mui/x-data-grid";
 import React from "react";
 
 export const UserTableComponent = ({ rows, tableColumns, banks }: any) => {
+  const width = typeof window !== 'undefined' && window.screen.width / (tableColumns.length + 1);
   const columns = tableColumns.map((column: any) => ({
     ...column,
+    width: column.renderCell ? undefined : width
   }));
 
   const rows2 = rows.map((row: any, index: any) => {

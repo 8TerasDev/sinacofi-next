@@ -16,7 +16,7 @@ type RenderTableProps = {
 const getBeneficios = (declaracion: any) => {
   return (
     declaracion?.bf_data_process_beneficiariosfinales?.filter(
-      (beneficiarios_finales: any) => beneficiarios_finales.tipo === "bf"
+      (beneficiarios_finales: any) => beneficiarios_finales.tipo.toLowerCase() == "bf"
     ) || []
   );
 };
@@ -24,7 +24,7 @@ const getBeneficios = (declaracion: any) => {
 const getControl = (declaracion: any) => {
   return (
     declaracion?.bf_data_process_beneficiariosfinales?.filter(
-      (beneficiarios_finales: any) => beneficiarios_finales.tipo === "ce"
+      (beneficiarios_finales: any) => beneficiarios_finales.tipo.toLowerCase() == "ce"
     ) || []
   );
 };

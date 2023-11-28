@@ -46,8 +46,8 @@ export const SinaTableModal = ({
   const [controlEfectivo, controlEfectivoSetter] = useState<any[]>([]);
 
   useEffect(() => {
-    const cleanBeneficiarios = declaracion?.bf_data_process_beneficiariosfinales?.filter(beneficiarios_finales => beneficiarios_finales.tipo === "bf") || []
-    const cleanControl = declaracion?.bf_data_process_beneficiariosfinales?.filter(beneficiarios_finales => beneficiarios_finales.tipo === "ce") || []
+    const cleanBeneficiarios = declaracion?.bf_data_process_beneficiariosfinales?.filter(beneficiarios_finales => beneficiarios_finales.tipo?.toLowerCase() == "bf") || []
+    const cleanControl = declaracion?.bf_data_process_beneficiariosfinales?.filter(beneficiarios_finales => beneficiarios_finales.tipo?.toLowerCase() == "ce") || []
     beneficiariosSetter(cleanBeneficiarios)
     controlEfectivoSetter(cleanControl)
 
