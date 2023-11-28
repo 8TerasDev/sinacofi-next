@@ -210,8 +210,9 @@ const AdminPage = () => {
       { value: first_name },
       { value: last_name },
       { value: email },
-      { value: bank_id },
       { value: password },
+      { value: bank_id },
+      { value: is_staff }
     ] = e.target;
 
     const date = new Date();
@@ -222,7 +223,7 @@ const AdminPage = () => {
         last_name,
         email,
         is_superuser: false,
-        is_staff: false,
+        is_staff: Boolean(is_staff),
         is_active: true,
         bank_id,
         password,

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Alert,
   Button,
@@ -105,7 +105,7 @@ const AdminPage = () => {
   const [error, setError] = useState(false);
   const [type, setType] = useState("");
   const route = useRouter();
-  const { data: userData, isLoading: loading } = useGetProfile();
+  const { data: userData, isLoading: loading }: any = useGetProfile();
   const { data: usersData, isLoading: usersLoading } = useGetUsersSameBank();
   const [userDataList, setUserDataList] = useState(usersData);
 
@@ -123,7 +123,6 @@ const AdminPage = () => {
       { value: first_name },
       { value: last_name },
       { value: email },
-      { value: bank_id },
       { value: password },
     ] = e.target;
 

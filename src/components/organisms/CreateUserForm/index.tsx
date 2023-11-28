@@ -8,6 +8,8 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 import React, { useState } from "react";
 
@@ -20,6 +22,7 @@ export const CreateUserForm = ({
   isBankAdmin,
 }: CreateFormsProps) => {
   const [bank, setBank] = useState("none");
+  const [newBankAdmin, setNewBankAdmin] = useState(false);
   return (
     <FormControl
       variant='filled'
@@ -45,31 +48,6 @@ export const CreateUserForm = ({
               />
             </Grid>
           ))}
-          {!isBankAdmin && 
-            <Grid item sm={4} padding={"10px"}>
-              <InputLabel id='select-label' sx={{ visibility: "hidden" }}>
-                Banco
-              </InputLabel>
-              <Select
-                labelId='select-label'
-                id='select'
-                label='Banco'
-                fullWidth
-                placeholder='Banco'
-                value={bank}
-                onChange={(e) => setBank(e.target.value)}
-              >
-                <MenuItem disabled value='none'>
-                  Banco
-                </MenuItem>
-                {banks.map((bank: any, index: any) => (
-                  <MenuItem key={index} value={bank.id}>
-                    {bank.nombre}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
-          }
           <Grid item sm={4} padding={"10px"}>
             <TextField
               required
@@ -83,6 +61,42 @@ export const CreateUserForm = ({
               type={"password"}
             />
           </Grid>
+          {!isBankAdmin && (
+            <>
+              <Grid item sm={4} padding={"10px"}>
+                <InputLabel id='select-label' sx={{ visibility: "hidden" }}>
+                  Banco
+                </InputLabel>
+                <Select
+                  labelId='select-label'
+                  id='select'
+                  label='Banco'
+                  fullWidth
+                  placeholder='Banco'
+                  value={bank}
+                  onChange={(e) => setBank(e.target.value)}
+                >
+                  <MenuItem disabled value='none'>
+                    Banco
+                  </MenuItem>
+                  {banks.map((bank: any, index: any) => (
+                    <MenuItem key={index} value={bank.id}>
+                      {bank.nombre}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Grid>
+              <Grid item sm={4} padding={"10px"}>
+                <Stack flexDirection={'row'} alignItems={'center'}>
+                <FormControlLabel control={
+                  <Checkbox
+                    value={newBankAdmin} 
+                    onChange={(e) => setNewBankAdmin(e.target.checked)}/>
+                } label="Usuario Administrador de banco" />
+                </Stack>
+              </Grid>
+            </>
+          )}
         </Grid>
       </Stack>
       <Stack
