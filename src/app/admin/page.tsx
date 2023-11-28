@@ -20,16 +20,15 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import axios from "@/common/http-client";
 import { CreateUserForm } from "@/components/organisms/CreateUserForm";
-import { CreateBankForm, EditBankForm } from "@/components/organisms/CreateBankForm";
+import { CreateBankForm } from "@/components/organisms/CreateBankForm";
 import { useGetUsers } from "@/custom-hooks/useGetUsers";
 import { AdminStack } from "@/components/organisms/Admin";
 import { useGetBanks } from "@/custom-hooks/useGetBanks";
 import ButtonConfirm from "@/components/organisms/ButtonConfirm";
 import { deleteBankById, enableBankById } from "@/common/bank";
 import { deleteUserById, enableUserById } from "@/common/user";
-import { GridRowModes } from "@mui/x-data-grid";
-import { updateInfoUserById } from "@/lib/users/updateInfoUserById.prisma";
 import { EditUserForm } from "@/components/organisms/EditUserForm";
+import { EditBankForm } from "@/components/organisms/EditBankForm";
 
 // TODO: Create a customHook / actions in store to createUsers/Banks
 
