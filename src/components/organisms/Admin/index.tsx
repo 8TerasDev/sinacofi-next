@@ -1,5 +1,5 @@
 import SinaText from "@/components/atoms/SinaText";
-import { Button, Paper, Stack } from "@mui/material";
+import { Button, CircularProgress, Paper, Stack } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import React from "react";
 
@@ -39,12 +39,23 @@ export const UserTableComponent = ({ rows, tableColumns, banks }: any) => {
 export const AdminStack = ({
   title,
   handleModal,
-  showTable,
-  setShowTable,
   dataTable,
   tableColumns,
   banks,
+  isLoading,
 }: any) => {
+
+  // if (isLoading) return (
+  //   <Stack
+  //     flex={1}
+  //     height={"100vh"}
+  //     justifyContent={"center"}
+  //     alignItems={"center"}
+  //   >
+  //     <CircularProgress />
+  //   </Stack>
+  // );
+
   return (
     <Stack>
       <Paper>
@@ -64,12 +75,11 @@ export const AdminStack = ({
         </Stack>
       </Paper>
       <Stack height={"15px"} />
-      {dataTable && true && (
+      {dataTable && (
         <UserTableComponent
           rows={dataTable}
           banks={banks}
           tableColumns={tableColumns}
-          onClose={() => setShowTable(false)}
         />
       )}
     </Stack>

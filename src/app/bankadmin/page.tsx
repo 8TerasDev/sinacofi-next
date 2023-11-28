@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Alert,
   Button,
@@ -19,22 +19,16 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import axios from "@/common/http-client";
 import { CreateUserForm } from "@/components/organisms/CreateUserForm";
-import { CreateBankForm } from "@/components/organisms/CreateBankForm";
 import { useGetProfile } from "@/custom-hooks/useGetProfile";
-import { useGetUsers } from "@/custom-hooks/useGetUsers";
 import { AdminStack } from "@/components/organisms/Admin";
-import { useGetBanks } from "@/custom-hooks/useGetBanks";
 import ButtonConfirm from "@/components/organisms/ButtonConfirm";
-import { deleteBankById, enableBankById } from "@/common/bank";
 import { deleteUserById, enableUserById } from "@/common/user";
-
-// TODO: Create a customHook / actions in store to createUsers/Banks
+import { useGetUsersSameBank } from "@/custom-hooks/useGetUsersSameBank";
 
 export type CreateFormsProps = {
   handleSubmit: (input: any) => void;
   setOpenModal: (input: boolean) => void;
   banks?: any;
-  isBankAdmin?: boolean;
 };
 
 const isActive = (row: any) => row.status === "ACTIVE";
@@ -104,78 +98,16 @@ const preColumnsUsers = [
     name: "Banco",
   },
 ];
-const preColumnsBanks = [
-  {
-    field: "acciones",
-    name: "Acciones",
-    sortable: false,
-    renderCell: ({ row }: any) => (
-      <ButtonConfirm
-        icon={isActive(row) ? <DeleteIcon /> : <RestoreFromTrashIcon />}
-        title={row.nombre}
-        message={
-          isActive(row)
-            ? "Al desactivar el banco no podra crear nuevos o usar usuarios con este banco"
-            : "Esta acción permitira que el banco pueda usarse nuevamente"
-        }
-        handleDelete={async () => {
-          if (isActive(row)) {
-            await row.disableBank(row);
-          } else {
-            await row.enableBank(row);
-          }
-        }}
-      />
-    ),
-  },
-  {
-    field: "status",
-    name: "Status",
-    sortable: false,
-    renderCell: ({ row }: any) => {
-      return (
-        row.status && (
-          <Chip
-            label={row.status.toLowerCase()}
-            color={row.status === "ACTIVE" ? "success" : undefined}
-            variant='outlined'
-          />
-        )
-      );
-    },
-  },
-  {
-    field: "nombre",
-    name: "Nombre",
-  },
-  {
-    field: "codigo",
-    name: "Codigo",
-  },
-];
 
 const AdminPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [showUsers, setShowUsers] = useState(false);
-  const [showBanks, setShowBanks] = useState(false);
   const [error, setError] = useState(false);
   const [type, setType] = useState("");
   const route = useRouter();
-  const { data, isLoading: loading } = useGetProfile();
-  const { data: usersData, isLoading: usersLoading } = useGetUsers();
-  const { data: banksData, isLoading: banksLoading } = useGetBanks();
-  const [bankDataList, setBankDataList] = useState(banksData);
+  const { data: userData, isLoading: loading }: any = useGetProfile();
+  const { data: usersData, isLoading: usersLoading } = useGetUsersSameBank();
   const [userDataList, setUserDataList] = useState(usersData);
-
-  // useEffect(() => {
-  //   // TODO. REFACTOR. Better use Middleware
-  //   if (data) {
-  //     // @ts-ignore
-  //     !data.isAdmin && route.push(`/home`);
-  //     setIsLoading(loading);
-  //   }
-  // }, [data]);
 
   const handleModal = (modalType: string) => {
     setIsLoading(true);
@@ -184,25 +116,6 @@ const AdminPage = () => {
     setIsLoading(false);
   };
 
-  const handleCreateBank = async (e: any) => {
-    const [nombre, codigo] = e.target;
-    const date = new Date();
-    try {
-      const data = {
-        nombre: nombre.value,
-        codigo: codigo.value,
-        created_at: date.toISOString(),
-      };
-      const { data: banks, status } = await axios.post(`api/createbank`, data);
-      if (status < 400) {
-        setBankDataList(banks);
-      } else {
-        setError(banks.message);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const handleCreateUser = async (e: any) => {
     const [
@@ -211,8 +124,6 @@ const AdminPage = () => {
       { value: last_name },
       { value: email },
       { value: password },
-      { value: bank_id },
-      { value: is_staff }
     ] = e.target;
 
     const date = new Date();
@@ -223,14 +134,13 @@ const AdminPage = () => {
         last_name,
         email,
         is_superuser: false,
-        is_staff: Boolean(is_staff),
+        is_staff: false,
         is_active: true,
-        bank_id,
         password,
         date_joined: date.toISOString(),
       };
 
-      const res = await axios.post(`api/createuser`, data);
+      const res = await axios.post(`api/users/createuser/samebank`, data);
       if (res.status < 400) {
         const newUsersList = res.data;
         setUserDataList(newUsersList);
@@ -247,12 +157,7 @@ const AdminPage = () => {
     setOpenModal(false);
     e.preventDefault();
     try {
-      if (type === "createbank") {
-        const res = await handleCreateBank(e);
-      }
-      if (type === "createuser") {
-        const res = await handleCreateUser(e);
-      }
+      const res = await handleCreateUser(e);
     } catch (err) {
       console.log("Error", err);
     } finally {
@@ -260,27 +165,11 @@ const AdminPage = () => {
     }
   };
 
-  if (isLoading || usersLoading || banksLoading)
-    return (
-      <Stack
-        flex={1}
-        height={"100vh"}
-        justifyContent={"center"}
-        alignItems={"center"}
-      >
-        <CircularProgress />
-      </Stack>
-    );
   const handleClose = () => {
     setError(false);
   };
 
-  const updateBankData = (_row: any) => {
-    const data: any[] = [...(bankDataList || banksData || [])];
-    const prev: any = data[_row.id];
-    data[_row.id] = { ...prev, ..._row };
-    setBankDataList(data as any);
-  };
+
   const updateUserData = (_row: any) => {
     const data: any[] = [...(userDataList || usersData || [])];
     const prev: any = data[_row.id];
@@ -299,18 +188,12 @@ const AdminPage = () => {
     };
   };
 
-  const enableBank = errorWrapper(async (row: any) => {
-    await enableBankById(row?._id);
-    updateBankData({ ...row, status: "ACTIVE" });
-  });
+
   const enableUser = errorWrapper(async (row: any) => {
     await enableUserById(row?._id);
     updateUserData({ ...row, status: "ACTIVE" });
   });
-  const disableBank = errorWrapper(async (row: any) => {
-    await deleteBankById(row?._id);
-    updateBankData({ ...row, status: "DISABLED" });
-  });
+
   const disableUser = errorWrapper(async (row: any) => {
     await deleteUserById(row?._id);
     updateUserData({ ...row, status: "DISABLED" });
@@ -320,10 +203,22 @@ const AdminPage = () => {
     ...row,
     disableUser: disableUser,
     enableUser: enableUser,
-    disableBank: disableBank,
-    enableBank: enableBank,
     setError: setError,
   });
+
+
+  if (loading || isLoading || usersLoading )
+  return (
+    <Stack
+      flex={1}
+      height={"100vh"}
+      justifyContent={"center"}
+      alignItems={"center"}
+    >
+      <CircularProgress />
+    </Stack>
+  );
+
 
   return (
     <Stack flex={1} height={"100vh"} padding={"15px"}>
@@ -369,28 +264,14 @@ const AdminPage = () => {
           padding={"30px"}
           boxShadow={"2px 4px 20px 2px rgba(0, 0, 0, 0.3);"}
         >
-          {!showBanks && (
-            <AdminStack
-              title={"ADMINISTRAR USUARIOS"}
-              handleModal={() => handleModal("createuser")}
-              showTable={showUsers}
-              tableColumns={preColumnsUsers}
-              setShowTable={setShowUsers}
-              dataTable={(userDataList || usersData || []).map(addSetters)}
-              banks={bankDataList || banksData}
-            />
-          )}
-          <Stack height={"15px"} />
-          {!showUsers && (
-            <AdminStack
-              title={"ADMINISTRAR BANCOS"}
-              handleModal={() => handleModal("createbank")}
-              showTable={showBanks}
-              tableColumns={preColumnsBanks}
-              setShowTable={setShowBanks}
-              dataTable={(bankDataList || banksData || []).map(addSetters)}
-            />
-          )}
+        <AdminStack
+          title={"ADMINISTRAR USUARIOS"}
+          handleModal={() => handleModal("createuser")}
+          tableColumns={preColumnsUsers}
+          dataTable={(userDataList || usersData || []).map(addSetters)}
+          isLoading={usersLoading}
+        />
+        <Stack height={"15px"} />
         </Stack>
         <Modal
           sx={{
@@ -417,25 +298,14 @@ const AdminPage = () => {
               padding={"20px"}
             >
               <SinaText size='mWide'>
-                {type === "createuser" && "Crear Usuario"}
-                {type === "createbank" && "Crear Banco"}
+                Crear Usuario
               </SinaText>
             </Stack>
-            {type === "createuser" && (
-              <CreateUserForm
-                banks={(bankDataList || banksData || []).filter(
-                  (b: any) => b.status == "ACTIVE"
-                )}
-                handleSubmit={handleSubmit}
-                setOpenModal={setOpenModal}
-              />
-            )}
-            {type === "createbank" && (
-              <CreateBankForm
-                handleSubmit={handleSubmit}
-                setOpenModal={setOpenModal}
-              />
-            )}
+            <CreateUserForm
+              handleSubmit={handleSubmit}
+              setOpenModal={setOpenModal}
+              isBankAdmin={userData?.isBankAdmin}
+            />
           </Paper>
         </Modal>
       </Stack>
