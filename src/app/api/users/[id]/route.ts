@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic'
 
 import { processError } from '@/lib/error';
 import { getSessionUser, validateAdminPermission } from '@/lib/security';
+import { getUsers } from '@/lib/users/getusers.prisma';
 import { updateInfoUserById } from '@/lib/users/updateInfoUserById.prisma';
 import { updateStatusUserById } from '@/lib/users/updateStatusUserById.prisma';
 import { NextRequest, NextResponse } from 'next/server';
@@ -35,12 +36,16 @@ export const DELETE = async (req: NextRequest, { params }: DeleteParam) => {
     }
 }
 
-export const UPDATE = async (req: NextRequest, { params }: UpdateUserProps) => {
+export const PUT = async (req: NextRequest, { params }: DeleteParam) => {
     try {
+        const editUserId = params.id;
         const user = getSessionUser(req);
+        const data = await req.json();
         validateAdminPermission(user)
-        updateInfoUserById(params)
-        return new Response(undefined, { status: 204 })
+        await updateInfoUserById(editUserId, data);
+        const newUsers = await getUsers();
+        return Response.json(newUsers);
+        // return new Response(undefined, { status: 204 })
     } catch (error) {
         return processError('No se ha podido eliminar el usuario')
     }

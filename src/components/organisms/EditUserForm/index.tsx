@@ -22,7 +22,7 @@ export const EditUserForm = ({
   isBankAdmin,
   currentRow,
 }: CreateFormsProps) => {
-  const {username, first_name, last_name, is_staff, bank_id} = currentRow;
+  const {username, first_name, last_name, is_staff, bank_id, email} = currentRow;
   const [bank, setBank] = useState(bank_id);
   const [newBankAdmin, setNewBankAdmin] = useState(is_staff);
   
@@ -66,6 +66,16 @@ export const EditUserForm = ({
                 variant='filled'
                 label={'Apellido'}
                 defaultValue={last_name}
+                // placeholder={currentRow.username}
+                sx={{ width: "100%" }}
+              />
+            </Grid>
+            <Grid item sm={4} padding={"10px"}>
+              <TextField
+                required
+                variant='filled'
+                label={'Email'}
+                defaultValue={email}
                 // placeholder={currentRow.username}
                 sx={{ width: "100%" }}
               />

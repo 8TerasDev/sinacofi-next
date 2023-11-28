@@ -14,7 +14,7 @@ export const getUsers = async () => {
       user.id = user.id.toString();
       // @ts-ignore
       delete user.password;
-      
+
       return { ...user, bank_id: user.bank_id?.toString() }
     });
     return stringUsers;

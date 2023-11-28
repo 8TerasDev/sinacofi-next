@@ -243,6 +243,33 @@ const AdminPage = () => {
     }
   };
 
+  const handleEditUser = async (e: any) => {
+    const [
+      { value: username },
+      { value: first_name },
+      { value: last_name },
+      { value: email },
+      { value: bank_id },
+      { value: is_staff }
+    ] = e.target;
+
+    try {
+      const data = {
+        username,
+        first_name,
+        last_name,
+        email,
+        is_staff: Boolean(is_staff),
+        bank_id,
+      };
+      const res = await axios.put(`api/users/${currentRow._id}`, data);
+      const newUsersList = res.data;
+      setUserDataList(newUsersList);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleSubmit = async (e: any) => {
     setIsLoading(true);
     setOpenModal(false);
@@ -255,7 +282,7 @@ const AdminPage = () => {
         const res = await handleCreateUser(e);
       }
       if (type === "edituser") {
-        console.log('here')
+        const res = await handleEditUser(e);
         //const res = await handleCreateBank(e);
       }
     } catch (err) {
@@ -308,7 +335,6 @@ const AdminPage = () => {
     updateUserData({ ...row, status: "DISABLED" });
   });
   const updateUser = errorWrapper(async (row: any) => {
-    console.log(row)
     handleModal('edituser')
     setCurrentRow(row);
     // await updateInfoUserById(row?._id);
