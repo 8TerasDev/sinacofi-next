@@ -16,8 +16,8 @@ export const UserTableComponent = ({ rows, tableColumns, banks }: any) => {
       const bank =
         row.bank_id &&
         banks.find((bank: any) => parseInt(bank.id) === parseInt(row.bank_id));
-      const { nombre } = bank || {};
-      return { ...row, _id: row._id ?? row.id, id: index, bank_id: nombre };
+      const { nombre: bankName } = bank || {};
+      return { ...row, _id: row._id ?? row.id, id: index, bankName };
     }
     return { ...row, _id: row._id ?? row.id, id: index };
   });

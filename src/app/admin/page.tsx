@@ -110,7 +110,7 @@ const preColumnsUsers = [
     headerName: "Es Staff",
   },
   {
-    field: "bank_id",
+    field: "bankName",
     headerName: "Banco",
   },
 ];
@@ -173,23 +173,10 @@ const AdminPage = () => {
   const [error, setError] = useState(false);
   const [type, setType] = useState("");
   const route = useRouter();
-  // const { data, isLoading: loading } = useGetProfile();
   const { data: usersData, isLoading: usersLoading } = useGetUsers();
   const { data: banksData, isLoading: banksLoading } = useGetBanks();
   const [bankDataList, setBankDataList] = useState(banksData);
   const [userDataList, setUserDataList] = useState(usersData);
-
-  // const handleEdit = (rowId) => {
-  //   console.log(rowId)
-  //   const newRows = userDataList && userDataList.map( (item ) => {
-  //     if(item.id === rowId){
-  //       return {...item, editable: true }
-  //     }
-  //     return item
-  //   });
-  //   setUserDataList(newRows);
-  // }
-
 
   const handleModal = (modalType: string) => {
     setIsLoading(true);

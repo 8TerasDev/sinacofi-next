@@ -22,10 +22,10 @@ export const EditUserForm = ({
   isBankAdmin,
   currentRow,
 }: CreateFormsProps) => {
-  const [bank, setBank] = useState("none");
-  const [newBankAdmin, setNewBankAdmin] = useState(false);
   const {username, first_name, last_name, is_staff, bank_id} = currentRow;
-  console.log(banks)
+  const [bank, setBank] = useState(bank_id);
+  const [newBankAdmin, setNewBankAdmin] = useState(is_staff);
+  
   return (
     <FormControl
       variant='filled'
@@ -91,7 +91,6 @@ export const EditUserForm = ({
                 </InputLabel>
                 <Select
                   labelId='select-label'
-                  defaultValue={bank_id}
                   id='select'
                   label='Banco'
                   fullWidth
@@ -113,8 +112,8 @@ export const EditUserForm = ({
                 <Stack flexDirection={'row'} alignItems={'center'}>
                 <FormControlLabel control={
                   <Checkbox
+                    defaultChecked={is_staff}
                     value={newBankAdmin}
-                    defaultValue={is_staff}
                     onChange={(e) => setNewBankAdmin(e.target.checked)}/>
                 } label="Usuario Administrador de banco" />
                 </Stack>
