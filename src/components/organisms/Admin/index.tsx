@@ -4,14 +4,13 @@ import { DataGrid } from "@mui/x-data-grid";
 import React from "react";
 
 export const UserTableComponent = ({ rows, tableColumns, banks }: any) => {
+  const width = typeof window !== 'undefined' && window.screen.width / (tableColumns.length + 1);
   const columns = tableColumns.map((column: any) => ({
     field: column.field,
     headerName: column.name,
     renderCell: column.renderCell,
     sortable: column.sortable,
-    width: column.renderCell
-      ? undefined
-      : window.screen.width / (tableColumns.length + 1),
+    width: column.renderCell ? undefined : width
   }));
 
   const rows2 = rows.map((row: any, index: any) => {
