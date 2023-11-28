@@ -1,15 +1,13 @@
 import SinaText from "@/components/atoms/SinaText";
-import { Button, CircularProgress, Paper, Stack } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { updateInfoUserById } from "@/lib/users/updateInfoUserById.prisma";
+import { Button, Paper, Stack } from "@mui/material";
+import { DataGrid, GridRowModes } from "@mui/x-data-grid";
 import React from "react";
 
 export const UserTableComponent = ({ rows, tableColumns, banks }: any) => {
   const width = typeof window !== 'undefined' && window.screen.width / (tableColumns.length + 1);
   const columns = tableColumns.map((column: any) => ({
-    field: column.field,
-    headerName: column.name,
-    renderCell: column.renderCell,
-    sortable: column.sortable,
+    ...column,
     width: column.renderCell ? undefined : width
   }));
 
@@ -18,8 +16,8 @@ export const UserTableComponent = ({ rows, tableColumns, banks }: any) => {
       const bank =
         row.bank_id &&
         banks.find((bank: any) => parseInt(bank.id) === parseInt(row.bank_id));
-      const { nombre } = bank || {};
-      return { ...row, _id: row._id ?? row.id, id: index, bank_id: nombre };
+      const { nombre: bankName } = bank || {};
+      return { ...row, _id: row._id ?? row.id, id: index, bankName };
     }
     return { ...row, _id: row._id ?? row.id, id: index };
   });
@@ -30,7 +28,6 @@ export const UserTableComponent = ({ rows, tableColumns, banks }: any) => {
       hideFooter
       columns={columns}
       rows={rows2}
-      disableRowSelectionOnClick
     />
   );
 };
@@ -43,17 +40,6 @@ export const AdminStack = ({
   banks,
   isLoading,
 }: any) => {
-
-  // if (isLoading) return (
-  //   <Stack
-  //     flex={1}
-  //     height={"100vh"}
-  //     justifyContent={"center"}
-  //     alignItems={"center"}
-  //   >
-  //     <CircularProgress />
-  //   </Stack>
-  // );
 
   return (
     <Stack>

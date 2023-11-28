@@ -37,7 +37,7 @@ const ButtonConfirm = ({
         handleClose={handleClose}
         handleDelete={processDelete}
       />
-      <IconButton onClick={handleOpen}>{icon}</IconButton>
+      <IconButton sx={{padding:0}} onClick={handleOpen}>{icon}</IconButton>
     </>
   );
 };

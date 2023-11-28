@@ -1,10 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Alert,
   Button,
   Chip,
   CircularProgress,
+  IconButton,
   Modal,
   Paper,
   Snackbar,
@@ -13,20 +14,22 @@ import {
 import Image from "next/image";
 import sinacofi_logo from "../../assets/images/sinacofi_logo.png";
 import { useRouter } from "next/navigation";
-import { Home } from "@mui/icons-material";
+import { Edit, Home } from "@mui/icons-material";
 import SinaText from "@/components/atoms/SinaText";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import axios from "@/common/http-client";
 import { CreateUserForm } from "@/components/organisms/CreateUserForm";
 import { CreateBankForm } from "@/components/organisms/CreateBankForm";
-import { useGetProfile } from "@/custom-hooks/useGetProfile";
 import { useGetUsers } from "@/custom-hooks/useGetUsers";
 import { AdminStack } from "@/components/organisms/Admin";
 import { useGetBanks } from "@/custom-hooks/useGetBanks";
 import ButtonConfirm from "@/components/organisms/ButtonConfirm";
 import { deleteBankById, enableBankById } from "@/common/bank";
 import { deleteUserById, enableUserById } from "@/common/user";
+import { GridRowModes } from "@mui/x-data-grid";
+import { updateInfoUserById } from "@/lib/users/updateInfoUserById.prisma";
+import { EditUserForm } from "@/components/organisms/EditUserForm";
 
 // TODO: Create a customHook / actions in store to createUsers/Banks
 
@@ -35,6 +38,7 @@ export type CreateFormsProps = {
   setOpenModal: (input: boolean) => void;
   banks?: any;
   isBankAdmin?: boolean;
+  currentRow?: any;
 };
 
 const isActive = (row: any) => row.status === "ACTIVE";
@@ -42,30 +46,36 @@ const isActive = (row: any) => row.status === "ACTIVE";
 const preColumnsUsers = [
   {
     field: "acciones",
-    name: "Acciones",
+    headerName: "Acciones",
     sortable: false,
     renderCell: ({ row }: any) => (
-      <ButtonConfirm
-        icon={isActive(row) ? <DeleteIcon /> : <RestoreFromTrashIcon />}
-        title={`${row.first_name} ${row.last_name}`}
-        message={
-          isActive(row)
-            ? "Al desactivar el usaurio este no podra usarse"
-            : "Esta acción permitira que el usuario pueda usarse nuevamente"
-        }
-        handleDelete={async () => {
-          if (isActive(row)) {
-            await row.disableUser(row);
-          } else {
-            await row.enableUser(row);
+      <Stack flexDirection={'row'} flex={1} justifyContent={'space-around'}>
+        <IconButton onClick={()=>row.updateUser(row)} sx={{padding:0}}>
+          <Edit color='action' />
+        </IconButton>
+        <ButtonConfirm
+          icon={isActive(row) ? <DeleteIcon /> : <RestoreFromTrashIcon />}
+          title={`${row.first_name} ${row.last_name}`}
+          message={
+            isActive(row)
+              ? "Al desactivar el usaurio este no podra usarse"
+              : "Esta acción permitira que el usuario pueda usarse nuevamente"
           }
-        }}
-      />
+          handleDelete={async () => {
+            if (isActive(row)) {
+              await row.disableUser(row);
+            } else {
+              await row.enableUser(row);
+            }
+          }}
+        />
+
+      </Stack>
     ),
   },
   {
     field: "status",
-    name: "Status",
+    headerName: "Status",
     sortable: false,
     renderCell: ({ row }: any) => {
       return (
@@ -81,33 +91,33 @@ const preColumnsUsers = [
   },
   {
     field: "username",
-    name: "Username",
+    headerName: "Username",
   },
   {
     field: "first_name",
-    name: "Nombre",
+    headerName: "Nombre",
   },
   {
     field: "last_name",
-    name: "Apellido",
+    headerName: "Apellido",
   },
   {
     field: "email",
-    name: "Email",
+    headerName: "Email",
   },
   {
     field: "is_staff",
-    name: "Es Staff",
+    headerName: "Es Staff",
   },
   {
-    field: "bank_id",
-    name: "Banco",
+    field: "bankName",
+    headerName: "Banco",
   },
 ];
 const preColumnsBanks = [
   {
     field: "acciones",
-    name: "Acciones",
+    headerName: "Acciones",
     sortable: false,
     renderCell: ({ row }: any) => (
       <ButtonConfirm
@@ -130,7 +140,7 @@ const preColumnsBanks = [
   },
   {
     field: "status",
-    name: "Status",
+    headerName: "Status",
     sortable: false,
     renderCell: ({ row }: any) => {
       return (
@@ -146,11 +156,11 @@ const preColumnsBanks = [
   },
   {
     field: "nombre",
-    name: "Nombre",
+    headerName: "Nombre",
   },
   {
     field: "codigo",
-    name: "Codigo",
+    headerName: "Codigo",
   },
 ];
 
@@ -159,23 +169,14 @@ const AdminPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showUsers, setShowUsers] = useState(false);
   const [showBanks, setShowBanks] = useState(false);
+  const [currentRow, setCurrentRow] = useState<any>();
   const [error, setError] = useState(false);
   const [type, setType] = useState("");
   const route = useRouter();
-  const { data, isLoading: loading } = useGetProfile();
   const { data: usersData, isLoading: usersLoading } = useGetUsers();
   const { data: banksData, isLoading: banksLoading } = useGetBanks();
   const [bankDataList, setBankDataList] = useState(banksData);
   const [userDataList, setUserDataList] = useState(usersData);
-
-  // useEffect(() => {
-  //   // TODO. REFACTOR. Better use Middleware
-  //   if (data) {
-  //     // @ts-ignore
-  //     !data.isAdmin && route.push(`/home`);
-  //     setIsLoading(loading);
-  //   }
-  // }, [data]);
 
   const handleModal = (modalType: string) => {
     setIsLoading(true);
@@ -242,6 +243,33 @@ const AdminPage = () => {
     }
   };
 
+  const handleEditUser = async (e: any) => {
+    const [
+      { value: username },
+      { value: first_name },
+      { value: last_name },
+      { value: email },
+      { value: bank_id },
+      { value: is_staff }
+    ] = e.target;
+
+    try {
+      const data = {
+        username,
+        first_name,
+        last_name,
+        email,
+        is_staff: Boolean(is_staff),
+        bank_id,
+      };
+      const res = await axios.put(`api/users/${currentRow._id}`, data);
+      const newUsersList = res.data;
+      setUserDataList(newUsersList);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleSubmit = async (e: any) => {
     setIsLoading(true);
     setOpenModal(false);
@@ -253,6 +281,10 @@ const AdminPage = () => {
       if (type === "createuser") {
         const res = await handleCreateUser(e);
       }
+      if (type === "edituser") {
+        const res = await handleEditUser(e);
+        //const res = await handleCreateBank(e);
+      }
     } catch (err) {
       console.log("Error", err);
     } finally {
@@ -260,20 +292,7 @@ const AdminPage = () => {
     }
   };
 
-  if (isLoading || usersLoading || banksLoading)
-    return (
-      <Stack
-        flex={1}
-        height={"100vh"}
-        justifyContent={"center"}
-        alignItems={"center"}
-      >
-        <CircularProgress />
-      </Stack>
-    );
-  const handleClose = () => {
-    setError(false);
-  };
+
 
   const updateBankData = (_row: any) => {
     const data: any[] = [...(bankDataList || banksData || [])];
@@ -315,16 +334,38 @@ const AdminPage = () => {
     await deleteUserById(row?._id);
     updateUserData({ ...row, status: "DISABLED" });
   });
+  const updateUser = errorWrapper(async (row: any) => {
+    handleModal('edituser')
+    setCurrentRow(row);
+    // await updateInfoUserById(row?._id);
+    // updateUserData({ ...row, first_name:'testing' });
+  });
+
 
   const addSetters = (row: any) => ({
     ...row,
-    disableUser: disableUser,
-    enableUser: enableUser,
-    disableBank: disableBank,
-    enableBank: enableBank,
-    setError: setError,
+    disableUser,
+    enableUser,
+    disableBank,
+    enableBank,
+    setError,
+    updateUser,
   });
 
+  if (isLoading || usersLoading || banksLoading)
+    return (
+      <Stack
+        flex={1}
+        height={"100vh"}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        <CircularProgress />
+      </Stack>
+    );
+  const handleClose = () => {
+    setError(false);
+  };
   return (
     <Stack flex={1} height={"100vh"} padding={"15px"}>
       <Snackbar
@@ -369,28 +410,24 @@ const AdminPage = () => {
           padding={"30px"}
           boxShadow={"2px 4px 20px 2px rgba(0, 0, 0, 0.3);"}
         >
-          {!showBanks && (
-            <AdminStack
-              title={"ADMINISTRAR USUARIOS"}
-              handleModal={() => handleModal("createuser")}
-              showTable={showUsers}
-              tableColumns={preColumnsUsers}
-              setShowTable={setShowUsers}
-              dataTable={(userDataList || usersData || []).map(addSetters)}
-              banks={bankDataList || banksData}
-            />
-          )}
+          <AdminStack
+            title={"ADMINISTRAR USUARIOS"}
+            handleModal={() => handleModal("createuser")}
+            showTable={showUsers}
+            tableColumns={preColumnsUsers}
+            setShowTable={setShowUsers}
+            dataTable={(userDataList || usersData || []).map(addSetters)}
+            banks={bankDataList || banksData}
+          />
           <Stack height={"15px"} />
-          {!showUsers && (
-            <AdminStack
-              title={"ADMINISTRAR BANCOS"}
-              handleModal={() => handleModal("createbank")}
-              showTable={showBanks}
-              tableColumns={preColumnsBanks}
-              setShowTable={setShowBanks}
-              dataTable={(bankDataList || banksData || []).map(addSetters)}
-            />
-          )}
+          <AdminStack
+            title={"ADMINISTRAR BANCOS"}
+            handleModal={() => handleModal("createbank")}
+            showTable={showBanks}
+            tableColumns={preColumnsBanks}
+            setShowTable={setShowBanks}
+            dataTable={(bankDataList || banksData || []).map(addSetters)}
+          />
         </Stack>
         <Modal
           sx={{
@@ -419,6 +456,7 @@ const AdminPage = () => {
               <SinaText size='mWide'>
                 {type === "createuser" && "Crear Usuario"}
                 {type === "createbank" && "Crear Banco"}
+                {type === "edituser" && "Editar Usuario"}
               </SinaText>
             </Stack>
             {type === "createuser" && (
@@ -428,6 +466,16 @@ const AdminPage = () => {
                 )}
                 handleSubmit={handleSubmit}
                 setOpenModal={setOpenModal}
+              />
+            )}
+            {type === "edituser" && (
+              <EditUserForm
+                banks={(bankDataList || banksData || []).filter(
+                  (b: any) => b.status == "ACTIVE"
+                )}
+                handleSubmit={handleSubmit}
+                setOpenModal={setOpenModal}
+                currentRow={currentRow}
               />
             )}
             {type === "createbank" && (
