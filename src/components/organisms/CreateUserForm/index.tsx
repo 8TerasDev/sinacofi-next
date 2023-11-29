@@ -1,4 +1,5 @@
 import { CreateFormsProps } from "@/app/admin/page";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   FormControl,
   Stack,
@@ -10,6 +11,8 @@ import {
   Select,
   Checkbox,
   FormControlLabel,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import React, { useState } from "react";
 
@@ -23,6 +26,7 @@ export const CreateUserForm = ({
 }: CreateFormsProps) => {
   const [bank, setBank] = useState("none");
   const [newBankAdmin, setNewBankAdmin] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   return (
     <FormControl
       variant='filled'
@@ -68,9 +72,22 @@ export const CreateUserForm = ({
               id='password'
               name='password'
               autoComplete='password'
-              type={"password"}
+              type={showPassword ? "text" : "password"}
               inputProps={{
-                pattern: "/^[A-Za-z]\w{7,14}$/"
+                //pattern: "/^[a-zA-Z0-9]{8,99}$/m"
+                pattern: ".{8,}",
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={()=>setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
               }}
             />
           </Grid>

@@ -22,7 +22,6 @@ export async function createNewUser() {
         status: 'ACTIVE'
       },
     });
-    console.log(newAdmin)
     return newAdmin;
   } catch (error) {
     console.error("Error al obtener las declaraciones:", error);
