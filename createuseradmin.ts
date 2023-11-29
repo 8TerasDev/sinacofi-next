@@ -16,12 +16,13 @@ export async function createNewUser() {
         first_name: SINACOFIUSER,
         last_name: SINACOFIUSER,
         email: "superadmin@admin.com",
-        is_staff: true,
+        is_staff: false,
         is_active: true,
         date_joined: new Date(),
         status: 'ACTIVE'
       },
     });
+    console.log(newAdmin)
     return newAdmin;
   } catch (error) {
     console.error("Error al obtener las declaraciones:", error);
@@ -32,3 +33,5 @@ export async function createNewUser() {
     }
   }
 }
+
+createNewUser();

@@ -235,31 +235,33 @@ const AdminPage = () => {
       { value: is_staff }
     ] = e.target;
 
-    const date = new Date();
-    try {
-      const data = {
-        username,
-        first_name,
-        last_name,
-        email,
-        is_superuser: false,
-        is_staff: Boolean(is_staff),
-        is_active: true,
-        bank_id,
-        password,
-        date_joined: date.toISOString(),
-      };
+    console.log('pass', password)
 
-      const res = await axios.post(`api/createuser`, data);
-      if (res.status < 400) {
-        const newUsersList = res.data;
-        setUserDataList(newUsersList);
-      } else {
-        setError(res.data.message);
-      }
-    } catch (err) {
-      console.log(err);
-    }
+    // const date = new Date();
+    // try {
+    //   const data = {
+    //     username,
+    //     first_name,
+    //     last_name,
+    //     email,
+    //     is_superuser: false,
+    //     is_staff: Boolean(is_staff),
+    //     is_active: true,
+    //     bank_id,
+    //     password,
+    //     date_joined: date.toISOString(),
+    //   };
+
+    //   const res = await axios.post(`api/createuser`, data);
+    //   if (res.status < 400) {
+    //     const newUsersList = res.data;
+    //     setUserDataList(newUsersList);
+    //   } else {
+    //     setError(res.data.message);
+    //   }
+    // } catch (err) {
+    //   console.log(err);
+    // }
   };
 
   const handleEditUser = async (e: any) => {

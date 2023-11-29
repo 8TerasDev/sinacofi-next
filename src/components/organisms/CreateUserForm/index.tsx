@@ -69,6 +69,9 @@ export const CreateUserForm = ({
               name='password'
               autoComplete='password'
               type={"password"}
+              inputProps={{
+                pattern: "/^[A-Za-z]\w{7,14}$/"
+              }}
             />
           </Grid>
           {!isBankAdmin && (
