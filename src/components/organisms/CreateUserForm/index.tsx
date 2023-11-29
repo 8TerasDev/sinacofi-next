@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 
-const Fields = ["Username", "Nombre", "Apellido", "Email"];
+const Fields = ["Username", "Nombre", "Apellido"];
 
 export const CreateUserForm = ({
   handleSubmit,
@@ -48,6 +48,16 @@ export const CreateUserForm = ({
               />
             </Grid>
           ))}
+          <Grid item sm={4} padding={"10px"}>
+            <TextField
+              required
+              variant='filled'
+              label={'Email'}
+              placeholder={'Email'}
+              sx={{ width: "100%" }}
+              type='email'
+            />
+          </Grid>
           <Grid item sm={4} padding={"10px"}>
             <TextField
               required

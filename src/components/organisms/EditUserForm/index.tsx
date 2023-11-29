@@ -46,7 +46,6 @@ export const EditUserForm = ({
                 variant='filled'
                 label={'Username'}
                 defaultValue={username}
-                // placeholder={currentRow.username}
                 sx={{ width: "100%" }}
               />
             </Grid>
@@ -56,7 +55,6 @@ export const EditUserForm = ({
                 variant='filled'
                 label={'Nombre'}
                 defaultValue={first_name}
-                // placeholder={currentRow.username}
                 sx={{ width: "100%" }}
               />
             </Grid>
@@ -66,7 +64,6 @@ export const EditUserForm = ({
                 variant='filled'
                 label={'Apellido'}
                 defaultValue={last_name}
-                // placeholder={currentRow.username}
                 sx={{ width: "100%" }}
               />
             </Grid>
@@ -76,8 +73,8 @@ export const EditUserForm = ({
                 variant='filled'
                 label={'Email'}
                 defaultValue={email}
-                // placeholder={currentRow.username}
                 sx={{ width: "100%" }}
+                type='email'
               />
             </Grid>
           {/* <Grid item sm={4} padding={"10px"}>
