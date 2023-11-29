@@ -1,6 +1,6 @@
 # Step 1: Build the Next.js application
 # Use an official Node runtime as a parent image
-FROM node:20-alpine as builder
+FROM node:20-alpine AS builder
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
@@ -26,7 +26,7 @@ COPY .env ./.env
 RUN source .env && yarn build
 
 # Step 2: Serve the Next.js application
-FROM node:20-alpine as runner
+FROM node:20-alpine AS runner
 
 WORKDIR /usr/src/app
 
