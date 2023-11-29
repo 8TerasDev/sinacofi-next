@@ -9,9 +9,6 @@ import axios from '@/common/http-client';
 const SinaAppBar = ({handleAdmin}: any) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isBankAdmin, setIsBankAdmin] = useState(false);
-  // const BANK_ADMIN_URL = isBankAdmin ? '/bankadmin' : '';
-  const ADMIN_URL = isAdmin ? '/admin' : ''; 
-  //const URL = `${BANK_ADMIN_URL}${ADMIN_URL}`;
 
   const URL: () => string = () => {
     if(isAdmin) return '/admin';
