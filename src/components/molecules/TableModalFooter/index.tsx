@@ -17,6 +17,7 @@ import SinaText from "@/components/atoms/SinaText";
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { DeclaracionPDF } from "../PDFViewer";
 import { NewDeclaracionesContext } from "@/contexts/new-declaraciones.context";
+import { createNewKindCSV } from "@/lib/utils";
 
 const TableModalFooter = ({
   onNextDeclaracion,
@@ -68,7 +69,7 @@ const TableModalFooter = ({
           </Button>
         </Grid>
         <Grid container item xs={8} justifyContent="end">
-          <PDFDownloadLink
+          {/* <PDFDownloadLink
             document={
               <DeclaracionPDF
                 declaracion={declaracion}
@@ -84,7 +85,16 @@ const TableModalFooter = ({
             >
               <SinaText color="white">Descargar declaración</SinaText>
             </Button>
-          </PDFDownloadLink>
+          </PDFDownloadLink> */}
+          <Button
+              startIcon={<DownloadIcon color="secondary" />}
+              sx={{ height: "4vh", mr: "2vh" }}
+              aria-label="descargar"
+              variant="contained"
+              onClick={()=>createNewKindCSV(declaracion)}
+            >
+              <SinaText color="white">Descargar declaración</SinaText>
+            </Button>
           <Button
             startIcon={<DeleteOutlineIcon color="secondary" />}
             sx={{ height: "4vh" }}

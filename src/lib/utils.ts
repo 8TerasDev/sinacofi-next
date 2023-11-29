@@ -55,6 +55,85 @@ const createCSV = (data: any) => {
   return final;
 };
 
+export const createNewKindCSV = (data: any) => {
+  //console.log(data)
+  const {
+    //banco_id, 
+    bf_data_process_beneficiariosfinales, // ce y bf
+    bf_data_process_personasjuridicas, // de aca sale mucha info cmo ej rut
+    codigo_banco,
+    fecha_declaracion,
+    fecha_subida,
+    num_declaracion,
+    correlativo
+  } = data;
+
+  const {
+    rut, 
+    razon_social, 
+    domicilio, 
+    lugar_de_constitucion, 
+    ciudad,
+    nombre_rep_legal,
+    tipo_de_sociedad,
+  } = bf_data_process_personasjuridicas[0];
+
+  console.log(
+    'PJ',
+    rut,
+    razon_social,
+    domicilio,
+    lugar_de_constitucion,
+    ciudad,
+    'num',
+    'num2',
+    nombre_rep_legal,
+    tipo_de_sociedad,
+    codigo_banco,
+    fecha_subida, //o created_at......
+    num_declaracion
+    )
+
+    console.log(bf_data_process_beneficiariosfinales)
+
+    bf_data_process_beneficiariosfinales.map( item => {
+      const {
+        tipo, 
+        identificacion, 
+        nombre_completo, 
+        domicilio:domicilio2,
+        ciudad:ciudad2,
+        pais,
+        participacion,
+      } = item;
+      console.log(
+        tipo, 
+        identificacion, 
+        nombre_completo, 
+        domicilio2,
+        ciudad2,
+        pais,
+        correlativo,
+        participacion,
+        rut,
+        codigo_banco,
+        num_declaracion,
+      )
+    })
+    // orden como las agarro es como es
+    // const {
+    //   tipo, 
+    //   identificacion, 
+    //   nombre_completo, 
+    //   domicilio:domicilio2,
+    //   ciudad:ciudad2,
+    //   pais,
+    //   participacion,
+    // } = bf_data_process_beneficiariosfinales[0];
+
+
+}
+
 export const handleDownloadCSV = (data: BfDataProcessDeclaraciones[]) => {
   const newDataMap = data.map((declaracion) => {
     return {
