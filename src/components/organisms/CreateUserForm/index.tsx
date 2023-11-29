@@ -1,4 +1,5 @@
 import { CreateFormsProps } from "@/app/admin/page";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   FormControl,
   Stack,
@@ -10,10 +11,12 @@ import {
   Select,
   Checkbox,
   FormControlLabel,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import React, { useState } from "react";
 
-const Fields = ["Username", "Nombre", "Apellido", "Email"];
+const Fields = ["Username", "Nombre", "Apellido"];
 
 export const CreateUserForm = ({
   handleSubmit,
@@ -23,6 +26,7 @@ export const CreateUserForm = ({
 }: CreateFormsProps) => {
   const [bank, setBank] = useState("none");
   const [newBankAdmin, setNewBankAdmin] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   return (
     <FormControl
       variant='filled'
@@ -52,13 +56,39 @@ export const CreateUserForm = ({
             <TextField
               required
               variant='filled'
+              label={'Email'}
+              placeholder={'Email'}
+              sx={{ width: "100%" }}
+              type='email'
+            />
+          </Grid>
+          <Grid item sm={4} padding={"10px"}>
+            <TextField
+              required
+              variant='filled'
               label='Password'
               placeholder='Password'
               sx={{ width: "100%" }}
               id='password'
               name='password'
               autoComplete='password'
-              type={"password"}
+              type={showPassword ? "text" : "password"}
+              inputProps={{
+                //pattern: "/^[a-zA-Z0-9]{8,99}$/m"
+                pattern: ".{8,}",
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={()=>setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
           </Grid>
           {!isBankAdmin && (
