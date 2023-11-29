@@ -16,7 +16,7 @@ export async function createNewUser() {
         first_name: SINACOFIUSER,
         last_name: SINACOFIUSER,
         email: "superadmin@admin.com",
-        is_staff: true,
+        is_staff: false,
         is_active: true,
         date_joined: new Date(),
         status: 'ACTIVE'
@@ -32,3 +32,5 @@ export async function createNewUser() {
     }
   }
 }
+
+createNewUser();
