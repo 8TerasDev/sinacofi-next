@@ -46,7 +46,7 @@ const SinaAppBar = ({handleAdmin}: any) => {
         <Stack padding={'5px'}>
           <Button
             startIcon={<Person />}
-            onClick={()=>handleAdmin(URL)} variant="contained" color="success">
+            onClick={()=>handleAdmin(URL())} variant="contained" color="success">
             Administrador
           </Button>
         </Stack>
