@@ -9,9 +9,12 @@ import axios from '@/common/http-client';
 const SinaAppBar = ({handleAdmin}: any) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isBankAdmin, setIsBankAdmin] = useState(false);
-  const BANK_ADMIN_URL = isBankAdmin ? '/bankadmin' : '';
-  const ADMIN_URL = isAdmin ? '/admin' : ''; 
-  const URL = `${BANK_ADMIN_URL}${ADMIN_URL}`;
+
+  const URL: () => string = () => {
+    if(isAdmin) return '/admin';
+    if(isBankAdmin) return '/bankadmin';
+    return '';
+  }
 
   const getProfile = async () => {
     try {
@@ -40,7 +43,7 @@ const SinaAppBar = ({handleAdmin}: any) => {
         <Stack padding={'5px'}>
           <Button
             startIcon={<Person />}
-            onClick={()=>handleAdmin(URL)} variant="contained" color="success">
+            onClick={()=>handleAdmin(URL())} variant="contained" color="success">
             Administrador
           </Button>
         </Stack>
