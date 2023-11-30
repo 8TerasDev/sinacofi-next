@@ -21,6 +21,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     return Response.json(banks)
   }
   catch (err: any) {
+    console.log(err)
     return processError('No se ha podido crear el banco')
   }
 }

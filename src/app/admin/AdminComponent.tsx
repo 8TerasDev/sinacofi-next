@@ -227,6 +227,7 @@ const AdminPage = () => {
       { value: last_name },
       { value: email },
       { value: password },
+      { value: nothing },
       { value: bank_id },
       { value: is_staff }
     ] = e.target;
