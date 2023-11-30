@@ -128,11 +128,10 @@ export const handleDownloadCSV = (data: any, type?:any) => {
     return {
       id: declaracion.id,
       codigo_banco: declaracion.codigo_banco,
-      correlativo: declaracion.correlativo,
-      status: declaracion.status,
-      fecha_subida: dayjs(declaracion.fecha_subida).format("DD/MM/YYYY"),
       num_declaracion: declaracion.num_declaracion,
+      razon_social: declaracion.bf_data_process_personasjuridicas[0].razon_social,
       fecha_declaracion: dayjs(declaracion.fecha_declaracion).format("DD/MM/YYYY"),
+      fecha_subida: dayjs(declaracion.fecha_subida).format("DD/MM/YYYY"),  
     };
   });
   const csvData = newDataMap ? createCSV(newDataMap) : createNewKindCSV(data);
