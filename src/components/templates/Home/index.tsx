@@ -20,7 +20,7 @@ const HomeTemplate = ({isAdmin, handleBankAdmin, loading}:any) => {
     <MainLayout>
       <SinaAppBar handleAdmin={handleBankAdmin}/>
       <SinaDrawer isOpen={isOpen} isOpenSetter={isOpenSetter}>
-        <DrawerBody isOpen={isOpen} isOpenSetter={isOpenSetter} />
+        {!isAdmin && <DrawerBody isOpen={isOpen} isOpenSetter={isOpenSetter} />}
       </SinaDrawer>
       <SinaMainCard>
         {(isLoading || loading) ? (

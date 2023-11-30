@@ -11,10 +11,7 @@ import {
   Snackbar,
   Stack,
 } from "@mui/material";
-import Image from "next/image";
-import sinacofi_logo from "../../assets/images/sinacofi_logo.png";
-import { useRouter } from "next/navigation";
-import { Edit, Home } from "@mui/icons-material";
+import { Edit} from "@mui/icons-material";
 import SinaText from "@/components/atoms/SinaText";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
@@ -176,7 +173,6 @@ const AdminPage = () => {
   const [currentRow, setCurrentRow] = useState<any>();
   const [error, setError] = useState(false);
   const [type, setType] = useState("");
-  const route = useRouter();
   const { data: usersData, isLoading: usersLoading } = useGetUsers();
   const { data: banksData, isLoading: banksLoading } = useGetBanks();
   const [bankDataList, setBankDataList] = useState(banksData);
@@ -401,39 +397,15 @@ const AdminPage = () => {
       >
         <Alert severity='warning'>{error}</Alert>
       </Snackbar>
-      {/* <Stack
-        borderRadius={"5px"}
-        justifyContent={"space-between"}
-        flexDirection={"row"}
-        padding={"20px 40px"}
-        boxShadow={"2px 4px 20px 2px rgba(0, 0, 0, 0.3);"}
-      >
-        <Button
-          variant='contained'
-          color='success'
-          startIcon={<Home />}
-          onClick={() => route.push(`/home`)}
-        >
-          HOME
-        </Button>
-        <Stack justifyContent={"center"}>
-          <SinaText size='mWide'>ADMINISTRADOR</SinaText>
-        </Stack>
-        <Image src={sinacofi_logo} alt='' width={180} />
-      </Stack> */}
-      {/* <Stack height={"15px"} /> */}
       <Stack
         justifyContent={"center"}
         alignItems={"center"}
-        paddingTop={"10px"}
         width={'100%'}
       >
         <Stack
           borderRadius={"5px"}
           justifyContent={"space-around"}
           width={"100%"}
-          padding={"30px"}
-          boxShadow={"2px 4px 20px 2px rgba(0, 0, 0, 0.3);"}
         >
           <AdminStack
             title={"ADMINISTRAR USUARIOS"}
