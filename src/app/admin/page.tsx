@@ -181,6 +181,15 @@ const AdminPage = () => {
   const { data: banksData, isLoading: banksLoading } = useGetBanks();
   const [bankDataList, setBankDataList] = useState(banksData);
   const [userDataList, setUserDataList] = useState(usersData);
+  const [openSnack, setOpenSnack] = useState(false);
+
+  const handleCloseSnack = () => setOpenSnack(false);
+  const handleOpenSnack = (type:string) => {
+    if(type === 'success'){
+      setOpenSnack(true);
+    }
+    
+  }
 
   const handleModal = (modalType: string) => {
     setIsLoading(true);
@@ -306,6 +315,7 @@ const AdminPage = () => {
       if (type === "editbank") {
         const res = await handleEditBank(e);
       }
+      handleOpenSnack('success');
     } catch (err) {
       console.log("Error", err);
     } finally {
@@ -400,6 +410,13 @@ const AdminPage = () => {
         message={error}
       >
         <Alert severity='warning'>{error}</Alert>
+      </Snackbar>
+      <Snackbar
+        open={openSnack}
+        autoHideDuration={6000}
+        onClose={handleCloseSnack}
+      >
+        <Alert severity="success"> Operacion realizada con exito </Alert>
       </Snackbar>
       <Stack
         borderRadius={"5px"}
