@@ -299,30 +299,30 @@ const AdminPage = () => {
   };
 
   const handleSubmit = async (e: any) => {
-    setIsLoading(true);
-    setOpenModal(false);
+    // setIsLoading(true);
+    // setOpenModal(false);
     e.preventDefault();
-    try {
-      if (type === "createbank") {
-        const res = await handleCreateBank(e);
-      }
-      if (type === "createuser") {
-        const res = await handleCreateUser(e);
-      }
-      if (type === "edituser") {
-        const res = await handleEditUser(e);
-      }
-      if (type === "editbank") {
-        const res = await handleEditBank(e);
-      }
-      handleOpenSnack('success');
-    } catch (err) {
-      console.log("Error", err);
-      handleOpenSnack('error');
-    } finally {
-      setIsLoading(false);
+    // try {
+    //   if (type === "createbank") {
+    //     const res = await handleCreateBank(e);
+    //   }
+    //   if (type === "createuser") {
+    //     const res = await handleCreateUser(e);
+    //   }
+    //   if (type === "edituser") {
+    //     const res = await handleEditUser(e);
+    //   }
+    //   if (type === "editbank") {
+    //     const res = await handleEditBank(e);
+    //   }
+    //   handleOpenSnack('success');
+    // } catch (err) {
+    //   console.log("Error", err);
+    //   handleOpenSnack('error');
+    // } finally {
+    //   setIsLoading(false);
       
-    }
+    // }
   };
 
 

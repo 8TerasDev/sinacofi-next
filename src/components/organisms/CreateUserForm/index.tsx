@@ -74,8 +74,8 @@ export const CreateUserForm = ({
               autoComplete='password'
               type={showPassword ? "text" : "password"}
               inputProps={{
-                //pattern: "/^[a-zA-Z0-9]{8,99}$/m"
-                pattern: ".{8,}",
+                pattern: "(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[a-z]).{8,}",
+                //(?=.*?[#?!@$ %^&*-])
               }}
               InputProps={{
                 endAdornment: (
