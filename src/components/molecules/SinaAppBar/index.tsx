@@ -39,11 +39,11 @@ const SinaAppBar = ({handleAdmin}: any) => {
 
   return (
     <div className={styles.sinappbar_container}>
-      {(isAdmin || isBankAdmin) &&
+      {handleAdmin &&
         <Stack padding={'5px'}>
           <Button
             startIcon={<Person />}
-            onClick={()=>handleAdmin(URL())} variant="contained" color="success">
+            onClick={handleAdmin} variant="contained" color="success">
             Administrador
           </Button>
         </Stack>

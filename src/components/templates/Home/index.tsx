@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SinaDrawer from "../../molecules/SinaDrawer";
 import DrawerBody from "../../organisms/DrawerBody";
 import SinaAppBar from "../../molecules/SinaAppBar";
@@ -9,29 +9,27 @@ import { MainLayout } from "@/components/atoms/MainLayout";
 import { CircularProgress, Stack } from "@mui/material";
 import SinaCardHeader from "../../molecules/SinaCardHeader";
 import { EmptyTable } from "@/components/organisms/EmptyTable";
-import { useRouter } from "next/navigation";
 import { NewDeclaracionesContext } from "@/contexts/new-declaraciones.context";
+import AdminComponent from "@/app/admin/AdminComponent";
 
-const HomeTemplate = () => {
+const HomeTemplate = ({isAdmin, handleBankAdmin, loading}:any) => {
   const { declaraciones, isLoading } = useContext(NewDeclaracionesContext);
-
   const [isOpen, isOpenSetter] = useState(true);
-  const route = useRouter();
-
-  const handleAdmin = (page:string) => route.push(page);
 
   return (
     <MainLayout>
-      <SinaAppBar handleAdmin={handleAdmin}/>
+      <SinaAppBar handleAdmin={handleBankAdmin}/>
       <SinaDrawer isOpen={isOpen} isOpenSetter={isOpenSetter}>
         <DrawerBody isOpen={isOpen} isOpenSetter={isOpenSetter} />
       </SinaDrawer>
       <SinaMainCard>
-        {isLoading ? (
+        {(isLoading || loading) ? (
           <Stack justifyContent={"center"} alignItems={"center"} flex={1}>
             <CircularProgress />
           </Stack>
         ) : (
+          isAdmin ? 
+          <AdminComponent/> :
           <Stack flex={1}>
             <SinaCardHeader />
             {declaraciones && declaraciones.length !== 0 ? (
@@ -40,7 +38,8 @@ const HomeTemplate = () => {
               <EmptyTable />
             )}
           </Stack>
-        )}
+          )
+        }
       </SinaMainCard>
     </MainLayout>
   );
