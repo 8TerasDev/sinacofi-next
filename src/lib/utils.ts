@@ -56,18 +56,14 @@ const createCSV = (data: any) => {
 };
 
 export const createNewKindCSV = (data: any) => {
-  //console.log(data)
   const {
-    //banco_id, 
-    bf_data_process_beneficiariosfinales, // ce y bf
-    bf_data_process_personasjuridicas, // de aca sale mucha info cmo ej rut
+    bf_data_process_beneficiariosfinales,
+    bf_data_process_personasjuridicas,
     codigo_banco,
-    fecha_declaracion,
     fecha_subida,
     num_declaracion,
     correlativo
   } = data;
-
   const {
     rut, 
     razon_social, 
@@ -76,27 +72,28 @@ export const createNewKindCSV = (data: any) => {
     ciudad,
     nombre_rep_legal,
     tipo_de_sociedad,
+    telefono,
+    identificacion_rep_legal,
   } = bf_data_process_personasjuridicas[0];
 
-  console.log(
-    'PJ',
-    rut,
-    razon_social,
-    domicilio,
-    lugar_de_constitucion,
-    ciudad,
-    'num',
-    'num2',
-    nombre_rep_legal,
-    tipo_de_sociedad,
-    codigo_banco,
-    fecha_subida, //o created_at......
-    num_declaracion
-    )
+    const firstLine = `PJ;\
+      ${rut};\
+      ${razon_social};\
+      ${domicilio};\
+      ${lugar_de_constitucion};\
+      ${ciudad};\
+      ${telefono};\
+      ${identificacion_rep_legal};\
+      ${nombre_rep_legal};\
+      ${tipo_de_sociedad};\
+      ${tipo_de_sociedad};\
+      ${codigo_banco};\
+      ${fecha_subida};\
+      ${num_declaracion};\
+      \n
+    `;
 
-    console.log(bf_data_process_beneficiariosfinales)
-
-    bf_data_process_beneficiariosfinales.map( item => {
+    const BF_CE_Lines = bf_data_process_beneficiariosfinales.map( (item:any) => {
       const {
         tipo, 
         identificacion, 
@@ -106,36 +103,28 @@ export const createNewKindCSV = (data: any) => {
         pais,
         participacion,
       } = item;
-      console.log(
-        tipo, 
-        identificacion, 
-        nombre_completo, 
-        domicilio2,
-        ciudad2,
-        pais,
-        correlativo,
-        participacion,
-        rut,
-        codigo_banco,
-        num_declaracion,
-      )
+      return `
+        ${tipo};\
+        ${identificacion};\
+        ${nombre_completo};\
+        ${domicilio2};\
+        ${ciudad2};\
+        ${pais};\
+        ${correlativo};\
+        ${participacion};\
+        ${rut};\
+        ${codigo_banco};\
+        ${num_declaracion};\
+        \n`;
     })
-    // orden como las agarro es como es
-    // const {
-    //   tipo, 
-    //   identificacion, 
-    //   nombre_completo, 
-    //   domicilio:domicilio2,
-    //   ciudad:ciudad2,
-    //   pais,
-    //   participacion,
-    // } = bf_data_process_beneficiariosfinales[0];
 
-
+    return firstLine+BF_CE_Lines;
 }
 
-export const handleDownloadCSV = (data: BfDataProcessDeclaraciones[]) => {
-  const newDataMap = data.map((declaracion) => {
+export const handleDownloadCSV = (data: any, type?:any) => {
+  const isDeclaracion = type === 'declaracion';
+  const filename = isDeclaracion ? `declaracion_${data.num_declaracion}.csv` : 'declaracaiones.csv'; 
+  const newDataMap = !isDeclaracion && data.map((declaracion:any) => {
     return {
       id: declaracion.id,
       codigo_banco: declaracion.codigo_banco,
@@ -146,15 +135,14 @@ export const handleDownloadCSV = (data: BfDataProcessDeclaraciones[]) => {
       fecha_declaracion: dayjs(declaracion.fecha_declaracion).format("DD/MM/YYYY"),
     };
   });
-
-  const csvData = createCSV(newDataMap);
+  const csvData = newDataMap ? createCSV(newDataMap) : createNewKindCSV(data);
   const blob = new Blob([csvData], {
     type: "application/json",
   });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.setAttribute("href", url);
-  a.setAttribute("download", "declaraciones.csv");
+  a.setAttribute("download", filename);
   a.click();
   a.remove();
 };

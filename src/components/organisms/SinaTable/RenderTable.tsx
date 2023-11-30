@@ -2,6 +2,7 @@
 import { BfDataProcessDeclaraciones, Declaracion } from "@/application";
 import SinaTableCtaIcons from "@/components/atoms/SinaTableCtaIcons";
 import { DeclaracionPDF } from "@/components/molecules/PDFViewer";
+import { handleDownloadCSV } from "@/lib/utils";
 import { Button, TableCell, TableRow } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import dayjs from "dayjs";
@@ -56,13 +57,15 @@ const RowTable = ({
       <SinaTableCtaIcons
         isLastDeclaration={declaracion.isLastDeclaration} 
         handleDelete={() => handleDeleteModal(declaracion)}
-        handleDownload={() => {
-          setStartDownload(() => {
-            return true;
-          });
-        }}
+        // handleDownload={() => {
+        //   setStartDownload(() => {
+        //     return true;
+        //   });
+        // }}
+        handleDownload={()=>handleDownloadCSV(declaracion,'declaracion')}
       />
       <TableCell>
+        {/* NOT DELETE THIS LINES, MAY BE WILL BE USED SOON
         <span style={{ display: "none" }}>
           {startDownload && (
             <PDFDownloadLink
@@ -78,7 +81,7 @@ const RowTable = ({
               <button ref={documentRef}>descargar</button>
             </PDFDownloadLink>
           )}
-        </span>
+        </span> */}
         {declaracion.codigo_banco} {declaracion.num_declaracion}
       </TableCell>
       <TableCell>
