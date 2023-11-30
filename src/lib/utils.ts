@@ -55,8 +55,76 @@ const createCSV = (data: any) => {
   return final;
 };
 
-export const handleDownloadCSV = (data: BfDataProcessDeclaraciones[]) => {
-  const newDataMap = data.map((declaracion) => {
+export const createNewKindCSV = (data: any) => {
+  const {
+    bf_data_process_beneficiariosfinales,
+    bf_data_process_personasjuridicas,
+    codigo_banco,
+    fecha_subida,
+    num_declaracion,
+    correlativo
+  } = data;
+  const {
+    rut, 
+    razon_social, 
+    domicilio, 
+    lugar_de_constitucion, 
+    ciudad,
+    nombre_rep_legal,
+    tipo_de_sociedad,
+    telefono,
+    identificacion_rep_legal,
+  } = bf_data_process_personasjuridicas[0];
+
+    const firstLine = `PJ;\
+      ${rut};\
+      ${razon_social};\
+      ${domicilio};\
+      ${lugar_de_constitucion};\
+      ${ciudad};\
+      ${telefono};\
+      ${identificacion_rep_legal};\
+      ${nombre_rep_legal};\
+      ${tipo_de_sociedad};\
+      ${tipo_de_sociedad};\
+      ${codigo_banco};\
+      ${fecha_subida};\
+      ${num_declaracion};\
+      \n
+    `;
+
+    const BF_CE_Lines = bf_data_process_beneficiariosfinales.map( (item:any) => {
+      const {
+        tipo, 
+        identificacion, 
+        nombre_completo, 
+        domicilio:domicilio2,
+        ciudad:ciudad2,
+        pais,
+        participacion,
+      } = item;
+      return `
+        ${tipo};\
+        ${identificacion};\
+        ${nombre_completo};\
+        ${domicilio2};\
+        ${ciudad2};\
+        ${pais};\
+        ${correlativo};\
+        ${participacion};\
+        ${rut};\
+        ${codigo_banco};\
+        ${num_declaracion};\
+        \n`;
+    })
+
+    return firstLine+BF_CE_Lines;
+}
+
+export const handleDownloadCSV = (data: any, type?:any) => {
+  const isDeclaracion = type === 'declaracion';
+  const filename = isDeclaracion ? `declaracion_${data.num_declaracion}.csv` : 'declaracaiones.csv'; 
+  const newDataMap = !isDeclaracion && data.map((declaracion:any) => {
     return {
       id: declaracion.id,
       codigo_banco: declaracion.codigo_banco,
@@ -67,15 +135,14 @@ export const handleDownloadCSV = (data: BfDataProcessDeclaraciones[]) => {
       fecha_declaracion: dayjs(declaracion.fecha_declaracion).format("DD/MM/YYYY"),
     };
   });
-
-  const csvData = createCSV(newDataMap);
+  const csvData = newDataMap ? createCSV(newDataMap) : createNewKindCSV(data);
   const blob = new Blob([csvData], {
     type: "application/json",
   });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.setAttribute("href", url);
-  a.setAttribute("download", "declaraciones.csv");
+  a.setAttribute("download", filename);
   a.click();
   a.remove();
 };
