@@ -198,7 +198,7 @@ const AdminPage = () => {
   };
 
   const handleCreateBank = async (e: any) => {
-    const [nombre, codigo] = e.target;
+    const [nombre, codigo, telefono] = e.target;
     const date = new Date();
     try {
       const data = {
@@ -218,7 +218,7 @@ const AdminPage = () => {
   };
 
   const handleEditBank = async (e: any) => {
-    const [nombre, codigo] = e.target;
+    const [nombre, codigo, telefono] = e.target;
     try {
       const data = {
         nombre: nombre.value,
@@ -241,6 +241,7 @@ const AdminPage = () => {
       { value: password },
       { value: nothing },
       { value: bank_id },
+      { value: telefono},
       { value: is_staff }
     ] = e.target;
 
@@ -278,6 +279,7 @@ const AdminPage = () => {
       { value: last_name },
       { value: email },
       { value: bank_id },
+      { value: telefono},
       { value: is_staff }
     ] = e.target;
 
@@ -303,14 +305,14 @@ const AdminPage = () => {
     setOpenModal(false);
     e.preventDefault();
     try {
-      if (type === "createbank") {
-        const res = await handleCreateBank(e);
-      }
       if (type === "createuser") {
         const res = await handleCreateUser(e);
       }
       if (type === "edituser") {
         const res = await handleEditUser(e);
+      }
+      if (type === "createbank") {
+        const res = await handleCreateBank(e);
       }
       if (type === "editbank") {
         const res = await handleEditBank(e);

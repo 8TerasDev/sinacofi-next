@@ -34,6 +34,16 @@ export const CreateBankForm = ({
               sx={{width:'100%'}}
               />  
           </Grid>
+          <Grid item sm={4} padding={"10px"}>
+            <TextField
+              required
+              variant='filled'
+              label={'Telefono'}
+              placeholder={'Telefono'}
+              sx={{ width: "100%" }}
+              type='tel'
+            />
+            </Grid>
         </Grid>
     </Stack>
     <Stack padding={'10px'} flexDirection={'row'} justifyContent={'space-around'}>

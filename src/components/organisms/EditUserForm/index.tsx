@@ -116,6 +116,16 @@ export const EditUserForm = ({
                 </Select>
               </Grid>
               <Grid item sm={4} padding={"10px"}>
+                <TextField
+                  required
+                  variant='filled'
+                  label={'Telefono'}
+                  placeholder={'Telefono'}
+                  sx={{ width: "100%" }}
+                  type='tel'
+                />
+              </Grid>
+              <Grid item sm={4} padding={"10px"}>
                 <Stack flexDirection={'row'} alignItems={'center'}>
                 <FormControlLabel control={
                   <Checkbox
