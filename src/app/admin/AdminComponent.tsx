@@ -100,6 +100,7 @@ const preColumnsUsers = [
   {
     field: "email",
     headerName: "Email",
+    width:200
   },
   {
     field: "is_staff",
@@ -108,6 +109,7 @@ const preColumnsUsers = [
   {
     field: "bankName",
     headerName: "Banco",
+    width:200
   },
 ];
 const preColumnsBanks = [
@@ -158,6 +160,7 @@ const preColumnsBanks = [
   {
     field: "nombre",
     headerName: "Nombre",
+    width:300
   },
   {
     field: "codigo",
