@@ -36,7 +36,7 @@ const isActive = (row: any) => row.status === "ACTIVE";
 const preColumnsUsers = [
   {
     field: "acciones",
-    name: "Acciones",
+    headerName: "Acciones",
     sortable: false,
     renderCell: ({ row }: any) => (
       <ButtonConfirm
@@ -59,7 +59,7 @@ const preColumnsUsers = [
   },
   {
     field: "status",
-    name: "Status",
+    headerName: "Status",
     sortable: false,
     renderCell: ({ row }: any) => {
       return (
@@ -75,27 +75,31 @@ const preColumnsUsers = [
   },
   {
     field: "username",
-    name: "Username",
+    headerName: "Username",
   },
   {
     field: "first_name",
-    name: "Nombre",
+    headerName: "Nombre",
   },
   {
     field: "last_name",
-    name: "Apellido",
+    headerName: "Apellido",
   },
   {
     field: "email",
-    name: "Email",
+    headerName: "Email",
   },
   {
     field: "is_staff",
-    name: "Es Staff",
+    headerName: "Es Staff",
   },
   {
     field: "bank_id",
-    name: "Banco",
+    headerName: "Banco",
+  },
+  {
+    field: "telefono",
+    headerName: "Telefono",
   },
 ];
 
@@ -123,6 +127,7 @@ const AdminPage = () => {
       { value: first_name },
       { value: last_name },
       { value: email },
+      { value: telefono},
       { value: password },
     ] = e.target;
 
@@ -133,6 +138,7 @@ const AdminPage = () => {
         first_name,
         last_name,
         email,
+        telefono,
         is_superuser: false,
         is_staff: false,
         is_active: true,

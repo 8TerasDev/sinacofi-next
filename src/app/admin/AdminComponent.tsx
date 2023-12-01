@@ -195,7 +195,6 @@ const AdminPage = () => {
     if(type === 'success'){
       setOpenSnack(true);
     }
-    
   }
 
   const handleModal = (modalType: string) => {
@@ -248,10 +247,10 @@ const AdminPage = () => {
       { value: first_name },
       { value: last_name },
       { value: email },
+      { value: telefono},
       { value: password },
       { value: nothing }, // BUG
       { value: bank_id },
-      { value: telefono},
       { value: is_staff }
     ] = e.target;
 

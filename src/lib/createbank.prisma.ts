@@ -14,6 +14,7 @@ export const createBank = async (data: CreateBankProps) => {
     return newBank
   }
   catch (err) {
+    // BUG: handle this error case.
     throw err;
   }
 }
