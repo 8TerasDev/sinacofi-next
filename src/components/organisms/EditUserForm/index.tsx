@@ -22,7 +22,7 @@ export const EditUserForm = ({
   isBankAdmin,
   currentRow,
 }: CreateFormsProps) => {
-  const {username, first_name, last_name, is_staff, bank_id, email} = currentRow;
+  const {username, first_name, last_name, is_staff, bank_id, email, telefono} = currentRow;
   const [bank, setBank] = useState(bank_id);
   const [newBankAdmin, setNewBankAdmin] = useState(is_staff);
   
@@ -77,6 +77,17 @@ export const EditUserForm = ({
                 type='email'
               />
             </Grid>
+            <Grid item sm={4} padding={"10px"}>
+                <TextField
+                  required
+                  defaultValue={telefono}
+                  variant='filled'
+                  label={'Telefono'}
+                  placeholder={'Telefono'}
+                  sx={{ width: "100%" }}
+                  type='tel'
+                />
+              </Grid>
           {/* <Grid item sm={4} padding={"10px"}>
             <TextField
               required
@@ -90,7 +101,7 @@ export const EditUserForm = ({
               type={"password"}
             />
           </Grid> */}
-          {!isBankAdmin && (
+          {!isBankAdmin && banks && (
             <>
               <Grid item sm={4} padding={"10px"}>
                 <InputLabel id='select-label' sx={{ visibility: "hidden" }}>
@@ -114,16 +125,6 @@ export const EditUserForm = ({
                     </MenuItem>
                   ))}
                 </Select>
-              </Grid>
-              <Grid item sm={4} padding={"10px"}>
-                <TextField
-                  required
-                  variant='filled'
-                  label={'Telefono'}
-                  placeholder={'Telefono'}
-                  sx={{ width: "100%" }}
-                  type='tel'
-                />
               </Grid>
               <Grid item sm={4} padding={"10px"}>
                 <Stack flexDirection={'row'} alignItems={'center'}>

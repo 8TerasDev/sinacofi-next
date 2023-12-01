@@ -288,8 +288,8 @@ const AdminPage = () => {
       { value: first_name },
       { value: last_name },
       { value: email },
-      { value: bank_id },
       { value: telefono},
+      { value: bank_id },
       { value: is_staff }
     ] = e.target;
 
