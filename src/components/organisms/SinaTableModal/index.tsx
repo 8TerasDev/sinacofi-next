@@ -53,6 +53,9 @@ export const SinaTableModal = ({
 
   }, [declaracion])
 
+  // @ts-ignore
+  const isLastDeclaration = declaracion && declaracion.isLastDeclaration;
+
   return (
     <ThemeProvider theme={theme}>
       <Modal
@@ -119,7 +122,7 @@ export const SinaTableModal = ({
             declaracion={declaracion}
             controlEfectivo={controlEfectivo}
             beneficiarios={beneficiarios}
-            handleDelete={() => handleDelete(declaracion)}
+            handleDelete={isLastDeclaration && (() => handleDelete(declaracion))}
           />
         </Paper>
       </Modal>

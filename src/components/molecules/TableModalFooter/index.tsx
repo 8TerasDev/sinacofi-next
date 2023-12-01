@@ -96,7 +96,7 @@ const TableModalFooter = ({
             >
               <SinaText color="white">Descargar declaración</SinaText>
           </Button>
-          <Button
+          {handleDelete && <Button
             startIcon={<DeleteOutlineIcon color="secondary" />}
             sx={{ height: "4vh" }}
             aria-label="eliminar"
@@ -105,6 +105,7 @@ const TableModalFooter = ({
           >
             <SinaText color="white">Eliminar declaración</SinaText>
           </Button>
+          }
         </Grid>
       </Grid>
     </Box>
