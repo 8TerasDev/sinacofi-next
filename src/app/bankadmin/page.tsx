@@ -114,6 +114,7 @@ const preColumnsUsers = [
 const AdminPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [openSnack, setOpenSnack] = useState(false);
   const [error, setError] = useState(false);
   const [type, setType] = useState("");
   const route = useRouter();
@@ -121,6 +122,13 @@ const AdminPage = () => {
   const { data: usersData, isLoading: usersLoading } = useGetUsersSameBank();
   const [userDataList, setUserDataList] = useState(usersData);
   const [currentRow, setCurrentRow] = useState<any>();
+
+  const handleCloseSnack = () => setOpenSnack(false);
+  const handleOpenSnack = (type: string) => {
+    if(type === 'success'){
+      setOpenSnack(true);
+    }
+  }
 
   const handleModal = (modalType: string) => {
     setIsLoading(true);
@@ -204,6 +212,7 @@ const AdminPage = () => {
       if (type === "edituser") {
         const res = await handleEditUser(e);
       }
+      handleOpenSnack('success');
     } catch (err) {
       console.log("Error", err);
     } finally {
@@ -283,13 +292,13 @@ const AdminPage = () => {
       >
         <Alert severity='warning'>{error}</Alert>
       </Snackbar>
-      {/* <Snackbar
+      <Snackbar
         open={openSnack}
         autoHideDuration={6000}
         onClose={handleCloseSnack}
       >
         <Alert severity="success"> Operacion realizada con exito </Alert>
-      </Snackbar> */}
+      </Snackbar>
       <Stack
         borderRadius={"5px"}
         justifyContent={"space-between"}
