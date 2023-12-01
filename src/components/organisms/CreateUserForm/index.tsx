@@ -66,6 +66,16 @@ export const CreateUserForm = ({
             <TextField
               required
               variant='filled'
+              label={'Telefono'}
+              placeholder={'Telefono'}
+              sx={{ width: "100%" }}
+              type='tel'
+            />
+          </Grid>
+          <Grid item sm={4} padding={"10px"}>
+            <TextField
+              required
+              variant='filled'
               label='Password'
               placeholder='Password'
               sx={{ width: "100%" }}
@@ -91,6 +101,7 @@ export const CreateUserForm = ({
               }}
             />
           </Grid>
+
           {!isBankAdmin && (
             <>
               <Grid item sm={4} padding={"10px"}>
@@ -117,22 +128,15 @@ export const CreateUserForm = ({
                 </Select>
               </Grid>
               <Grid item sm={4} padding={"10px"}>
-                <TextField
-                  required
-                  variant='filled'
-                  label={'Telefono'}
-                  placeholder={'Telefono'}
-                  sx={{ width: "100%" }}
-                  type='tel'
-                />
-              </Grid>
-              <Grid item sm={4} padding={"10px"}>
                 <Stack flexDirection={'row'} alignItems={'center'}>
-                <FormControlLabel control={
-                  <Checkbox
-                    value={newBankAdmin} 
-                    onChange={(e) => setNewBankAdmin(e.target.checked)}/>
-                } label="Usuario Administrador de banco" />
+                <FormControlLabel 
+                  control={
+                    <Checkbox
+                      value={newBankAdmin} 
+                      onChange={(e) => setNewBankAdmin(e.target.checked)}
+                    />
+                  } 
+                  label="Usuario Administrador de banco" />
                 </Stack>
               </Grid>
             </>

@@ -111,6 +111,10 @@ const preColumnsUsers = [
     headerName: "Banco",
     width:200
   },
+  {
+    field: "telefono",
+    headerName: "Telefono",
+  },
 ];
 const preColumnsBanks = [
   {
@@ -166,6 +170,10 @@ const preColumnsBanks = [
     field: "codigo",
     headerName: "Codigo",
   },
+  {
+    field: "telefono",
+    headerName: "Telefono",
+  },
 ];
 
 const AdminPage = () => {
@@ -187,7 +195,6 @@ const AdminPage = () => {
     if(type === 'success'){
       setOpenSnack(true);
     }
-    
   }
 
   const handleModal = (modalType: string) => {
@@ -204,6 +211,7 @@ const AdminPage = () => {
       const data = {
         nombre: nombre.value,
         codigo: codigo.value,
+        telefono: telefono.value,
         created_at: date.toISOString(),
       };
       const { data: banks, status } = await axios.post(`api/createbank`, data);
@@ -223,6 +231,7 @@ const AdminPage = () => {
       const data = {
         nombre: nombre.value,
         codigo: codigo.value,
+        telefono: telefono.value,
       };
       const { data: banks } = await axios.put(`api/banks/${currentRow._id}`, data);
       setBankDataList(banks);
@@ -238,10 +247,10 @@ const AdminPage = () => {
       { value: first_name },
       { value: last_name },
       { value: email },
-      { value: password },
-      { value: nothing },
-      { value: bank_id },
       { value: telefono},
+      { value: password },
+      { value: nothing }, // BUG
+      { value: bank_id },
       { value: is_staff }
     ] = e.target;
 
@@ -252,6 +261,7 @@ const AdminPage = () => {
         first_name,
         last_name,
         email,
+        telefono,
         is_superuser: false,
         is_staff: Boolean(is_staff),
         is_active: true,
@@ -288,6 +298,7 @@ const AdminPage = () => {
         username,
         first_name,
         last_name,
+        telefono,
         email,
         is_staff: Boolean(is_staff),
         bank_id,
