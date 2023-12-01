@@ -199,12 +199,13 @@ const AdminPage = () => {
   };
 
   const handleCreateBank = async (e: any) => {
-    const [nombre, codigo] = e.target;
+    const [nombre, codigo, telefono] = e.target;
     const date = new Date();
     try {
       const data = {
         nombre: nombre.value,
         codigo: codigo.value,
+        telefono: telefono.value,
         created_at: date.toISOString(),
       };
       const { data: banks, status } = await axios.post(`api/createbank`, data);
@@ -219,11 +220,12 @@ const AdminPage = () => {
   };
 
   const handleEditBank = async (e: any) => {
-    const [nombre, codigo] = e.target;
+    const [nombre, codigo, telefono] = e.target;
     try {
       const data = {
         nombre: nombre.value,
         codigo: codigo.value,
+        telefono: telefono.value
       };
       const { data: banks } = await axios.put(`api/banks/${currentRow._id}`, data);
       setBankDataList(banks);
@@ -241,6 +243,7 @@ const AdminPage = () => {
       { value: email },
       { value: password },
       { value: bank_id },
+      { value: telefono },
       { value: is_staff }
     ] = e.target;
 

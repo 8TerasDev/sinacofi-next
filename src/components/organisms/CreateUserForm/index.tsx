@@ -128,11 +128,14 @@ export const CreateUserForm = ({
               </Grid>
               <Grid item sm={4} padding={"10px"}>
                 <Stack flexDirection={'row'} alignItems={'center'}>
-                <FormControlLabel control={
-                  <Checkbox
-                    value={newBankAdmin} 
-                    onChange={(e) => setNewBankAdmin(e.target.checked)}/>
-                } label="Usuario Administrador de banco" />
+                <FormControlLabel 
+                  control={
+                    <Checkbox
+                      value={newBankAdmin} 
+                      onChange={(e) => setNewBankAdmin(e.target.checked)}
+                    />
+                  } 
+                  label="Usuario Administrador de banco" />
                 </Stack>
               </Grid>
             </>
