@@ -8,6 +8,7 @@ import { Button, TableCell, TableRow } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import dayjs from "dayjs";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { fetchDeclaracionById } from "@/common/declaraciones";
 
 type Pagination = {
   number: number;
@@ -77,7 +78,10 @@ const RowTable = ({
         //     return true;
         //   });
         // }}
-        handleDownload={() => handleDownloadCSV(declaracion, "declaracion")}
+        handleDownload={async () => {
+          const data = await fetchDeclaracionById(declaracion.id as any);
+          handleDownloadCSV(data, "declaracion");
+        }}
       />
       <TableCell>
         {/* NOT DELETE THIS LINES, MAY BE WILL BE USED SOON
