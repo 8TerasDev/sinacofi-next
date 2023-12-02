@@ -14,6 +14,6 @@ export const POST = async (req: NextRequest, { params }: DeleteParam) => {
         updateStatusUserById(bankId, 'ACTIVE')
         return new Response(undefined, { status: 204 })
     } catch (error) {
-        return processError('No se ha podido deshabilitar el usuario')
+        return processError(error, 'No se ha podido deshabilitar el usuario')
     }
 }

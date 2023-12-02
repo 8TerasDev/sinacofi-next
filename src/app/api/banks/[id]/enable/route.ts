@@ -14,6 +14,6 @@ export const POST = async (req: NextRequest, { params }: DeleteParam) => {
         updateStatusBankById(bankId, 'ACTIVE')
         return new Response(undefined, { status: 204 })
     } catch (error) {
-        return processError('No se ha podido actualizar el status')
+        return processError(error, 'No se ha podido actualizar el status')
     }
 }

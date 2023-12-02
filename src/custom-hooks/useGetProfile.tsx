@@ -6,7 +6,8 @@ export const useGetProfile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  const getProfile = async () => {
+  const loadProfile = async () => {
+    console.time("Loan profile");
     setIsLoading(true);
     try {
       const { data } = await axios.get("/api/auth/getprofile");
@@ -18,7 +19,7 @@ export const useGetProfile = () => {
     }
   };
   useEffect(() => {
-    getProfile();
+    loadProfile();
   }, []);
 
   return { isLoading, isError, data };

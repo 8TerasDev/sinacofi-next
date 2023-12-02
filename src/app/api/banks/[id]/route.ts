@@ -16,7 +16,7 @@ export const DELETE = async (req: NextRequest, { params }: DeleteParam) => {
         updateStatusBankById(bankId, 'DISABLED')
         return new Response(undefined, { status: 204 })
     } catch (error) {
-        return processError('No se ha podido eliminar el banco')
+        return processError(error, 'No se ha podido eliminar el banco')
     }
 }
 
@@ -30,6 +30,6 @@ export const PUT = async (req: NextRequest, { params }: DeleteParam) => {
         const banks = await getBanks();
         return Response.json(banks)
     } catch (error) {
-        return processError('No se ha podido eliminar el banco')
+        return processError(error, 'No se ha podido eliminar el banco')
     }
 }

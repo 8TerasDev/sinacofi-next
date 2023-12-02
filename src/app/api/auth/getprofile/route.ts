@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
     const user = getSessionUser(req)
     return Response.json({ user })
   } catch (error: any) {
-    return processError('No se ha podido obtener la informacion del usuario')
+    return processError(error, 'No se ha podido obtener la informacion del usuario')
   }
   // return res.redirect(307, "/home");
 }

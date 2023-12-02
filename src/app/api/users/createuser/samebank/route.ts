@@ -12,10 +12,10 @@ export const POST = async (req: NextRequest) => {
     const data: CreateUserProps = await req.json();
     (data as any).status = 'ACTIVE';
     data.password = await encryptPassword(data.password);
-    await createUser({...data, bank_id:user.bankId});
+    await createUser({ ...data, bank_id: user.bankId });
     const newUsers = await getUsersSameBank(user.bankId);
     return Response.json(newUsers);
   } catch (err: any) {
-    return processError('No se ha podido crear el usuario')
+    return processError(err, 'No se ha podido crear el usuario')
   }
 };

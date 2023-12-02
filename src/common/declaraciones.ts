@@ -1,15 +1,51 @@
 import axios from '@/common/http-client';
 
-export async function getAllDeclaracionesClientSide(intent = 0) {
-    try {
-        const { data, status } = await axios.get("api/declaraciones");
-        if (status < 400) {
-            const declaraciones = data.declaraciones ?? [];
-            return declaraciones;
+const parseArgs = (prefix: string, input: any) => {
+    const keys = Object.keys(input || {})
+    return keys.filter(k => input[k] != null).map(k => {
+        if (Array.isArray(input[k])) {
+            return input[k].map((v: string) => `${prefix}[${k}][]=${v}`).join("&")
         } else {
-            const res: any = await getAllDeclaracionesClientSide(intent + 1)
-            return res
+            return `${prefix}[${k}]=${input[k]}`
         }
+    })
+}
+
+export async function fetchDeclaraciones(args: any, intent = 0) {
+    const { filter, page, order } = args;
+    const params = parseArgs('filter', filter).concat(parseArgs('page', page)).concat(parseArgs('order', order))
+    const query = params.join("&")
+    try {
+        const { data, status } = await axios.get(`api/declaraciones?${query}`);
+        if (status < 400) {
+            return data
+        }
+        if (intent > 3) {
+            throw new Error(data.message ?? "Error al obtener las declaraciones")
+        }
+        const res: any = await fetchDeclaraciones(args, intent + 1)
+        return res
+
+    } catch (error) {
+        console.error("Error al obtener las declaraciones:", error);
+        throw error;
+    }
+}
+
+export async function fetchDeclaracionById(id: number, intent = 0) {
+
+
+    try {
+        const { data, status } = await axios.get(`api/declaraciones/${id}`);
+        if (status < 400) {
+            return data
+        }
+        if (intent > 3) {
+            throw new Error(data.message ?? "Error al obtener las declaraciones")
+        }
+        const res: any = await fetchDeclaracionById(id, intent + 1)
+        return res
+
     } catch (error) {
         console.error("Error al obtener las declaraciones:", error);
         throw error;

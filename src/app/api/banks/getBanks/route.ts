@@ -14,6 +14,6 @@ export const GET = async (req: NextRequest) => {
     return Response.json(banks);
   }
   catch (err) {
-    return processError('No se ha podido obtener los bancos')
+    return processError(err, 'No se ha podido obtener los bancos')
   }
 }

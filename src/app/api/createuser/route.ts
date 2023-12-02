@@ -16,6 +16,6 @@ export const POST = async (req: NextRequest) => {
     const newUsers = await getUsers();
     return Response.json(newUsers);
   } catch (err: any) {
-    return processError('No se ha podido crear el usuario')
+    return processError(err, 'No se ha podido crear el usuario')
   }
 };

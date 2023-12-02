@@ -188,7 +188,6 @@ const AdminPage = () => {
       try {
         return await callback(args);
       } catch (ex: any) {
-        debugger;
         setError(ex.message);
       }
     };
