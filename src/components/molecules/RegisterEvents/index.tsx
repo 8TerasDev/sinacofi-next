@@ -7,36 +7,37 @@ import styles from './registerevents.module.css';
 export enum TypeOfRegisterEvents {
     NEW_DECLARATION = 'Nueva declaración',
     UPDATE_DECLARATION = 'Actualización de declaración',
-    FAIL_LOAD = 'Carga fallida',
+    ERROR_ON_LOAD = 'Carga fallida',
 }
 
 function getColor(typeOfRegisterEvents: TypeOfRegisterEvents) {
     switch (typeOfRegisterEvents) {
         case TypeOfRegisterEvents.NEW_DECLARATION:
-            return 'blue';
+            return '#2096F3';
         case TypeOfRegisterEvents.UPDATE_DECLARATION:
-            return 'orange';
-        case TypeOfRegisterEvents.FAIL_LOAD:
-            return 'red';
+            return '#F36C22';
+        case TypeOfRegisterEvents.ERROR_ON_LOAD:
+            return '#D32F2F';
         default:
-            return 'blue';
+            return '#2096F3';
     }
 }
+
 
 function getIcon(typeOfRegisterEvents: TypeOfRegisterEvents, color: string) {
     switch (typeOfRegisterEvents) {
         case TypeOfRegisterEvents.NEW_DECLARATION:
-            return <CheckCircleIcon sx={{ backgroundColor: color }} />;
+            return <CheckCircleIcon sx={{ color, fontSize: "30px" }} />;
         case TypeOfRegisterEvents.UPDATE_DECLARATION:
-            return <CheckCircleIcon sx={{ backgroundColor: color }} />;
-        case TypeOfRegisterEvents.FAIL_LOAD:
-            return <CancelIcon sx={{ backgroundColor: color }} />;
+            return <CheckCircleIcon sx={{ color, fontSize: "30px" }} />;
+        case TypeOfRegisterEvents.ERROR_ON_LOAD:
+            return <CancelIcon sx={{ color, fontSize: "30px" }} />;
         default:
-            return <CheckCircleIcon />;
+            return <CheckCircleIcon sx={{ color, fontSize: "30px" }} />;
     }
 }
 
-interface RegisterEventsProps {
+export interface RegisterEventsProps {
     title: string;
     date: string;
     typeOfRegisterEvents: TypeOfRegisterEvents;
@@ -52,7 +53,7 @@ function RegisterEvents({ title, date, typeOfRegisterEvents }: RegisterEventsPro
     return (
         <section className={styles.container}>
             {icon}
-            <section>
+            <section className={styles.content}>
                 <Typography variant="body2" color="text.primary">
                     {title}
                 </Typography>
