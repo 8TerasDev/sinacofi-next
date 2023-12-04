@@ -5,6 +5,7 @@ import {
   Button,
   Chip,
   CircularProgress,
+  IconButton,
   Modal,
   Paper,
   Snackbar,
@@ -13,7 +14,7 @@ import {
 import Image from "next/image";
 import sinacofi_logo from "../../assets/images/sinacofi_logo.png";
 import { useRouter } from "next/navigation";
-import { Home } from "@mui/icons-material";
+import { Edit, Home } from "@mui/icons-material";
 import SinaText from "@/components/atoms/SinaText";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
@@ -24,6 +25,7 @@ import { AdminStack } from "@/components/organisms/Admin";
 import ButtonConfirm from "@/components/organisms/ButtonConfirm";
 import { deleteUserById, enableUserById } from "@/common/user";
 import { useGetUsersSameBank } from "@/custom-hooks/useGetUsersSameBank";
+import { EditUserForm } from "@/components/organisms/EditUserForm";
 
 export type CreateFormsProps = {
   handleSubmit: (input: any) => void;
@@ -39,22 +41,28 @@ const preColumnsUsers = [
     headerName: "Acciones",
     sortable: false,
     renderCell: ({ row }: any) => (
-      <ButtonConfirm
-        icon={isActive(row) ? <DeleteIcon /> : <RestoreFromTrashIcon />}
-        title={`${row.first_name} ${row.last_name}`}
-        message={
-          isActive(row)
-            ? "Al desactivar el usaurio este no podra usarse"
-            : "Esta acción permitira que el usuario pueda usarse nuevamente"
-        }
-        handleDelete={async () => {
-          if (isActive(row)) {
-            await row.disableUser(row);
-          } else {
-            await row.enableUser(row);
+      <Stack flexDirection={'row'} flex={1} justifyContent={'space-around'}>
+        <IconButton onClick={()=>row.updateUser(row)} sx={{padding:0}}>
+          <Edit color='action' />
+        </IconButton>
+        <ButtonConfirm
+          icon={isActive(row) ? <DeleteIcon /> : <RestoreFromTrashIcon />}
+          title={`${row.first_name} ${row.last_name}`}
+          message={
+            isActive(row)
+              ? "Al desactivar el usaurio este no podra usarse"
+              : "Esta acción permitira que el usuario pueda usarse nuevamente"
           }
-        }}
-      />
+          handleDelete={async () => {
+            if (isActive(row)) {
+              await row.disableUser(row);
+            } else {
+              await row.enableUser(row);
+            }
+          }}
+        />
+
+      </Stack>
     ),
   },
   {
@@ -106,12 +114,21 @@ const preColumnsUsers = [
 const AdminPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [openSnack, setOpenSnack] = useState(false);
   const [error, setError] = useState(false);
   const [type, setType] = useState("");
   const route = useRouter();
   const { data: userData, isLoading: loading }: any = useGetProfile();
   const { data: usersData, isLoading: usersLoading } = useGetUsersSameBank();
   const [userDataList, setUserDataList] = useState(usersData);
+  const [currentRow, setCurrentRow] = useState<any>();
+
+  const handleCloseSnack = () => setOpenSnack(false);
+  const handleOpenSnack = (type: string) => {
+    if(type === 'success'){
+      setOpenSnack(true);
+    }
+  }
 
   const handleModal = (modalType: string) => {
     setIsLoading(true);
@@ -158,12 +175,44 @@ const AdminPage = () => {
     }
   };
 
+  const handleEditUser = async (e: any) => {
+    const [
+      { value: username },
+      { value: first_name },
+      { value: last_name },
+      { value: email },
+      { value: telefono},
+    ] = e.target;
+
+    try {
+      const data = {
+        username,
+        first_name,
+        last_name,
+        telefono,
+        email,
+        bank_id: currentRow.bank_id,
+        sameBank: true,
+      };
+      const res = await axios.put(`api/users/${currentRow._id}`, data);
+      const newUsersList = res.data;
+      setUserDataList(newUsersList);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const handleSubmit = async (e: any) => {
+    e.preventDefault();
     setIsLoading(true);
     setOpenModal(false);
-    e.preventDefault();
     try {
-      const res = await handleCreateUser(e);
+      if (type === "createuser") {
+        const res = await handleCreateUser(e);
+      }
+      if (type === "edituser") {
+        const res = await handleEditUser(e);
+      }
+      handleOpenSnack('success');
     } catch (err) {
       console.log("Error", err);
     } finally {
@@ -204,11 +253,17 @@ const AdminPage = () => {
     updateUserData({ ...row, status: "DISABLED" });
   });
 
+  const updateUser = errorWrapper(async (row: any) => {
+    handleModal('edituser')
+    setCurrentRow(row);
+  });
+
   const addSetters = (row: any) => ({
     ...row,
-    disableUser: disableUser,
-    enableUser: enableUser,
-    setError: setError,
+    disableUser,
+    enableUser,
+    setError,
+    updateUser
   });
 
 
@@ -235,6 +290,13 @@ const AdminPage = () => {
         message={error}
       >
         <Alert severity='warning'>{error}</Alert>
+      </Snackbar>
+      <Snackbar
+        open={openSnack}
+        autoHideDuration={6000}
+        onClose={handleCloseSnack}
+      >
+        <Alert severity="success"> Operacion realizada con exito </Alert>
       </Snackbar>
       <Stack
         borderRadius={"5px"}
@@ -306,11 +368,20 @@ const AdminPage = () => {
                 Crear Usuario
               </SinaText>
             </Stack>
-            <CreateUserForm
-              handleSubmit={handleSubmit}
-              setOpenModal={setOpenModal}
-              isBankAdmin={userData?.isBankAdmin}
-            />
+            {type === "createuser" && (
+              <CreateUserForm
+                handleSubmit={handleSubmit}
+                setOpenModal={setOpenModal}
+                isBankAdmin={userData?.isBankAdmin}
+              />
+            )}
+            {type === "edituser" && (
+              <EditUserForm
+                handleSubmit={handleSubmit}
+                setOpenModal={setOpenModal}
+                currentRow={currentRow}
+              />
+            )}
           </Paper>
         </Modal>
       </Stack>

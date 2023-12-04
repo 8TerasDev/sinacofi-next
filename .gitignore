@@ -3,9 +3,9 @@
 # dependencies
 /node_modules
 /.pnp
+/.scannerwork
 .pnp.js
 .env.*
-/.scannerwork
 # testing
 /coverage
 

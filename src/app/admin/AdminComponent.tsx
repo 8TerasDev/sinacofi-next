@@ -288,8 +288,8 @@ const AdminPage = () => {
       { value: first_name },
       { value: last_name },
       { value: email },
-      { value: bank_id },
       { value: telefono},
+      { value: bank_id },
       { value: is_staff }
     ] = e.target;
 
@@ -338,8 +338,6 @@ const AdminPage = () => {
     }
   };
 
-
-
   const updateBankData = (_row: any) => {
     const data: any[] = [...(bankDataList || banksData || [])];
     const prev: any = data[_row.id];
@@ -374,6 +372,22 @@ const AdminPage = () => {
   const disableBank = errorWrapper(async (row: any) => {
     await deleteBankById(row?._id);
     updateBankData({ ...row, status: "DISABLED" });
+
+    //@ts-ignore
+    const newUsers = usersData && usersData.map(async(user:any) => {
+      if(user.bank_id == row._id){
+        await deleteUserById(user.id);
+        return {...user, status: "DISABLED" }
+      }
+      return user
+    })
+    //@ts-ignore
+    Promise.all(newUsers).then((results):any=>{
+      //@ts-ignore
+      setUserDataList(results)
+    })
+
+
   });
   const disableUser = errorWrapper(async (row: any) => {
     await deleteUserById(row?._id);
