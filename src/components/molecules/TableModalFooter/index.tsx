@@ -25,7 +25,8 @@ const TableModalFooter = ({
   declaracion,
   controlEfectivo,
   beneficiarios,
-  handleDelete
+  handleDelete,
+  isLoading
 }: any) => {
   const {
     firstDeclaracion,
@@ -33,7 +34,7 @@ const TableModalFooter = ({
   } = useContext(NewDeclaracionesContext)
   return (
     <Box
-      component="footer"
+      component='footer'
       sx={{
         position: "fixed",
         bottom: 0,
@@ -47,28 +48,28 @@ const TableModalFooter = ({
       <Grid item xs={12}>
         <Divider sx={{ m: "2vh 0" }} />
       </Grid>
-      <Grid container alignItems="center">
+      <Grid container alignItems='center'>
         <Grid item xs={4} container>
           <Button
-            startIcon={<ArrowBackIosNewIcon fontSize="small" />}
+            startIcon={<ArrowBackIosNewIcon fontSize='small' />}
             sx={{ height: "5vh" }}
-            aria-label="anterior"
-            disabled={firstDeclaracion}
+            aria-label='anterior'
+            disabled={isLoading || firstDeclaracion}
             onClick={onPrevDeclaracion}
           >
-            <SinaText size="xs">Anterior</SinaText>
+            <SinaText size='xs'>Anterior</SinaText>
           </Button>
           <Button
-            endIcon={<ArrowForwardIosIcon fontSize="small" />}
-            disabled={lastDeclaracion}
+            endIcon={<ArrowForwardIosIcon fontSize='small' />}
+            disabled={isLoading || lastDeclaracion}
             sx={{ height: "5vh" }}
-            aria-label="siguiente"
+            aria-label='siguiente'
             onClick={onNextDeclaracion}
           >
-            <SinaText size="xs">Siguiente</SinaText>
+            <SinaText size='xs'>Siguiente</SinaText>
           </Button>
         </Grid>
-        <Grid container item xs={8} justifyContent="end">
+        <Grid container item xs={8} justifyContent='end'>
           {/* NOT DELETE THIS COMMENT. MAY BE IS USED IN FUTURE.
           <PDFDownloadLink
             document={
@@ -88,22 +89,24 @@ const TableModalFooter = ({
             </Button>
           </PDFDownloadLink> */}
           <Button
-              startIcon={<DownloadIcon color="secondary" />}
-              sx={{ height: "4vh", mr: "2vh" }}
-              aria-label="descargar"
-              variant="contained"
-              onClick={()=>handleDownloadCSV(declaracion,'declaracion')}
-            >
-              <SinaText color="white">Descargar declaración</SinaText>
+            startIcon={<DownloadIcon color='secondary' />}
+            sx={{ height: "4vh", mr: "2vh" }}
+            aria-label='descargar'
+            variant='contained'
+            disabled={isLoading}
+            onClick={() => handleDownloadCSV(declaracion, "declaracion")}
+          >
+            <SinaText color='white'>Descargar declaración</SinaText>
           </Button>
           <Button
-            startIcon={<DeleteOutlineIcon color="secondary" />}
+            startIcon={<DeleteOutlineIcon color='secondary' />}
             sx={{ height: "4vh" }}
-            aria-label="eliminar"
-            variant="contained"
+            disabled={isLoading}
+            aria-label='eliminar'
+            variant='contained'
             onClick={handleDelete}
           >
-            <SinaText color="white">Eliminar declaración</SinaText>
+            <SinaText color='white'>Eliminar declaración</SinaText>
           </Button>
         </Grid>
       </Grid>

@@ -36,6 +36,7 @@ type Args = {
 
 export const NewDeclaracionesProvider = ({ children }: any) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingDetail, setLoadingDetail] = useState(false);
   const [pageDeclaracion, setPageDeclaracion] =
     useState<PageDeclaracion | null>(null);
   const [args, setArgs] = useState<Args>({});
@@ -88,35 +89,34 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
     return { nextDeclaracion, prevDeclaracion };
   };
 
-  const assignDeclaraciones = async (
-    declaracion: BfDataProcessDeclaraciones
-  ) => {
-    setIsLoading(true);
-    const { nextDeclaracion, prevDeclaracion } = getDeclaraciones(declaracion);
-    activeDeclaracionSetter(declaracion);
-    setIsLoading(false);
-    if (nextDeclaracion) {
-      nextDeclaracionSetter(
-        await fetchDeclaracionById(nextDeclaracion.id as any)
-      );
-    }
-    if (prevDeclaracion) {
-      prevDeclaracionSetter(
-        await fetchDeclaracionById(prevDeclaracion.id as any)
-      );
+  const assignDeclaraciones = async (declaracionId: number) => {
+    setLoadingDetail(true);
+    try {
+      const declaracion = await fetchDeclaracionById(declaracionId);
+      const { nextDeclaracion, prevDeclaracion } =
+        getDeclaraciones(declaracion);
+      activeDeclaracionSetter(declaracion);
+      if (nextDeclaracion) {
+        nextDeclaracionSetter(nextDeclaracion);
+      }
+      if (prevDeclaracion) {
+        prevDeclaracionSetter(prevDeclaracion);
+      }
+    } finally {
+      setLoadingDetail(false);
     }
   };
 
   const handleNextDeclaracion = async (
     declaracion?: BfDataProcessDeclaraciones
   ) => {
-    await assignDeclaraciones(declaracion as any);
+    await assignDeclaraciones(declaracion?.id as any);
   };
 
   const handlePrevDeclaracion = async (
     declaracion: BfDataProcessDeclaraciones
   ) => {
-    await assignDeclaraciones(declaracion as any);
+    await assignDeclaraciones(declaracion?.id as any);
   };
 
   useEffect(() => {
@@ -180,6 +180,7 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
   };
 
   const valueContext = {
+    isLoadingDetail,
     isLoading,
     fetchData,
     setFilters,

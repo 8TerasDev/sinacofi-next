@@ -22,6 +22,7 @@ import { fetchDeclaracionById } from "@/common/declaraciones";
 const SinaTable = () => {
   const {
     isLoading,
+    isLoadingDetail,
     pageData,
     handleChangePage,
     handleChangeRowsPerPage,
@@ -51,9 +52,8 @@ const SinaTable = () => {
   const openModalWithDeclaracion = async (
     declaracion: BfDataProcessDeclaraciones
   ) => {
-    const d = await fetchDeclaracionById(declaracion.id as any);
     openModalSetter(true);
-    await assignDeclaraciones(d);
+    await assignDeclaraciones(declaracion.id);
   };
 
   const disableDeclaracion = useCallback(
@@ -137,6 +137,7 @@ const SinaTable = () => {
         </TableContainer>
       </div>
       <SinaTableModal
+        isLoading={isLoadingDetail}
         declaracion={activeDeclaracion ? activeDeclaracion : null}
         isOpen={openModal}
         onNextDeclaracion={async () => {
