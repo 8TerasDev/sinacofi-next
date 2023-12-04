@@ -15,6 +15,7 @@ import { BfDataProcessBeneficiariosFinales, PFinales } from "@/application";
 type AcordeonProps = {
   type: "beneficiarios" | "control" | "historico";
   registros: BfDataProcessBeneficiariosFinales[];
+  isLoading: boolean;
 };
 
 const getTitleFromType = (type: AcordeonProps["type"]) => {
@@ -30,7 +31,11 @@ const getTitleFromType = (type: AcordeonProps["type"]) => {
   }
 };
 
-const TableModalAcordeon: React.FC<AcordeonProps> = ({ type, registros }) => {
+const TableModalAcordeon: React.FC<AcordeonProps> = ({
+  type,
+  registros,
+  isLoading,
+}) => {
   const [expanded, setExpanded] = useState(false);
 
   const handleToggle = (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
@@ -47,24 +52,27 @@ const TableModalAcordeon: React.FC<AcordeonProps> = ({ type, registros }) => {
       expanded={expanded}
       onChange={handleToggle}
       disableGutters
-      sx={{ "&:before": { display: "none" }, boxShadow: "none", mb: '2vh' }}
+      sx={{ "&:before": { display: "none" }, boxShadow: "none", mb: "2vh" }}
     >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel-content"
-        id="panel-header"
+        aria-controls='panel-content'
+        id='panel-header'
         sx={{ bgcolor: "rgba(0, 179, 226, 0.1)", p: "0 1vw" }}
       >
-        <Grid container justifyContent="space-between" alignItems="center">
+        <Grid container justifyContent='space-between' alignItems='center'>
           <Grid item>
-            <SinaText size="xsWide" spacing="on">
+            <SinaText size='xsWide' spacing='on'>
               {getTitleFromType(type)}
             </SinaText>
           </Grid>
         </Grid>
       </AccordionSummary>
       <AccordionDetails>
-        <TableModalAccordionDetails registros={registros} />
+        <TableModalAccordionDetails
+          isLoading={isLoading}
+          registros={registros}
+        />
       </AccordionDetails>
     </Accordion>
   );

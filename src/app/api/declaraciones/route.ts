@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
     const lastDeclarationId = await getLastDeclaration(user?.bank_code);
     data.items = data.items.map((declaracion) => {
       const isSameBank = user?.bank_code === declaracion.codigo_banco;
-      const isLastDeclaration = declaracion.id === lastDeclarationId || user.isAdmin;
+      const isLastDeclaration = declaracion.id.toString() === lastDeclarationId || user.isAdmin;
       return { ...declaracion, isSameBank, isLastDeclaration }
     })
     return Response.json(data);

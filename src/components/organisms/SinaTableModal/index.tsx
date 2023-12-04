@@ -108,7 +108,10 @@ export const SinaTableModal = ({
               />
             </Grid>
             <Grid item xs={3}>
-              <TableModalDetails isLoading={isLoading} declaracion={declaracion} />
+              <TableModalDetails
+                isLoading={isLoading}
+                declaracion={declaracion}
+              />
             </Grid>
             <Grid item xs={1}>
               <Divider orientation='vertical' sx={{ height: "100%" }} />
@@ -118,8 +121,13 @@ export const SinaTableModal = ({
               <TableModalAccordion
                 type='beneficiarios'
                 registros={beneficiarios}
+                isLoading={isLoading}
               />
-              <TableModalAccordion type='control' registros={controlEfectivo} />
+              <TableModalAccordion
+                type='control'
+                registros={controlEfectivo}
+                isLoading={isLoading}
+              />
               {/* <TableModalAccordion type="historico" /> */}
             </Grid>
           </Grid>
