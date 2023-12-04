@@ -16,13 +16,11 @@ import "dayjs/locale/es";
 import ES from "antd/locale/es_ES";
 
 dayjs.locale("es");
-const dateFormat = "DD/MM/YYYY/";
+const dateFormat = "DD/MM/YYYY";
 const { RangePicker } = DatePicker;
 
 export const SinCardHeader = () => {
-  const { setFilters, pageData, setView } = useContext(
-    NewDeclaracionesContext
-  );
+  const { setFilters, pageData, setView } = useContext(NewDeclaracionesContext);
   const [calendarValue, calendarValueSetter] = useState();
 
   function onChangeCalendar(e: any) {
@@ -34,9 +32,9 @@ export const SinCardHeader = () => {
     let to = e[1];
     if (from && to) {
       const formatDate = "YYYY-MM-DD";
-      setFilters({
+      setFilters((args: any) => ({
         fecha_declaracion: [from.format(formatDate), to.format(formatDate)],
-      });
+      }));
     }
   }
   const [filterDeclaraciones, filterDeclaracionesBySetter] = useState<any>(1);
@@ -47,10 +45,10 @@ export const SinCardHeader = () => {
       setView(undefined);
     }
     if (target.value === 2) {
-      setView('last_update');
+      setView("last_update");
     }
     if (target.value === 3) {
-      setView('last_declaration');
+      setView("last_declaration");
     }
   }
 
