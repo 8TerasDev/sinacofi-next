@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { TextField, Button, Stack } from "@mui/material";
 import { TypeOfSearch } from "../../../custom-hooks/typeSearchHook";
@@ -9,10 +9,11 @@ import { NewDeclaracionesContext } from "@/contexts/new-declaraciones.context";
 
 const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
   const [value, setValue] = useState("");
+  const [date, setDate] = useState<any>(undefined);
   const { typeOfSearch } = useContext(TypeSearchContext);
-  const { setFilters } = useContext(NewDeclaracionesContext);
+  const { setFilters, args } = useContext(NewDeclaracionesContext);
 
-  async function handleSearchByParams() {
+  const handleSearchByParams = useCallback(async() => {
     let filterName = "";
     if (typeOfSearch == TypeOfSearch.FOLIO) {
       filterName = "num_declaracion";
@@ -23,6 +24,7 @@ const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
     if (typeOfSearch == TypeOfSearch.RUT) {
       filterName = "person_rut";
     }
+    setDate(args?.filter?.fecha_declaracion || -1);
     setFilters((input: any) => {
       const args: any = {};
       if (input.fecha_declaracion) {
@@ -33,7 +35,7 @@ const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
       }
       return args;
     });
-  }
+  }, [args, value])
 
   function placeHolderText() {
     if (typeOfSearch == TypeOfSearch.FOLIO) {
@@ -60,6 +62,18 @@ const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
       handleSearchByParams().then();
     }
   }, [value]);
+
+  useEffect(() => {
+    const filter = args.filter || {};
+    if (
+      date &&
+      filter?.fecha_declaracion &&
+      date != filter?.fecha_declaracion &&
+      value.length > 0
+    ) {
+      setValue("");
+    }
+  }, [args]);
 
   useEffect(() => {
     resetFilter();

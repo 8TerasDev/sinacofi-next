@@ -78,19 +78,27 @@ const buildWhere = (filters: { [key: string]: string | string[] }) => {
 const buildView = (view: ViewDeclaration) => {
   if (view === 'last_update') {
     return Prisma.sql` inner join (
-      select
-        pj.rut,
-        max(d.fecha_subida) as max_upload
-      from
-        bf_data_process_declaraciones as d
-      inner join
-        bf_data_process_personasjuridicas as pj
-      on
-        d.id = pj.declaracion_id
-      group by pj.rut
+      select pj.rut,last_update.last_date, max(d.id) as max_id from
+          bf_data_process_declaraciones as d
+        inner join bf_data_process_personasjuridicas as pj on d.id  = pj.declaracion_id
+        inner join
+        (
+          select
+            pj.rut,
+            max(d.fecha_subida) as last_date
+          from
+            schema1.bf_data_process_declaraciones as d
+          inner join
+            schema1.bf_data_process_personasjuridicas as pj
+          on
+            d.id = pj.declaracion_id
+          group by pj.rut
+        ) as last_update on
+        d.fecha_subida = last_update.last_date and pj.rut  = last_update.rut
+        group by pj.rut, last_update.last_date
     ) as last_upload
     on
-    last_upload.rut = pj.rut  and last_upload.max_upload = d.fecha_subida
+    last_upload.rut = pj.rut and last_upload.last_date = d.fecha_subida and last_upload.max_id = d.id
   `
   }
   if (view == 'last_declaration') {

@@ -73,8 +73,7 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
   const getDeclaraciones = (declaracion?: BfDataProcessDeclaraciones) => {
     const index =
       pageDeclaracion?.items?.findIndex(
-        (item: BfDataProcessDeclaraciones) =>
-          item.id === declaracion?.id
+        (item: BfDataProcessDeclaraciones) => item.id === declaracion?.id
       ) || 0;
     const nextDeclaracion =
       index + 1 >= (pageDeclaracion?.items?.length || 0)
