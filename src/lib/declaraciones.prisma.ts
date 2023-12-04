@@ -82,9 +82,9 @@ const buildView = (view: ViewDeclaration) => {
         pj.rut,
         max(d.fecha_subida) as max_upload
       from
-        schema1.bf_data_process_declaraciones as d
+        bf_data_process_declaraciones as d
       inner join
-        schema1.bf_data_process_personasjuridicas as pj
+        bf_data_process_personasjuridicas as pj
       on
         d.id = pj.declaracion_id
       group by pj.rut
@@ -99,9 +99,9 @@ const buildView = (view: ViewDeclaration) => {
         pj.rut,
         max(d.fecha_declaracion) as max_declaration
       from
-        schema1.bf_data_process_declaraciones as d
+        bf_data_process_declaraciones as d
       inner join
-        schema1.bf_data_process_personasjuridicas as pj
+        bf_data_process_personasjuridicas as pj
       on
         d.id = pj.declaracion_id
       group by pj.rut
