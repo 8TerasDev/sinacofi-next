@@ -137,7 +137,7 @@ const buildQuery = ({ bankCode, page, filter, order, view }: FindArgs) => {
             inner join
               bf_data_process_personasjuridicas as pj2
             on d2.id = pj2.declaracion_id
-            where pj2.rut  = pj.rut  and d2.id != d.id  and d2.codigo_banco = ${bankCode}
+            where pj2.rut  = pj.rut  and d2.id != d.id  and d2.codigo_banco = ${bankCode} and d2.status = 'ACTIVE'
         )) or ${bankCode} = '-1' as has_ofuscate,
         pj.rut,
         d.id,
