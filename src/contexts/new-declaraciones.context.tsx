@@ -152,6 +152,10 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
     }
     setArgs({
       ...args,
+      page: {
+        ...(args.page || {}),
+        number: 0,
+      },
       filter: newFilters,
     });
   };
