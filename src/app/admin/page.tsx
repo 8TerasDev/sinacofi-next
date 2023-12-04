@@ -188,7 +188,7 @@ const AdminPage = () => {
     if(type === 'success'){
       setOpenSnack(true);
     }
-    
+
   }
 
   const handleModal = (modalType: string) => {
@@ -229,7 +229,7 @@ const AdminPage = () => {
       };
       const { data: banks } = await axios.put(`api/banks/${currentRow._id}`, data);
       setBankDataList(banks);
-    
+
     } catch (err) {
       console.log(err);
     }
@@ -346,7 +346,6 @@ const AdminPage = () => {
       try {
         return await callback(args);
       } catch (ex: any) {
-        debugger;
         setError(ex.message);
       }
     };

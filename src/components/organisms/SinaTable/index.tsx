@@ -17,23 +17,20 @@ import { disable as disableDeclaracionById } from "@/common/declaraciones";
 import { DeleteModal } from "../DeleteModal";
 import RenderTable from "./RenderTable";
 import { NewDeclaracionesContext } from "@/contexts/new-declaraciones.context";
+import { fetchDeclaracionById } from "@/common/declaraciones";
 
 const SinaTable = () => {
   const {
-    declaraciones,
-    currentPage,
-    rowsPerPage,
+    isLoading,
+    isLoadingDetail,
+    pageData,
     handleChangePage,
     handleChangeRowsPerPage,
-    totalDeclaraciones,
-    handleOrderByFechaDeclaracion,
-    handleOrderByFechaCarga,
-    orderByFechaDeclaracion,
-    orderByFechaCarga,
+    args,
+    setOrders,
     activeDeclaracion,
     nextDeclaracion,
     prevDeclaracion,
-    getDeclaraciones,
     assignDeclaraciones,
     handleNextDeclaracion,
     handlePrevDeclaracion,
@@ -42,21 +39,21 @@ const SinaTable = () => {
   const [openModal, openModalSetter] = useState<boolean>(false);
   const [currentDeclaracion, setCurrentDeclaracion] = useState<any>();
   const [openDeleteModal, openDeleteModalSetter] = useState<boolean>(false);
-  const [data, setData] = useState(declaraciones);
+  const [data, setData] = useState(pageData);
   useEffect(() => {
-    setData(declaraciones);
-  }, [declaraciones]);
+    setData(pageData);
+  }, [pageData]);
 
   const handleDeleteModal = (declaracion: any) => {
     openDeleteModalSetter((openDeleteModal) => !openDeleteModal);
     setCurrentDeclaracion(declaracion);
   };
 
-  const openModalWithDeclaracion = (
+  const openModalWithDeclaracion = async (
     declaracion: BfDataProcessDeclaraciones
   ) => {
     openModalSetter(true);
-    assignDeclaraciones(declaracion);
+    await assignDeclaraciones(declaracion.id);
   };
 
   const disableDeclaracion = useCallback(
@@ -68,7 +65,10 @@ const SinaTable = () => {
     },
     [currentDeclaracion, data]
   );
-
+  const handleOrder = useCallback((field: string) => () => {
+    const orders = args?.order || {};
+    setOrders({ [field]: orders[field] === "desc" ? "asc" : "desc" });
+  }, [args]);
   return (
     <>
       <div className={styles.sinatable_container}>
@@ -98,8 +98,8 @@ const SinaTable = () => {
                 <TableCell>
                   <TableSortLabel
                     active={true}
-                    direction={orderByFechaDeclaracion}
-                    onClick={handleOrderByFechaDeclaracion}
+                    direction={args?.order?.fecha_declaracion}
+                    onClick={handleOrder("fecha_declaracion")}
                   >
                     <SinaTypography>Fecha de declaración</SinaTypography>
                   </TableSortLabel>
@@ -107,8 +107,8 @@ const SinaTable = () => {
                 <TableCell>
                   <TableSortLabel
                     active={true}
-                    direction={orderByFechaCarga}
-                    onClick={handleOrderByFechaCarga}
+                    direction={args?.order?.fecha_subida}
+                    onClick={handleOrder("fecha_subida")}
                   >
                     <SinaTypography>Fecha de carga</SinaTypography>
                   </TableSortLabel>
@@ -117,7 +117,8 @@ const SinaTable = () => {
             </TableHead>
             <TableBody>
               <RenderTable
-                declaraciones={data}
+                isLoading={isLoading}
+                declaraciones={data?.items ?? []}
                 handleDeleteModal={handleDeleteModal}
                 openModalWithDeclaracion={openModalWithDeclaracion}
               />
@@ -127,25 +128,23 @@ const SinaTable = () => {
             rowsPerPageOptions={[10, 25, 50]}
             labelRowsPerPage='Filas por pagina'
             component='div'
-            count={data?.length ?? 0} // Debe ser el número total de elementos
-            rowsPerPage={rowsPerPage} // Número de filas por página
-            page={Math.min(
-              currentPage,
-              Math.ceil(data?.length ?? 0 / rowsPerPage) - 1
-            )} // Asegurando que la página no sea mayor que el total de páginas
+            count={data?.page?.total ?? 0} // Debe ser el número total de elementos
+            rowsPerPage={data?.page?.size ?? 10} // Número de filas por página
+            page={data?.page?.number ?? 0 + 1} // Asegurando que la página no sea mayor que el total de páginas
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </TableContainer>
       </div>
       <SinaTableModal
+        isLoading={isLoadingDetail}
         declaracion={activeDeclaracion ? activeDeclaracion : null}
         isOpen={openModal}
-        onNextDeclaracion={() => {
-          handleNextDeclaracion(nextDeclaracion);
+        onNextDeclaracion={async () => {
+          await handleNextDeclaracion(nextDeclaracion);
         }}
-        onPrevDeclaracion={() => {
-          handlePrevDeclaracion(prevDeclaracion);
+        onPrevDeclaracion={async () => {
+          await handlePrevDeclaracion(prevDeclaracion);
         }}
         handleClose={() => {
           openModalSetter(false);

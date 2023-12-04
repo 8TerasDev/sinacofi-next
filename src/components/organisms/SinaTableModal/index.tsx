@@ -20,16 +20,15 @@ const theme = createTheme({
   },
 });
 
-
-
 type SinaTableModalProps = {
   declaracion: BfDataProcessDeclaraciones | null;
   isOpen: any;
+  isLoading: boolean;
   handleClose: any;
   onNextDeclaracion: any;
   onPrevDeclaracion: any;
   handleDelete: any;
-}
+};
 
 export const SinaTableModal = ({
   declaracion,
@@ -37,21 +36,26 @@ export const SinaTableModal = ({
   handleClose,
   onNextDeclaracion,
   onPrevDeclaracion,
-  handleDelete
+  handleDelete,
+  isLoading,
 }: SinaTableModalProps) => {
-
-
-
   const [beneficiarios, beneficiariosSetter] = useState<any[]>([]);
   const [controlEfectivo, controlEfectivoSetter] = useState<any[]>([]);
 
   useEffect(() => {
-    const cleanBeneficiarios = declaracion?.bf_data_process_beneficiariosfinales?.filter(beneficiarios_finales => beneficiarios_finales.tipo?.toLowerCase() == "bf") || []
-    const cleanControl = declaracion?.bf_data_process_beneficiariosfinales?.filter(beneficiarios_finales => beneficiarios_finales.tipo?.toLowerCase() == "ce") || []
-    beneficiariosSetter(cleanBeneficiarios)
-    controlEfectivoSetter(cleanControl)
-
-  }, [declaracion])
+    const cleanBeneficiarios =
+      declaracion?.bf_data_process_beneficiariosfinales?.filter(
+        (beneficiarios_finales) =>
+          beneficiarios_finales.tipo?.toLowerCase() == "bf"
+      ) || [];
+    const cleanControl =
+      declaracion?.bf_data_process_beneficiariosfinales?.filter(
+        (beneficiarios_finales) =>
+          beneficiarios_finales.tipo?.toLowerCase() == "ce"
+      ) || [];
+    beneficiariosSetter(cleanBeneficiarios);
+    controlEfectivoSetter(cleanControl);
+  }, [declaracion]);
 
   // @ts-ignore
   const isLastDeclaration = declaracion && declaracion.isLastDeclaration;
@@ -60,7 +64,7 @@ export const SinaTableModal = ({
     <ThemeProvider theme={theme}>
       <Modal
         open={isOpen} // Usa la prop directamente
-        aria-labelledby="modal-title"
+        aria-labelledby='modal-title'
         onClose={handleClose} // Usa la prop directamente
       >
         <Paper
@@ -89,14 +93,17 @@ export const SinaTableModal = ({
             }}
           >
             <Grid item xs={11}>
-              <TableModalTitle declaracion={declaracion} />
+              <TableModalTitle
+                isLoading={isLoading}
+                declaracion={declaracion}
+              />
             </Grid>
             <Grid
               item
               xs={1}
               container
-              alignItems="center"
-              justifyContent="flex-end"
+              alignItems='center'
+              justifyContent='flex-end'
             >
               <TableModalCloseButton
                 isOpen={isOpen}
@@ -104,15 +111,26 @@ export const SinaTableModal = ({
               />
             </Grid>
             <Grid item xs={3}>
-              <TableModalDetails declaracion={declaracion} />
+              <TableModalDetails
+                isLoading={isLoading}
+                declaracion={declaracion}
+              />
             </Grid>
             <Grid item xs={1}>
-              <Divider orientation="vertical" sx={{ height: "100%" }} />
+              <Divider orientation='vertical' sx={{ height: "100%" }} />
             </Grid>
             <Grid item xs={8}>
               {/* {JSON.stringify(beneficiarios)} */}
-              <TableModalAccordion type="beneficiarios" registros={beneficiarios} />
-              <TableModalAccordion type="control" registros={controlEfectivo} />
+              <TableModalAccordion
+                type='beneficiarios'
+                registros={beneficiarios}
+                isLoading={isLoading}
+              />
+              <TableModalAccordion
+                type='control'
+                registros={controlEfectivo}
+                isLoading={isLoading}
+              />
               {/* <TableModalAccordion type="historico" /> */}
             </Grid>
           </Grid>
@@ -122,7 +140,9 @@ export const SinaTableModal = ({
             declaracion={declaracion}
             controlEfectivo={controlEfectivo}
             beneficiarios={beneficiarios}
-            handleDelete={isLastDeclaration && (() => handleDelete(declaracion))}
+            handleDelete={
+              isLastDeclaration && (() => handleDelete(declaracion))
+            }
           />
         </Paper>
       </Modal>

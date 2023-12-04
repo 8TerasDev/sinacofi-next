@@ -1,67 +1,74 @@
 import React, { useContext, useState } from "react";
 import types from "./sinacardheader.module.css";
-import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import SinaText from "../../atoms/SinaText";
 import { handleDownloadCSV } from "@/lib/utils";
-import { ConfigProvider, DatePicker } from 'antd';
+import { ConfigProvider, DatePicker } from "antd";
 import { NewDeclaracionesContext } from "@/contexts/new-declaraciones.context";
-import { useGetProfile } from "@/custom-hooks/useGetProfile";
-import ES from 'antd/locale/es_ES';
+import dayjs from "dayjs";
+import "dayjs/locale/es";
+import ES from "antd/locale/es_ES";
 
+dayjs.locale("es");
+const dateFormat = "DD/MM/YYYY/";
 const { RangePicker } = DatePicker;
 
 export const SinCardHeader = () => {
-  const { declaraciones, FilterByLastUpdated, FilterByLastUploaded, resetFilter, FilterByDateRange } = useContext(NewDeclaracionesContext)
+  const { setFilters, pageData, setView } = useContext(
+    NewDeclaracionesContext
+  );
   const [calendarValue, calendarValueSetter] = useState();
 
-  function dateStringifier(value: any) {
-    const response = `${value.$d}`
-    return response
-  }
-
   function onChangeCalendar(e: any) {
-    if (!e) { resetFilter() }
-    calendarValueSetter(e)
-    let from = e[0] && dateStringifier(e[0])
-    let to = e[1] && dateStringifier(e[1])
+    if (!e) {
+      setFilters({ fecha_declaracion: undefined });
+    }
+    calendarValueSetter(e);
+    let from = e[0];
+    let to = e[1];
     if (from && to) {
-      FilterByDateRange({
-        fechaInicio: from,
-        fechaFin: to
-      })
+      const formatDate = "YYYY-MM-DD";
+      setFilters({
+        fecha_declaracion: [from.format(formatDate), to.format(formatDate)],
+      });
     }
   }
   const [filterDeclaraciones, filterDeclaracionesBySetter] = useState<any>(1);
 
-
   async function filterDeclaracionesBy({ target }: any) {
-    filterDeclaracionesBySetter(target.value)
+    filterDeclaracionesBySetter(target.value);
     if (target.value === 1) {
-      resetFilter();
+      setView(undefined);
     }
     if (target.value === 2) {
-      FilterByLastUpdated();
+      setView('last_update');
     }
     if (target.value === 3) {
-      FilterByLastUploaded();
+      setView('last_declaration');
     }
   }
 
   return (
     <div className={types.cardheader_container}>
       <div className={types.text_container}>
-        <SinaText size="l" lineHeight="off" fontWeight={700}>
+        <SinaText size='l' lineHeight='off' fontWeight={700}>
           DECLARACIONES
         </SinaText>
       </div>
       <div className={types.calendar_container}>
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Mostrar</InputLabel>
+          <InputLabel id='demo-simple-select-label'>Mostrar</InputLabel>
           <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
+            labelId='demo-simple-select-label'
+            id='demo-simple-select'
             value={`${filterDeclaraciones}`}
-            label="Mostrar"
+            label='Mostrar'
             onChange={filterDeclaracionesBy}
           >
             <MenuItem value={1}>Totalidad</MenuItem>
@@ -70,17 +77,17 @@ export const SinCardHeader = () => {
           </Select>
         </FormControl>
         <ConfigProvider locale={ES}>
-          <RangePicker 
-            format={'DD/MM/YYYY'}
-            onCalendarChange={onChangeCalendar} 
+          <RangePicker
+            format={dateFormat}
+            onCalendarChange={onChangeCalendar}
             value={calendarValue}
           />
         </ConfigProvider>
 
         <Button
-          variant="contained"
+          variant='contained'
           className={types.downloadButton}
-          onClick={() => handleDownloadCSV(declaraciones)}
+          onClick={() => handleDownloadCSV(pageData.items)}
         >
           descargar
         </Button>

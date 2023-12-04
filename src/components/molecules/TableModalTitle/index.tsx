@@ -1,17 +1,25 @@
 // TableModalTitle.tsx
 import React from "react";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Skeleton } from "@mui/material";
 import SinaText from "../../atoms/SinaText";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import { BfDataProcessDeclaraciones, Declaracion, PJuridicas } from "@/application";
+import {
+  BfDataProcessDeclaraciones,
+  Declaracion,
+  PJuridicas,
+} from "@/application";
 export const TableModalTitle = ({
   declaracion,
-}: { declaracion?: BfDataProcessDeclaraciones | null }) => {
+  isLoading,
+}: {
+  declaracion?: BfDataProcessDeclaraciones | null;
+  isLoading: boolean;
+}) => {
   return (
     <Box
-      component="header"
+      component='header'
       sx={{
         position: "fixed",
         top: 0,
@@ -25,48 +33,60 @@ export const TableModalTitle = ({
         borderBottomRightRadius: 0,
       }}
     >
-      <Grid item xs={8} container direction="column">
-        <Grid item container alignItems="center">
+      <Grid item xs={8} container direction='column'>
+        <Grid item container alignItems='center'>
           <Grid item>
-            <Box display="flex" alignItems="center">
-              <HomeOutlinedIcon fontSize="small" />
-              <SinaText size="xs" color="var(--gray-text)">
+            <Box display='flex' alignItems='center'>
+              <HomeOutlinedIcon fontSize='small' />
+              <SinaText size='xs' color='var(--gray-text)'>
                 Todas las declaraciones
               </SinaText>
             </Box>
           </Grid>
           <Grid item sx={{ p: "0 1vw" }}>
-            <SinaText size="xs" color="var(--gray-text)">
+            <SinaText size='xs' color='var(--gray-text)'>
               /
             </SinaText>
           </Grid>
           <Grid item>
-            <Box display="flex" alignItems="center">
-              <CalendarMonthIcon fontSize="small" />
-              <SinaText size="xs" color="var(--gray-text)">
-                Declaración de{" "}
-                {declaracion &&
-                  `${declaracion.fecha_declaracion}`.slice(0, 10)}
+            <Box display='flex' alignItems='center'>
+              <CalendarMonthIcon fontSize='small' />
+              <SinaText size='xs' color='var(--gray-text)'>
+                {isLoading ? (
+                  <Skeleton />
+                ) : (
+                  `Declaración de ${(
+                    declaracion?.fecha_declaracion || ""
+                  )?.slice(0, 10)}`
+                )}
               </SinaText>
             </Box>
           </Grid>
           <Grid item sx={{ p: "0 1vw" }}>
-            <SinaText size="xs" color="var(--gray-text)">
+            <SinaText size='xs' color='var(--gray-text)'>
               /
             </SinaText>
           </Grid>
           <Grid item>
-            <Box display="flex" alignItems="center">
-              <AttachFileIcon fontSize="small" />
-              <SinaText size="xs" color="var(--gray-text)">
-                Folio : {declaracion && declaracion.num_declaracion}
+            <Box display='flex' alignItems='center'>
+              <AttachFileIcon fontSize='small' />
+              <SinaText size='xs' color='var(--gray-text)'>
+                {isLoading ? (
+                  <Skeleton />
+                ) : (
+                  `Folio : ${declaracion?.num_declaracion}`
+                )}
               </SinaText>
             </Box>
           </Grid>
         </Grid>
         <Grid item sx={{ marginTop: "1rem" }}>
-          <SinaText size="sl" lineHeight="off">
-            {declaracion && declaracion.bf_data_process_personasjuridicas?.[0]?.razon_social}
+          <SinaText size='sl' lineHeight='off'>
+            {isLoading ? (
+              <Skeleton />
+            ) : (
+              declaracion?.bf_data_process_personasjuridicas?.[0]?.razon_social
+            )}
           </SinaText>
         </Grid>
       </Grid>

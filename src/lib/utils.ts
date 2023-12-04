@@ -65,10 +65,10 @@ export const createNewKindCSV = (data: any) => {
     correlativo
   } = data;
   const {
-    rut, 
-    razon_social, 
-    domicilio, 
-    lugar_de_constitucion, 
+    rut,
+    razon_social,
+    domicilio,
+    lugar_de_constitucion,
     ciudad,
     nombre_rep_legal,
     tipo_de_sociedad,
@@ -95,9 +95,9 @@ export const createNewKindCSV = (data: any) => {
 
     const BF_CE_Lines = bf_data_process_beneficiariosfinales.map( (item:any) => {
       const {
-        tipo, 
-        identificacion, 
-        nombre_completo, 
+        tipo,
+        identificacion,
+        nombre_completo,
         domicilio:domicilio2,
         ciudad:ciudad2,
         pais,
@@ -123,15 +123,15 @@ export const createNewKindCSV = (data: any) => {
 
 export const handleDownloadCSV = (data: any, type?:any) => {
   const isDeclaracion = type === 'declaracion';
-  const filename = isDeclaracion ? `declaracion_${data.num_declaracion}.csv` : 'declaracaiones.csv'; 
+  const filename = isDeclaracion ? `declaracion_${data.num_declaracion}.csv` : 'declaraciones.csv';
   const newDataMap = !isDeclaracion && data.map((declaracion:any) => {
     return {
       id: declaracion.id,
       codigo_banco: declaracion.codigo_banco,
       num_declaracion: declaracion.num_declaracion,
-      razon_social: declaracion.bf_data_process_personasjuridicas[0].razon_social,
+      razon_social: declaracion.razon_social,
       fecha_declaracion: dayjs(declaracion.fecha_declaracion).format("DD/MM/YYYY"),
-      fecha_subida: dayjs(declaracion.fecha_subida).format("DD/MM/YYYY"),  
+      fecha_subida: dayjs(declaracion.fecha_subida).format("DD/MM/YYYY"),
     };
   });
   const csvData = newDataMap ? createCSV(newDataMap) : createNewKindCSV(data);

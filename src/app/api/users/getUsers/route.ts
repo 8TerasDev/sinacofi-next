@@ -12,6 +12,6 @@ export const GET = async (req: NextRequest) => {
     return Response.json(users)
   }
   catch (err) {
-    return processError('No se ha podido obtener los usuarios')
+    return processError(err, 'No se ha podido obtener los usuarios')
   }
 };

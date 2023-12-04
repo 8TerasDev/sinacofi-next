@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export const processError = (error: any) => {
+export const processError = (error: any, message: string | undefined = undefined) => {
     if (error.name && error.name === "TokenExpiredError") {
         return NextResponse.json({ "message": "token expired" }, {
             status: 401,
@@ -11,7 +11,7 @@ export const processError = (error: any) => {
             status: 403,
         });
     }
-    return NextResponse.json({ message: error.toString() }, {
+    return NextResponse.json({ message: message || error.toString() }, {
         status: 500,
     });
 }

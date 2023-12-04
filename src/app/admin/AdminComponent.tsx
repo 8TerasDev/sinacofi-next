@@ -235,7 +235,7 @@ const AdminPage = () => {
       };
       const { data: banks } = await axios.put(`api/banks/${currentRow._id}`, data);
       setBankDataList(banks);
-    
+
     } catch (err) {
       console.log(err);
     }
@@ -334,7 +334,7 @@ const AdminPage = () => {
       handleOpenSnack('error');
     } finally {
       setIsLoading(false);
-      
+
     }
   };
 
@@ -356,7 +356,6 @@ const AdminPage = () => {
       try {
         return await callback(args);
       } catch (ex: any) {
-        // debugger;
         setError(ex.message);
       }
     };
