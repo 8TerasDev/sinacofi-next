@@ -20,7 +20,7 @@ const dateFormat = "DD/MM/YYYY/";
 const { RangePicker } = DatePicker;
 
 export const SinCardHeader = () => {
-  const { setFilters, pageData, setOrders } = useContext(
+  const { setFilters, pageData, setView } = useContext(
     NewDeclaracionesContext
   );
   const [calendarValue, calendarValueSetter] = useState();
@@ -44,13 +44,13 @@ export const SinCardHeader = () => {
   async function filterDeclaracionesBy({ target }: any) {
     filterDeclaracionesBySetter(target.value);
     if (target.value === 1) {
-      setOrders({});
+      setView(undefined);
     }
     if (target.value === 2) {
-      setOrders({ fecha_subida: "desc" });
+      setView('last_update');
     }
     if (target.value === 3) {
-      setOrders({ fecha_declaracion: "desc" });
+      setView('last_declaration');
     }
   }
 

@@ -12,9 +12,13 @@ const parseArgs = (prefix: string, input: any) => {
 }
 
 export async function fetchDeclaraciones(args: any, intent = 0) {
-    const { filter, page, order } = args;
+    const { filter, page, order, view } = args;
     const params = parseArgs('filter', filter).concat(parseArgs('page', page)).concat(parseArgs('order', order))
+    if (view) {
+        params.push(`view=${view}`)
+    }
     const query = params.join("&")
+
     try {
         const { data, status } = await axios.get(`api/declaraciones?${query}`);
         if (status < 400) {

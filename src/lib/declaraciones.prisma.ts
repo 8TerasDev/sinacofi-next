@@ -3,6 +3,7 @@ import { prisma } from "./newclient.prisma";
 import { count } from "console";
 import { Prisma } from "@prisma/client";
 
+type ViewDeclaration = 'last_update' | 'last_declaration'
 export interface FindArgs {
   bankCode: string
   filter?: { [key: string]: string | string[] }
@@ -13,12 +14,22 @@ export interface FindArgs {
   order?: {
     [key: string]: 'asc' | 'desc'
   }
+  view?: ViewDeclaration
 }
 
-export async function countDeclaraciones(filter: any) {
+export async function countDeclaraciones(filter: any, view?: ViewDeclaration) {
   const whereStmt = buildWhere(filter || {})
-  const query = Prisma.join([
-    Prisma.sql`select count(id) as count from bf_data_process_declaraciones as d where d.status = 'ACTIVE' `,
+  let query = Prisma.sql`
+    select count(d.id) as count from bf_data_process_declaraciones as d
+    inner join bf_data_process_personasjuridicas as pj
+    on d.id = pj.declaracion_id
+  `
+  if (view) {
+    query = Prisma.join([query, buildView(view)], '')
+  }
+  query = Prisma.join([
+    query,
+    Prisma.sql` where d.status = 'ACTIVE' `,
     whereStmt || Prisma.sql``,
 
   ], whereStmt ? " and " : "")
@@ -61,7 +72,45 @@ const buildWhere = (filters: { [key: string]: string | string[] }) => {
   return Prisma.join(query, " AND ")
 }
 
-const buildQuery = ({ bankCode, page, filter, order }: FindArgs) => {
+const buildView = (view: ViewDeclaration) => {
+  if (view === 'last_update') {
+    return Prisma.sql` inner join (
+      select
+        pj.rut,
+        max(d.fecha_subida) as max_upload
+      from
+        schema1.bf_data_process_declaraciones as d
+      inner join
+        schema1.bf_data_process_personasjuridicas as pj
+      on
+        d.id = pj.declaracion_id
+      group by pj.rut
+    ) as last_upload
+    on
+    last_upload.rut = pj.rut  and last_upload.max_upload = d.fecha_subida
+  `
+  }
+  if (view == 'last_declaration') {
+    return Prisma.sql` inner join (
+      select
+        pj.rut,
+        max(d.fecha_declaracion) as max_declaration
+      from
+        schema1.bf_data_process_declaraciones as d
+      inner join
+        schema1.bf_data_process_personasjuridicas as pj
+      on
+        d.id = pj.declaracion_id
+      group by pj.rut
+    ) as last_upload
+    on
+    last_upload.rut = pj.rut  and last_upload.max_declaration = d.fecha_declaracion
+  `
+  }
+  return Prisma.sql``
+}
+
+const buildQuery = ({ bankCode, page, filter, order, view }: FindArgs) => {
   const whereStmt = buildWhere(filter || {})
   const orderStmt = buildOrder(order || {})
   const page_size = parseInt(page?.size ?? '10')
@@ -90,8 +139,12 @@ const buildQuery = ({ bankCode, page, filter, order }: FindArgs) => {
         pj.razon_social
       from bf_data_process_declaraciones as d
       inner join bf_data_process_personasjuridicas as pj
-      on d.id = pj.declaracion_id where d.status = 'ACTIVE'
+      on d.id = pj.declaracion_id
 	  `
+  if (view) {
+    query = Prisma.join([query, buildView(view)], '')
+  }
+  query = Prisma.join([query, Prisma.sql` where d.status = 'ACTIVE' `], '')
   if (whereStmt) {
     query = Prisma.join([query, Prisma.sql` and `, whereStmt], '')
   }
@@ -103,13 +156,13 @@ const buildQuery = ({ bankCode, page, filter, order }: FindArgs) => {
 
 }
 
-export async function findDeclaraciones({ bankCode, page, filter, order }: FindArgs) {
-  const page_size = parseInt(page?.size ?? '10')
-  const page_number = parseInt(page?.number ?? '0')
+export async function findDeclaraciones(args: FindArgs) {
+  const page_size = parseInt(args?.page?.size ?? '10')
+  const page_number = parseInt(args?.page?.number ?? '0')
   let count = 0
   try {
-    count = await countDeclaraciones(filter)
-    const declaraciones: any[] = await prisma.$queryRaw(buildQuery({ bankCode, page, filter, order }))
+    count = await countDeclaraciones(args?.filter, args?.view)
+    const declaraciones: any[] = await prisma.$queryRaw(buildQuery(args))
     return {
       page: {
         number: page_number,

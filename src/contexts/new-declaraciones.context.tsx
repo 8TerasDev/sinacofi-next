@@ -31,6 +31,7 @@ type Args = {
   page?: Page;
   order?: FieldOrderBy;
   filter?: FieldFilterBy;
+  view?: string;
 };
 
 export const NewDeclaracionesProvider = ({ children }: any) => {
@@ -171,11 +172,20 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
     });
   };
 
+  const setView = (view: string) => {
+    setArgs({
+      ...args,
+      view,
+    });
+  };
+
   const valueContext = {
     isLoading,
     fetchData,
     setFilters,
     setOrders,
+    setView,
+    args,
     pageData: pageDeclaracion,
     totalDeclaraciones,
     handleChangePage,

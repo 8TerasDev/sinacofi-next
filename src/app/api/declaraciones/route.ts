@@ -22,7 +22,8 @@ const pushNewValueAndCreateArray = (prev: string[] | string, value: string) => {
 
 const parseQueryArgs = (params: URLSearchParams, bankCode: string | undefined) => {
   const input: FindArgs = {
-    bankCode: bankCode ?? '-1'
+    bankCode: bankCode ?? '-1',
+    view: params.get("view") as any
   }
   const args: any = {}
   const keys = ["page", "filter", "order"]

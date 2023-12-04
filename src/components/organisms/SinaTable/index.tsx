@@ -25,10 +25,8 @@ const SinaTable = () => {
     pageData,
     handleChangePage,
     handleChangeRowsPerPage,
-    handleOrderByFechaDeclaracion,
-    handleOrderByFechaCarga,
-    orderByFechaDeclaracion,
-    orderByFechaCarga,
+    args,
+    setOrders,
     activeDeclaracion,
     nextDeclaracion,
     prevDeclaracion,
@@ -67,6 +65,10 @@ const SinaTable = () => {
     },
     [currentDeclaracion, data]
   );
+  const handleOrder = useCallback((field: string) => () => {
+    const orders = args?.order || {};
+    setOrders({ [field]: orders[field] === "desc" ? "asc" : "desc" });
+  }, [args]);
   return (
     <>
       <div className={styles.sinatable_container}>
@@ -96,8 +98,8 @@ const SinaTable = () => {
                 <TableCell>
                   <TableSortLabel
                     active={true}
-                    direction={orderByFechaDeclaracion}
-                    onClick={handleOrderByFechaDeclaracion}
+                    direction={args?.order?.fecha_declaracion}
+                    onClick={handleOrder("fecha_declaracion")}
                   >
                     <SinaTypography>Fecha de declaración</SinaTypography>
                   </TableSortLabel>
@@ -105,8 +107,8 @@ const SinaTable = () => {
                 <TableCell>
                   <TableSortLabel
                     active={true}
-                    direction={orderByFechaCarga}
-                    onClick={handleOrderByFechaCarga}
+                    direction={args?.order?.fecha_subida}
+                    onClick={handleOrder("fecha_subida")}
                   >
                     <SinaTypography>Fecha de carga</SinaTypography>
                   </TableSortLabel>
