@@ -29,7 +29,10 @@ export async function countDeclaraciones(filter: any, view?: ViewDeclaration) {
   }
   query = Prisma.join([
     query,
-    Prisma.sql` where d.status = 'ACTIVE' `,
+    Prisma.sql` where d.status = 'ACTIVE' `
+  ], '');
+  query = Prisma.join([
+    query,
     whereStmt || Prisma.sql``,
 
   ], whereStmt ? " and " : "")
