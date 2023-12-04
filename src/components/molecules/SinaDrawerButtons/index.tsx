@@ -65,7 +65,12 @@ const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
 
   useEffect(() => {
     const filter = args.filter || {};
-    if (date && date != filter?.fecha_declaracion && value.length > 0) {
+    if (
+      date &&
+      filter?.fecha_declaracion &&
+      date != filter?.fecha_declaracion &&
+      value.length > 0
+    ) {
       setValue("");
     }
   }, [args]);
