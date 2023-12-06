@@ -1,8 +1,11 @@
 import SinaText from "@/components/atoms/SinaText";
-import { updateInfoUserById } from "@/lib/users/updateInfoUserById.prisma";
 import { Button, Paper, Stack } from "@mui/material";
-import { DataGrid, GridRowModes } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { esES } from '@mui/x-data-grid';
 import React from "react";
+
+const theme = createTheme({}, esES)
 
 export const UserTableComponent = ({ rows, tableColumns, banks }: any) => {
   //const width = typeof window !== 'undefined' && window.screen.width / (tableColumns.length + 1);
@@ -22,13 +25,15 @@ export const UserTableComponent = ({ rows, tableColumns, banks }: any) => {
     return { ...row, _id: row._id ?? row.id, id: index };
   });
   return (
-    <DataGrid
-      sx={{ paddingX: "20px" }}
-      hideFooterPagination
-      hideFooter
-      columns={columns}
-      rows={rows2}
-    />
+    <ThemeProvider theme={theme}>
+      <DataGrid
+        sx={{ paddingX: "20px" }}
+        hideFooterPagination
+        hideFooter
+        columns={columns}
+        rows={rows2}
+      />
+    </ThemeProvider>
   );
 };
 

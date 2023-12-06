@@ -26,6 +26,7 @@ import ButtonConfirm from "@/components/organisms/ButtonConfirm";
 import { deleteUserById, enableUserById } from "@/common/user";
 import { useGetUsersSameBank } from "@/custom-hooks/useGetUsersSameBank";
 import { EditUserForm } from "@/components/organisms/EditUserForm";
+import { translate } from "@/common/translations";
 
 export type CreateFormsProps = {
   handleSubmit: (input: any) => void;
@@ -67,7 +68,7 @@ const preColumnsUsers = [
   },
   {
     field: "status",
-    headerName: "Status",
+    headerName: translate('status'),
     sortable: false,
     renderCell: ({ row }: any) => {
       return (
@@ -83,7 +84,8 @@ const preColumnsUsers = [
   },
   {
     field: "username",
-    headerName: "Username",
+    headerName: translate('username'),
+    width: 150,
   },
   {
     field: "first_name",
@@ -99,7 +101,7 @@ const preColumnsUsers = [
   },
   {
     field: "is_staff",
-    headerName: "Es Staff",
+    headerName: translate('isStaff'),
   },
   {
     field: "bank_id",
