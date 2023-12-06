@@ -4,7 +4,8 @@ export const getUsersSameBank = async (id:any) => {
   try {
     const users = await prisma.accounts_user.findMany({
       where: {
-        bank_id: id
+        bank_id: id,
+        is_superuser: false
       },
       orderBy: [
         {
