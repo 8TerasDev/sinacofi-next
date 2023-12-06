@@ -1,3 +1,4 @@
+import { logger } from "../logger";
 import { prisma } from "../newclient.prisma";
 
 export const getBankByCode = async (code: string) => {
@@ -12,7 +13,7 @@ export const getBankByCode = async (code: string) => {
         return bank
     }
     catch (err) {
-        console.log(err);
+        logger.error(err);
         throw err
     }
 

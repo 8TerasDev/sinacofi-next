@@ -4,6 +4,7 @@ import { getBankByCode } from "@/lib/banks/getBankByCode.prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { getSessionUser, validateAdminPermission } from "@/lib/security";
 import { processError } from "@/lib/error";
+import { logger } from "@/lib/logger";
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
 
@@ -21,7 +22,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     return Response.json(banks)
   }
   catch (err: any) {
-    console.log(err)
+    logger.error(err)
     return processError(err, 'No se ha podido crear el banco')
   }
 }

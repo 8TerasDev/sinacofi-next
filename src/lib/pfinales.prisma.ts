@@ -1,5 +1,6 @@
 import { PFinales } from "@/application";
 import { prisma } from "./newclient.prisma";
+import { logger } from "./logger";
 
 export async function getAllPFinales(
   correlativo_declaracion: string
@@ -30,7 +31,7 @@ export async function getUniqueCorrelativoDeclaracion(
     return uniqueCorrelativos;
   } catch (error) {
     // Maneja la excepción si algo sale mal
-    console.error("Error al obtener los correlativos únicos:", error);
+    logger.error("Error al obtener los correlativos únicos:", error);
     throw error;
   }
 }

@@ -42,6 +42,13 @@ const TableModalDetails = ({
   const rutRep =
     declaracion?.bf_data_process_personasjuridicas?.[0]
       ?.identificacion_rep_legal;
+  const getDate = (dateStr: string) => {
+    try {
+      return dayjs(new Date(dateStr?.split(".")[0])).format("DD/MM/YYYY HH:mm");
+    } catch {
+      return "-";
+    }
+  };
   return (
     <Grid container direction='column' alignItems='flex-start'>
       {/* Los items ahora ocupan toda la anchura disponible, xs={12} */}
@@ -109,7 +116,7 @@ const TableModalDetails = ({
           {isLoading ? (
             <Skeleton />
           ) : (
-            `${dayjs(fechahora_creacion).format("DD/MM/YYYY hh:mm")}`
+            `${getDate(fechahora_creacion as unknown as string)}`
           )}
         </SinaText>
       </Grid>

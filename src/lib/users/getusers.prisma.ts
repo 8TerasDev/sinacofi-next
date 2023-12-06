@@ -1,3 +1,4 @@
+import { logger } from "../logger";
 import { prisma } from "../newclient.prisma";
 
 export const getUsers = async () => {
@@ -20,7 +21,7 @@ export const getUsers = async () => {
     return stringUsers;
   }
   catch (err) {
-    console.log(err);
+    logger.error(err);
     throw err;
   }
 

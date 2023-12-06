@@ -1,5 +1,4 @@
-//import { PrismaClient } from "@prisma/client";
-import { getBankById } from "./banks/getBankById.prisma";
+import { logger } from "./logger";
 import { prisma } from "./newclient.prisma";
 
 export async function findByUsername(username: string) {
@@ -19,7 +18,7 @@ export async function findByUsername(username: string) {
 
     return cleanUser;
   } catch (error) {
-    console.error("Error al verificar credenciales:", error);
+    logger.error("Error al verificar credenciales:", error);
     throw error;
   } finally {
   }
