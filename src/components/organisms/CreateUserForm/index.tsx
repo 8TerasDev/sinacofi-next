@@ -1,6 +1,7 @@
 import { CreateFormsProps } from "@/app/admin/page";
+import SinaText from "@/components/atoms/SinaText";
 import PhoneInputMask from "@/components/atoms/PhoneInputMask";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Info, Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   FormControl,
   Stack,
@@ -14,6 +15,7 @@ import {
   FormControlLabel,
   InputAdornment,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 import React, { useState } from "react";
 
@@ -77,33 +79,51 @@ export const CreateUserForm = ({
             />
           </Grid>
           <Grid item sm={4} padding={"10px"}>
-            <TextField
-              required
-              variant='filled'
-              label='Password'
-              placeholder='Password'
-              sx={{ width: "100%" }}
-              id='password'
-              name='password'
-              autoComplete='password'
-              type={showPassword ? "text" : "password"}
-              inputProps={{
-                pattern: "(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[a-z]).{8,}",
-                //(?=.*?[#?!@$ %^&*-])
-              }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={()=>setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
+          <Grid container alignItems="center">
+              <Grid item xs>
+                <TextField
+                  required
+                  variant='filled'
+                  label='Password'
+                  placeholder='Password'
+                  sx={{ width: "100%" }}
+                  id='password'
+                  name='password'
+                  autoComplete='password'
+                  type={showPassword ? "text" : "password"}
+                  inputProps={{
+                    pattern: "(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[a-z]).{8,}",
+                    //(?=.*?[#?!@$ %^&*-])
+                  }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowPassword(!showPassword)}
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Grid>
+              <Grid item>
+                <Tooltip
+                  arrow
+                  title={
+                    <SinaText size="xs" color="inherit">
+                      Debe contener un mínimo de 8 caracteres con una combinación de mayúsculas, minúsculas y caracteres numéricos.
+                    </SinaText>
+                  }
+                >
+                  <IconButton>
+                    <Info />
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+            </Grid>
           </Grid>
 
           {!isBankAdmin && (
