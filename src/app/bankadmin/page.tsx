@@ -42,16 +42,21 @@ const preColumnsUsers = [
     headerName: "Acciones",
     sortable: false,
     renderCell: ({ row }: any) => (
-      <Stack flexDirection={'row'} flex={1} justifyContent={'space-around'}>
-        <IconButton onClick={()=>row.updateUser(row)} sx={{padding:0}}>
+      <Stack flexDirection={"row"} flex={1} justifyContent={"space-around"}>
+        <IconButton onClick={() => row.updateUser(row)} sx={{ padding: 0 }}>
           <Edit color='action' />
         </IconButton>
         <ButtonConfirm
+          questionText={
+            isActive(row)
+              ? "¿Estás seguro de desactivar este registro?"
+              : "¿Estás seguro de habilitar este registro?"
+          }
           icon={isActive(row) ? <DeleteIcon /> : <RestoreFromTrashIcon />}
           title={`${row.first_name} ${row.last_name}`}
           message={
             isActive(row)
-              ? "Al desactivar el usaurio este no podra usarse"
+              ? "Al desactivar el usuario este no podra usarse"
               : "Esta acción permitira que el usuario pueda usarse nuevamente"
           }
           handleDelete={async () => {
@@ -62,13 +67,12 @@ const preColumnsUsers = [
             }
           }}
         />
-
       </Stack>
     ),
   },
   {
     field: "status",
-    headerName: translate('status'),
+    headerName: translate("status"),
     sortable: false,
     renderCell: ({ row }: any) => {
       return (
@@ -84,7 +88,7 @@ const preColumnsUsers = [
   },
   {
     field: "username",
-    headerName: translate('username'),
+    headerName: translate("username"),
     width: 150,
   },
   {
@@ -101,7 +105,7 @@ const preColumnsUsers = [
   },
   {
     field: "is_staff",
-    headerName: translate('isStaff'),
+    headerName: translate("isStaff"),
   },
   {
     field: "bank_id",
@@ -127,10 +131,10 @@ const AdminPage = () => {
 
   const handleCloseSnack = () => setOpenSnack(false);
   const handleOpenSnack = (type: string) => {
-    if(type === 'success'){
+    if (type === "success") {
       setOpenSnack(true);
     }
-  }
+  };
 
   const handleModal = (modalType: string) => {
     setIsLoading(true);
@@ -139,14 +143,13 @@ const AdminPage = () => {
     setIsLoading(false);
   };
 
-
   const handleCreateUser = async (e: any) => {
     const [
       { value: username },
       { value: first_name },
       { value: last_name },
       { value: email },
-      { value: telefono},
+      { value: telefono },
       { value: password },
     ] = e.target;
 
@@ -183,7 +186,7 @@ const AdminPage = () => {
       { value: first_name },
       { value: last_name },
       { value: email },
-      { value: telefono},
+      { value: telefono },
     ] = e.target;
 
     try {
@@ -214,7 +217,7 @@ const AdminPage = () => {
       if (type === "edituser") {
         const res = await handleEditUser(e);
       }
-      handleOpenSnack('success');
+      handleOpenSnack("success");
     } catch (err) {
       console.log("Error", err);
     } finally {
@@ -225,7 +228,6 @@ const AdminPage = () => {
   const handleClose = () => {
     setError(false);
   };
-
 
   const updateUserData = (_row: any) => {
     const data: any[] = [...(userDataList || usersData || [])];
@@ -244,7 +246,6 @@ const AdminPage = () => {
     };
   };
 
-
   const enableUser = errorWrapper(async (row: any) => {
     await enableUserById(row?._id);
     updateUserData({ ...row, status: "ACTIVE" });
@@ -256,7 +257,7 @@ const AdminPage = () => {
   });
 
   const updateUser = errorWrapper(async (row: any) => {
-    handleModal('edituser')
+    handleModal("edituser");
     setCurrentRow(row);
   });
 
@@ -265,22 +266,20 @@ const AdminPage = () => {
     disableUser,
     enableUser,
     setError,
-    updateUser
+    updateUser,
   });
 
-
-  if (loading || isLoading || usersLoading )
-  return (
-    <Stack
-      flex={1}
-      height={"100vh"}
-      justifyContent={"center"}
-      alignItems={"center"}
-    >
-      <CircularProgress />
-    </Stack>
-  );
-
+  if (loading || isLoading || usersLoading)
+    return (
+      <Stack
+        flex={1}
+        height={"100vh"}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        <CircularProgress />
+      </Stack>
+    );
 
   return (
     <Stack flex={1} height={"100vh"} padding={"15px"}>
@@ -298,7 +297,7 @@ const AdminPage = () => {
         autoHideDuration={6000}
         onClose={handleCloseSnack}
       >
-        <Alert severity="success"> Operacion realizada con exito </Alert>
+        <Alert severity='success'> Operacion realizada con exito </Alert>
       </Snackbar>
       <Stack
         borderRadius={"5px"}
@@ -333,14 +332,14 @@ const AdminPage = () => {
           padding={"30px"}
           boxShadow={"2px 4px 20px 2px rgba(0, 0, 0, 0.3);"}
         >
-        <AdminStack
-          title={"ADMINISTRAR USUARIOS"}
-          handleModal={() => handleModal("createuser")}
-          tableColumns={preColumnsUsers}
-          dataTable={(userDataList || usersData || []).map(addSetters)}
-          isLoading={usersLoading}
-        />
-        <Stack height={"15px"} />
+          <AdminStack
+            title={"ADMINISTRAR USUARIOS"}
+            handleModal={() => handleModal("createuser")}
+            tableColumns={preColumnsUsers}
+            dataTable={(userDataList || usersData || []).map(addSetters)}
+            isLoading={usersLoading}
+          />
+          <Stack height={"15px"} />
         </Stack>
         <Modal
           sx={{
@@ -366,9 +365,7 @@ const AdminPage = () => {
               alignItems={"center"}
               padding={"20px"}
             >
-              <SinaText size='mWide'>
-                Crear Usuario
-              </SinaText>
+              <SinaText size='mWide'>Crear Usuario</SinaText>
             </Stack>
             {type === "createuser" && (
               <CreateUserForm

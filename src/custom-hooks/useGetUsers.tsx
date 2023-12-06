@@ -1,12 +1,12 @@
 import axios from "@/common/http-client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export const useGetUsers = (load?: any) => {
-  const [data, setData] = useState();
+  const [data, setData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  const getUsers = async () => {
+  const loadUsers = async () => {
     setIsLoading(true);
     try {
       const { data } = await axios.get("/api/users/getUsers");
@@ -19,7 +19,7 @@ export const useGetUsers = (load?: any) => {
     }
   };
   useEffect(() => {
-    getUsers();
+    loadUsers();
   }, []);
 
   return { isLoading, setIsLoading, isError, data };
