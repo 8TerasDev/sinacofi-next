@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Button,
@@ -11,7 +11,7 @@ import {
   Snackbar,
   Stack,
 } from "@mui/material";
-import { Edit} from "@mui/icons-material";
+import { Edit } from "@mui/icons-material";
 import SinaText from "@/components/atoms/SinaText";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
@@ -46,16 +46,21 @@ const preColumnsUsers = [
     headerName: "Acciones",
     sortable: false,
     renderCell: ({ row }: any) => (
-      <Stack flexDirection={'row'} flex={1} justifyContent={'space-around'}>
-        <IconButton onClick={()=>row.updateUser(row)} sx={{padding:0}}>
+      <Stack flexDirection={"row"} flex={1} justifyContent={"space-around"}>
+        <IconButton onClick={() => row.updateUser(row)} sx={{ padding: 0 }}>
           <Edit color='action' />
         </IconButton>
         <ButtonConfirm
+          questionText={
+            isActive(row)
+              ? "¿Estás seguro de desactivar este registro?"
+              : "¿Estás seguro de habilitar este registro?"
+          }
           icon={isActive(row) ? <DeleteIcon /> : <RestoreFromTrashIcon />}
           title={`${row.first_name} ${row.last_name}`}
           message={
             isActive(row)
-              ? "Al desactivar el usaurio este no podra usarse"
+              ? "Al desactivar el usuario este no podra usarse"
               : "Esta acción permitira que el usuario pueda usarse nuevamente"
           }
           handleDelete={async () => {
@@ -66,13 +71,12 @@ const preColumnsUsers = [
             }
           }}
         />
-
       </Stack>
     ),
   },
   {
     field: "status",
-    headerName: translate('status'),
+    headerName: translate("status"),
     sortable: false,
     renderCell: ({ row }: any) => {
       return (
@@ -88,7 +92,7 @@ const preColumnsUsers = [
   },
   {
     field: "username",
-    headerName: translate('username'),
+    headerName: translate("username"),
     width: 150,
   },
   {
@@ -102,16 +106,16 @@ const preColumnsUsers = [
   {
     field: "email",
     headerName: "Email",
-    width:200
+    width: 200,
   },
   {
     field: "is_staff",
-    headerName: translate('isStaff'),
+    headerName: translate("isStaff"),
   },
   {
     field: "bankName",
     headerName: "Banco",
-    width:200
+    width: 200,
   },
   {
     field: "telefono",
@@ -124,11 +128,16 @@ const preColumnsBanks = [
     headerName: "Acciones",
     sortable: false,
     renderCell: ({ row }: any) => (
-      <Stack flexDirection={'row'} flex={1} justifyContent={'space-around'}>
-        <IconButton onClick={()=>row.updateBank(row)} sx={{padding:0}}>
+      <Stack flexDirection={"row"} flex={1} justifyContent={"space-around"}>
+        <IconButton onClick={() => row.updateBank(row)} sx={{ padding: 0 }}>
           <Edit color='action' />
         </IconButton>
         <ButtonConfirm
+          questionText={
+            isActive(row)
+              ? "¿Estás seguro de desactivar este registro?"
+              : "¿Estás seguro de habilitar este registro?"
+          }
           icon={isActive(row) ? <DeleteIcon /> : <RestoreFromTrashIcon />}
           title={row.nombre}
           message={
@@ -149,7 +158,7 @@ const preColumnsBanks = [
   },
   {
     field: "status",
-    headerName: translate('status'),
+    headerName: translate("status"),
     sortable: false,
     renderCell: ({ row }: any) => {
       return (
@@ -166,7 +175,7 @@ const preColumnsBanks = [
   {
     field: "nombre",
     headerName: "Nombre",
-    width:300
+    width: 300,
   },
   {
     field: "codigo",
@@ -191,13 +200,18 @@ const AdminPage = () => {
   const [bankDataList, setBankDataList] = useState(banksData);
   const [userDataList, setUserDataList] = useState(usersData);
   const [openSnack, setOpenSnack] = useState(false);
-
+  useEffect(() => {
+    setUserDataList(usersData);
+  }, [usersData]);
+  useEffect(() => {
+    setBankDataList(banksData);
+  }, [banksData]);
   const handleCloseSnack = () => setOpenSnack(false);
   const handleOpenSnack = (type: string) => {
-    if(type === 'success'){
+    if (type === "success") {
       setOpenSnack(true);
     }
-  }
+  };
 
   const handleModal = (modalType: string) => {
     setIsLoading(true);
@@ -235,9 +249,11 @@ const AdminPage = () => {
         codigo: codigo.value,
         telefono: telefono.value,
       };
-      const { data: banks } = await axios.put(`api/banks/${currentRow._id}`, data);
+      const { data: banks } = await axios.put(
+        `api/banks/${currentRow._id}`,
+        data
+      );
       setBankDataList(banks);
-
     } catch (err) {
       console.log(err);
     }
@@ -249,11 +265,11 @@ const AdminPage = () => {
       { value: first_name },
       { value: last_name },
       { value: email },
-      { value: telefono},
+      { value: telefono },
       { value: password },
       { value: nothing }, // BUG
       { value: bank_id },
-      { value: is_staff }
+      { value: is_staff },
     ] = e.target;
 
     const date = new Date();
@@ -290,9 +306,9 @@ const AdminPage = () => {
       { value: first_name },
       { value: last_name },
       { value: email },
-      { value: telefono},
+      { value: telefono },
       { value: bank_id },
-      { value: is_staff }
+      { value: is_staff },
     ] = e.target;
 
     try {
@@ -330,13 +346,12 @@ const AdminPage = () => {
       if (type === "editbank") {
         const res = await handleEditBank(e);
       }
-      handleOpenSnack('success');
+      handleOpenSnack("success");
     } catch (err) {
       console.log("Error", err);
-      handleOpenSnack('error');
+      handleOpenSnack("error");
     } finally {
       setIsLoading(false);
-
     }
   };
 
@@ -376,34 +391,33 @@ const AdminPage = () => {
     updateBankData({ ...row, status: "DISABLED" });
 
     //@ts-ignore
-    const newUsers = usersData && usersData.map(async(user:any) => {
-      if(user.bank_id == row._id){
-        await deleteUserById(user.id);
-        return {...user, status: "DISABLED" }
-      }
-      return user
-    })
+    const newUsers =
+      usersData &&
+      usersData.map(async (user: any) => {
+        if (user.bank_id == row._id) {
+          await deleteUserById(user.id);
+          return { ...user, status: "DISABLED" };
+        }
+        return user;
+      });
     //@ts-ignore
-    Promise.all(newUsers).then((results):any=>{
+    Promise.all(newUsers).then((results): any => {
       //@ts-ignore
-      setUserDataList(results)
-    })
-
-
+      setUserDataList(results);
+    });
   });
   const disableUser = errorWrapper(async (row: any) => {
     await deleteUserById(row?._id);
     updateUserData({ ...row, status: "DISABLED" });
   });
   const updateUser = errorWrapper(async (row: any) => {
-    handleModal('edituser')
+    handleModal("edituser");
     setCurrentRow(row);
   });
   const updateBank = errorWrapper(async (row: any) => {
-    handleModal('editbank')
+    handleModal("editbank");
     setCurrentRow(row);
   });
-
 
   const addSetters = (row: any) => ({
     ...row,
@@ -431,7 +445,7 @@ const AdminPage = () => {
     setError(false);
   };
   return (
-    <Stack flex={1} height={"100vh"} padding={"15px"} width={'100%'}>
+    <Stack flex={1} height={"100vh"} padding={"15px"} width={"100%"}>
       <Snackbar
         open={error}
         autoHideDuration={6000}
@@ -445,13 +459,9 @@ const AdminPage = () => {
         autoHideDuration={6000}
         onClose={handleCloseSnack}
       >
-        <Alert severity="success"> Operacion realizada con exito </Alert>
+        <Alert severity='success'> Operacion realizada con exito </Alert>
       </Snackbar>
-      <Stack
-        justifyContent={"center"}
-        alignItems={"center"}
-        width={'100%'}
-      >
+      <Stack justifyContent={"center"} alignItems={"center"} width={"100%"}>
         <Stack
           borderRadius={"5px"}
           justifyContent={"space-around"}

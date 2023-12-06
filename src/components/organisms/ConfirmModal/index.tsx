@@ -5,6 +5,7 @@ import React from "react";
 type ConfirmModalProps = {
   open: boolean;
   title: string;
+  questionText: string;
   message: string;
   handleClose: () => void;
   handleDelete: () => void;
@@ -13,6 +14,7 @@ type ConfirmModalProps = {
 export const ConfirmModal = ({
   open,
   title,
+  questionText,
   message,
   handleClose,
   handleDelete,
@@ -44,7 +46,7 @@ export const ConfirmModal = ({
         <SinaText size='xs'>{message}</SinaText>
         <Box sx={{ height: "7px" }} />
         <SinaText size='xs' fontWeight={500}>
-          ¿Estás seguro de eliminar este registro?
+          {questionText}
         </SinaText>
       </Stack>
       <Stack
