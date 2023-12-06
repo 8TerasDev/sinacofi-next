@@ -45,7 +45,6 @@ export async function POST(req: NextRequest) {
     const token = jwt.sign(
       {
         username,
-        password,
         isAdmin: user.is_superuser,
         isBankAdmin: user.is_staff,
         name: user.first_name,
@@ -54,6 +53,8 @@ export async function POST(req: NextRequest) {
         bank: bank?.nombre,
         bank_code: bank?.codigo,
         bankId: user.bank_id?.toString(),
+        phone: user?.telefono,
+        bankPhone: bank?.telefono
       },
       "secret",
       {

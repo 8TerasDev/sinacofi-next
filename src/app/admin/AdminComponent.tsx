@@ -235,9 +235,11 @@ const AdminPage = () => {
         setBankDataList(banks);
       } else {
         setError(banks.message);
+        throw new Error("process fail");
       }
     } catch (err) {
       console.log(err);
+      throw err;
     }
   };
 
@@ -249,13 +251,19 @@ const AdminPage = () => {
         codigo: codigo.value,
         telefono: telefono.value,
       };
-      const { data: banks } = await axios.put(
+      const { data: banks, status } = await axios.put(
         `api/banks/${currentRow._id}`,
         data
       );
-      setBankDataList(banks);
+      if (status < 400) {
+        setBankDataList(banks);
+      } else {
+        setError(banks?.message);
+        throw new Error("process fail");
+      }
     } catch (err) {
       console.log(err);
+      throw err;
     }
   };
 
@@ -293,10 +301,12 @@ const AdminPage = () => {
         const newUsersList = res.data;
         setUserDataList(newUsersList);
       } else {
-        setError(res.data.message);
+        setError(res?.data?.message);
+        throw new Error("process fail");
       }
     } catch (err) {
       console.log(err);
+      throw err;
     }
   };
 
@@ -322,10 +332,16 @@ const AdminPage = () => {
         bank_id,
       };
       const res = await axios.put(`api/users/${currentRow._id}`, data);
-      const newUsersList = res.data;
-      setUserDataList(newUsersList);
+      if (res.status < 400) {
+        const newUsersList = res.data;
+        setUserDataList(newUsersList);
+      } else {
+        setError(res?.data?.message);
+        throw new Error("process fail");
+      }
     } catch (err) {
       console.log(err);
+      throw err;
     }
   };
 
