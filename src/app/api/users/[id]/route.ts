@@ -57,6 +57,6 @@ export const PUT = async (req: NextRequest, { params }: DeleteParam) => {
 
         // return new Response(undefined, { status: 204 })
     } catch (error) {
-        return processError(error, 'No se ha podido eliminar el usuario')
+        return processError(error, 'No se ha podido editar el usuario')
     }
 }

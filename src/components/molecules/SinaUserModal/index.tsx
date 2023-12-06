@@ -16,7 +16,7 @@ interface UserModalProps {
 
 const UserModal: React.FC<UserModalProps> = ({ isOpen, handleClick, data }) => {
   const router = useRouter();
-  const { name, lastName, email, bank, bank_code } = data;
+  const { name, lastName, email, bank, bank_code, bankPhone, phone } = data;
 
   const handleLogout = async () => {
     try {
@@ -87,6 +87,12 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, handleClick, data }) => {
               value={email}
               disabled
             />
+            <TextField
+              label='Telefono'
+              variant='standard'
+              value={phone ?? "-"}
+              disabled
+            />
           </form>
           <SinaText size='xsWide'>Institución</SinaText>
           <form className={styles.formData}>
@@ -100,6 +106,12 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, handleClick, data }) => {
               label='Código del Banco'
               variant='standard'
               value={bank_code ?? "-"}
+              disabled
+            />
+            <TextField
+              label='Telefono'
+              variant='standard'
+              value={bankPhone ?? "-"}
               disabled
             />
           </form>

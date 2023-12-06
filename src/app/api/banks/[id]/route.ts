@@ -30,6 +30,6 @@ export const PUT = async (req: NextRequest, { params }: DeleteParam) => {
         const banks = await getBanks();
         return Response.json(banks)
     } catch (error) {
-        return processError(error, 'No se ha podido eliminar el banco')
+        return processError(error, 'No se ha podido editar el banco')
     }
 }
