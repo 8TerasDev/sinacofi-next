@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { findByUsername } from "@/lib/queries.prisma";
 import { verifyPassword } from "@/lib/backend.utils";
 import { getBankById } from "@/lib/banks/getBankById.prisma";
+import { logger } from "@/lib/logger";
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,8 +13,17 @@ export async function POST(req: NextRequest) {
     const { username, password } = body;
 
     const user = await findByUsername(username);
+    if (!user) {
+      logger.warn("usuario no existe", { username });
+      return new Response(
+        JSON.stringify({ error: "Invalid username or password" }),
+        {
+          status: 400,
+        }
+      );
+    }
     if (user?.status != 'ACTIVE') {
-      console.log("User status invalid");
+      logger.info("User status invalid", { username });
       return Response.json(
         { error: "Invalid username or password" },
         {
@@ -23,19 +33,9 @@ export async function POST(req: NextRequest) {
     }
     const valid = await verifyPassword(password, user?.password || "");
     if (!valid) {
-      console.log("contraseña invalida");
+      logger.warn("contraseña invalida", { username });
       return Response.json(
         { error: "Invalid username or password" },
-        {
-          status: 400,
-        }
-      );
-    }
-
-    if (!user) {
-      console.log("usuario no existe");
-      return new Response(
-        JSON.stringify({ error: "Invalid username or password" }),
         {
           status: 400,
         }
@@ -73,10 +73,10 @@ export async function POST(req: NextRequest) {
       status: 200,
       headers: { "Set-Cookie": `auth=${token}` },
     });
-
+    logger.error("Iniciada sesion", { username });
     return res;
   } catch (error) {
-    console.error("Error al obtener las declaraciones:", error);
+    logger.error("Error al iniciar sesion", error);
     return new Response(JSON.stringify({ error }), {
       status: 500,
     });

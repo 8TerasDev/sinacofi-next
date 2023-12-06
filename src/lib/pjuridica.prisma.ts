@@ -1,6 +1,7 @@
 import { PJuridicas } from "@/application";
 //import { PrismaClient } from "@prisma/client";
 import { prisma } from "./newclient.prisma";
+import { logger } from "./logger";
 
 
 //const prisma = new PrismaClient();
@@ -111,7 +112,7 @@ export async function disablePJuridicas(
     return updateResponse;
   } catch (error) {
     // Maneja la excepción si algo sale mal
-    console.error("Error al deshabilitar p_juridicas:", error);
+    logger.error("Error al deshabilitar p_juridicas:", error);
     throw error;
   } finally {
     await prisma.$disconnect();
@@ -129,7 +130,7 @@ export async function getDeclaracionesByCorrelativos(correlativos: string[]) {
     });
     return declaraciones;
   } catch (error) {
-    console.error("Error al obtener las declaraciones:", error);
+    logger.error("Error al obtener las declaraciones:", error);
     throw error;
   }
 }

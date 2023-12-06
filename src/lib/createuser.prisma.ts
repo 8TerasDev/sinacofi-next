@@ -1,4 +1,5 @@
 //import { PrismaClient } from '@prisma/client';
+import { logger } from "./logger";
 import { prisma } from "./newclient.prisma";
 
 export type CreateUserProps = {
@@ -24,7 +25,7 @@ export const createUser = async (data: CreateUserProps) => {
     return newUser;
   }
   catch (err) {
-    console.log(err)
+    logger.error(err)
     throw err
   }
 

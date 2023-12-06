@@ -2,6 +2,7 @@ import { idID } from "@mui/material/locale";
 import { prisma } from "./newclient.prisma";
 import { count } from "console";
 import { Prisma } from "@prisma/client";
+import { logger } from "./logger";
 
 type ViewDeclaration = 'last_update' | 'last_declaration'
 export interface FindArgs {
@@ -183,7 +184,7 @@ export async function findDeclaraciones(args: FindArgs) {
       items: declaraciones.map((d) => ({ ...d, id: parseInt(d.id.toString()), codigo_banco: d.has_ofuscate ? 'XXXX' : d.codigo_banco }))
     };
   } catch (error) {
-    console.error("Error al obtener las declaraciones:", error);
+    logger.error("Error al obtener las declaraciones:", error);
     return {
       page: {
         number: page_number,
@@ -214,7 +215,7 @@ export async function disableDeclaracion(
     return updateResponse;
   } catch (error) {
     // Maneja la excepción si algo sale mal
-    console.error("Error al deshabilitar p_juridicas:", error);
+    logger.error("Error al deshabilitar p_juridicas:", error);
     throw error;
   }
 }
@@ -257,7 +258,7 @@ export async function findDeclaracionById(id: string) {
       bf_data_process_bancos: { ...declaracion.bf_data_process_bancos, id: parseInt(declaracion.bf_data_process_bancos.id.toString()) }
     }
   } catch (error) {
-    console.error("Error al obtener las declaraciones:", error);
+    logger.error("Error al obtener las declaraciones:", error);
     return undefined
   }
 }

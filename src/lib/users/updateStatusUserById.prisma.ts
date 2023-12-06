@@ -1,3 +1,4 @@
+import { logger } from "../logger";
 import { prisma } from "../newclient.prisma";
 
 export const updateStatusUserById = async (id: number, status: 'DISABLED' | 'ACTIVE') => {
@@ -13,7 +14,7 @@ export const updateStatusUserById = async (id: number, status: 'DISABLED' | 'ACT
         return user
     }
     catch (err) {
-        console.log(err);
+        logger.error(err);
         throw err
     }
 

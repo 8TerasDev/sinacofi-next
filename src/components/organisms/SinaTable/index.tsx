@@ -28,6 +28,7 @@ const SinaTable = () => {
     handleChangeRowsPerPage,
     args,
     setOrders,
+    fetchData,
     activeDeclaracion,
     nextDeclaracion,
     prevDeclaracion,
@@ -61,14 +62,24 @@ const SinaTable = () => {
       await disableDeclaracionById(currentDeclaracion.id);
       openModalSetter(false);
       openDeleteModalSetter(false);
-      setData(data.filter((item: any) => item.id != currentDeclaracion.id));
+
+      setData({
+        ...data,
+        items: data.items.filter(
+          (item: any) => item.id != currentDeclaracion.id
+        ),
+      });
+      await fetchData();
     },
     [currentDeclaracion, data]
   );
-  const handleOrder = useCallback((field: string) => () => {
-    const orders = args?.order || {};
-    setOrders({ [field]: orders[field] === "desc" ? "asc" : "desc" });
-  }, [args]);
+  const handleOrder = useCallback(
+    (field: string) => () => {
+      const orders = args?.order || {};
+      setOrders({ [field]: orders[field] === "desc" ? "asc" : "desc" });
+    },
+    [args]
+  );
   return (
     <>
       <div className={styles.sinatable_container}>

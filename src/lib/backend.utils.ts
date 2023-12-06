@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import { logger } from "./logger";
 
 export async function encryptPassword(password: string) {
   try {
@@ -6,7 +7,7 @@ export async function encryptPassword(password: string) {
     const hash = await bcrypt.hash(password, saltRounds);
     return hash;
   } catch (error) {
-    console.error("Error al encriptar la contraseña:", error);
+    logger.error("Error al encriptar la contraseña:", error);
     throw error;
   }
 }
@@ -14,7 +15,7 @@ export async function verifyPassword(password: string, hash: string) {
   try {
     return await bcrypt.compare(password, hash);
   } catch (error) {
-    console.error("Error al verificar la contraseña:", error);
+    logger.error("Error al verificar la contraseña:", error);
     throw error;
   }
 }

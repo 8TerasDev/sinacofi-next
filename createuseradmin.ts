@@ -1,3 +1,4 @@
+import { logger } from "./src/lib/logger";
 import { encryptPassword } from "./src/lib/backend.utils";
 import { PrismaClient } from "@prisma/client";
 const SINACOFIUSER = "sinacofiadmin";
@@ -24,7 +25,7 @@ export async function createNewUser() {
     });
     return newAdmin;
   } catch (error) {
-    console.error("Error al obtener las declaraciones:", error);
+    logger.error("Error al obtener las declaraciones:", error);
     return [];
   } finally {
     if (prisma) {

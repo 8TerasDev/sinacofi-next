@@ -5,6 +5,8 @@ services:
     image: sinacofi_web
     container_name: sinacofi_web
     env_file:
-     - .env
+      - .env
     ports:
       - "8081:3000"
+    volumes:
+      - ${LOG_PATH:-./logs/}:/var/log

@@ -1,6 +1,7 @@
+import { logger } from "../logger";
 import { prisma } from "../newclient.prisma";
 
-export const getUsersSameBank = async (id:any) => {
+export const getUsersSameBank = async (id: any) => {
   try {
     const users = await prisma.accounts_user.findMany({
       where: {
@@ -23,7 +24,7 @@ export const getUsersSameBank = async (id:any) => {
     return stringUsers;
   }
   catch (err) {
-    console.log(err);
+    logger.error(err);
     throw err;
   }
 
