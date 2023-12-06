@@ -1,4 +1,5 @@
 import { CreateFormsProps } from "@/app/admin/page";
+import PhoneInputMask from "@/components/atoms/PhoneInputMask";
 import {
   FormControl,
   Stack,
@@ -22,10 +23,10 @@ export const EditUserForm = ({
   isBankAdmin,
   currentRow,
 }: CreateFormsProps) => {
-  const {username, first_name, last_name, is_staff, bank_id, email, telefono} = currentRow;
+  const { username, first_name, last_name, is_staff, bank_id, email, telefono } = currentRow;
   const [bank, setBank] = useState(bank_id);
   const [newBankAdmin, setNewBankAdmin] = useState(is_staff);
-  
+
   return (
     <FormControl
       variant='filled'
@@ -40,54 +41,57 @@ export const EditUserForm = ({
           container
           sx={{ justifyContent: "center", height: "100%", flex: 1 }}
         >
-            <Grid item sm={4} padding={"10px"}>
-              <TextField
-                required
-                variant='filled'
-                label={'Username'}
-                defaultValue={username}
-                sx={{ width: "100%" }}
-              />
-            </Grid>
-            <Grid item sm={4} padding={"10px"}>
-              <TextField
-                required
-                variant='filled'
-                label={'Nombre'}
-                defaultValue={first_name}
-                sx={{ width: "100%" }}
-              />
-            </Grid>
-            <Grid item sm={4} padding={"10px"}>
-              <TextField
-                required
-                variant='filled'
-                label={'Apellido'}
-                defaultValue={last_name}
-                sx={{ width: "100%" }}
-              />
-            </Grid>
-            <Grid item sm={4} padding={"10px"}>
-              <TextField
-                required
-                variant='filled'
-                label={'Email'}
-                defaultValue={email}
-                sx={{ width: "100%" }}
-                type='email'
-              />
-            </Grid>
-            <Grid item sm={4} padding={"10px"}>
-                <TextField
-                  required
-                  defaultValue={telefono}
-                  variant='filled'
-                  label={'Telefono'}
-                  placeholder={'Telefono'}
-                  sx={{ width: "100%" }}
-                  type='tel'
-                />
-              </Grid>
+          <Grid item sm={4} padding={"10px"}>
+            <TextField
+              required
+              variant='filled'
+              label={'Username'}
+              defaultValue={username}
+              sx={{ width: "100%" }}
+            />
+          </Grid>
+          <Grid item sm={4} padding={"10px"}>
+            <TextField
+              required
+              variant='filled'
+              label={'Nombre'}
+              defaultValue={first_name}
+              sx={{ width: "100%" }}
+            />
+          </Grid>
+          <Grid item sm={4} padding={"10px"}>
+            <TextField
+              required
+              variant='filled'
+              label={'Apellido'}
+              defaultValue={last_name}
+              sx={{ width: "100%" }}
+            />
+          </Grid>
+          <Grid item sm={4} padding={"10px"}>
+            <TextField
+              required
+              variant='filled'
+              label={'Email'}
+              defaultValue={email}
+              sx={{ width: "100%" }}
+              type='email'
+            />
+          </Grid>
+          <Grid item sm={4} padding={"10px"}>
+            <TextField
+              required
+              defaultValue={telefono}
+              variant='filled'
+              label={'Teléfono'}
+              placeholder={'Teléfono'}
+              sx={{ width: "100%" }}
+              type='tel'
+              InputProps={{
+                inputComponent: PhoneInputMask as any,
+              }}
+            />
+          </Grid>
           {/* <Grid item sm={4} padding={"10px"}>
             <TextField
               required
@@ -128,12 +132,15 @@ export const EditUserForm = ({
               </Grid>
               <Grid item sm={4} padding={"10px"}>
                 <Stack flexDirection={'row'} alignItems={'center'}>
-                <FormControlLabel control={
-                  <Checkbox
-                    defaultChecked={is_staff}
-                    value={newBankAdmin}
-                    onChange={(e) => setNewBankAdmin(e.target.checked)}/>
-                } label="Usuario Administrador de banco" />
+                  <FormControlLabel
+                    label="Usuario Administrador de banco"
+                    control={
+                      <Checkbox
+                        defaultChecked={is_staff}
+                        value={newBankAdmin}
+                        onChange={(e) => setNewBankAdmin(e.target.checked)} />
+                    }
+                  />
                 </Stack>
               </Grid>
             </>

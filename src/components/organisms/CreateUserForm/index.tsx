@@ -1,4 +1,5 @@
 import { CreateFormsProps } from "@/app/admin/page";
+import PhoneInputMask from "@/components/atoms/PhoneInputMask";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   FormControl,
@@ -66,10 +67,13 @@ export const CreateUserForm = ({
             <TextField
               required
               variant='filled'
-              label={'Telefono'}
-              placeholder={'Telefono'}
+              label={'Teléfono'}
+              placeholder={'Teléfono'}
               sx={{ width: "100%" }}
               type='tel'
+              InputProps={{
+                inputComponent: PhoneInputMask as any,
+              }}
             />
           </Grid>
           <Grid item sm={4} padding={"10px"}>
@@ -129,13 +133,13 @@ export const CreateUserForm = ({
               </Grid>
               <Grid item sm={4} padding={"10px"}>
                 <Stack flexDirection={'row'} alignItems={'center'}>
-                <FormControlLabel 
+                <FormControlLabel
                   control={
                     <Checkbox
-                      value={newBankAdmin} 
+                      value={newBankAdmin}
                       onChange={(e) => setNewBankAdmin(e.target.checked)}
                     />
-                  } 
+                  }
                   label="Usuario Administrador de banco" />
                 </Stack>
               </Grid>
