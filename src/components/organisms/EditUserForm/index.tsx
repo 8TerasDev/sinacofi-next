@@ -1,5 +1,6 @@
 import { CreateFormsProps } from "@/app/admin/page";
 import PhoneInputMask from "@/components/atoms/PhoneInputMask";
+import { translate } from "@/common/translations";
 import {
   FormControl,
   Stack,
@@ -45,7 +46,7 @@ export const EditUserForm = ({
             <TextField
               required
               variant='filled'
-              label={'Username'}
+              label={translate('username')}
               defaultValue={username}
               sx={{ width: "100%" }}
             />

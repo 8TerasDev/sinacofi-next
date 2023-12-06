@@ -29,6 +29,7 @@ import { deleteBankById, enableBankById } from "@/common/bank";
 import { deleteUserById, enableUserById } from "@/common/user";
 import { EditUserForm } from "@/components/organisms/EditUserForm";
 import { EditBankForm } from "@/components/organisms/EditBankForm";
+import { translate } from "@/common/translations";
 
 // TODO: Create a customHook / actions in store to createUsers/Banks
 
@@ -74,7 +75,7 @@ const preColumnsUsers = [
   },
   {
     field: "status",
-    headerName: "Status",
+    headerName: translate('status'),
     sortable: false,
     renderCell: ({ row }: any) => {
       return (
@@ -90,7 +91,8 @@ const preColumnsUsers = [
   },
   {
     field: "username",
-    headerName: "Username",
+    headerName: translate('username'),
+    width: 150,
   },
   {
     field: "first_name",
@@ -106,7 +108,7 @@ const preColumnsUsers = [
   },
   {
     field: "is_staff",
-    headerName: "Es Staff",
+    headerName: translate('isStaff'),
   },
   {
     field: "bankName",
@@ -144,7 +146,7 @@ const preColumnsBanks = [
   },
   {
     field: "status",
-    headerName: "Status",
+    headerName: translate('status'),
     sortable: false,
     renderCell: ({ row }: any) => {
       return (
