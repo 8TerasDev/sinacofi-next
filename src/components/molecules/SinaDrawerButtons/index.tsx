@@ -86,7 +86,7 @@ const SinaDrawerButtons = ({ isOpen, isOpenSetter }: any) => {
           <SinaText> Busca una declaración por:</SinaText>
           <TextField
             label={placeHolderText()}
-            placeholder={`busqueda por ${typeOfSearch}`}
+            placeholder={`Búsqueda por ${typeOfSearch}`}
             onChange={cleanAndSearch}
             value={value}
             fullWidth
