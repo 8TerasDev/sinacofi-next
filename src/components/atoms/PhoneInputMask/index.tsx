@@ -23,7 +23,7 @@ const PhoneInputMask = React.forwardRef<HTMLInputElement, PhoneInputMaskProps>(
         inputRef={ref}
         onAccept={handleChange}
         definitions={{ '#': /[1-9]/ }}
-        mask={"(##) " + Array(13).fill(0).join('')}
+        mask={"(##) " + Array(10).fill(0).join('')}
       />
     );
   },
