@@ -179,7 +179,7 @@ const preColumnsBanks = [
   },
   {
     field: "codigo",
-    headerName: "Codigo",
+    headerName: "Código",
   },
   {
     field: "telefono",
@@ -275,7 +275,9 @@ const AdminPage = () => {
       { value: email },
       { value: telefono },
       { value: password },
-      { value: nothing }, // BUG
+      // TODO: replace with Form validation
+      , // BUG
+      , // BUG
       { value: bank_id },
       { value: is_staff },
     ] = e.target;
