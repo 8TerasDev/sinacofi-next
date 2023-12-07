@@ -176,8 +176,10 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
   };
 
   const setView = (view: string) => {
+    const page = args.page || {};
     setArgs({
       ...args,
+      page: { ...page, number: 0 },
       view,
     });
   };
