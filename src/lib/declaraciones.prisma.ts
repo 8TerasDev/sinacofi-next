@@ -103,20 +103,39 @@ const buildView = (view: ViewDeclaration) => {
   `
   }
   if (view == 'last_declaration') {
-    return Prisma.sql` inner join (
-      select
-        pj.rut,
-        max(d.fecha_declaracion) as max_declaration
-      from
-        bf_data_process_declaraciones as d
-      inner join
-        bf_data_process_personasjuridicas as pj
-      on
-        d.id = pj.declaracion_id
-      group by pj.rut
-    ) as last_upload
-    on
-    last_upload.rut = pj.rut  and last_upload.max_declaration = d.fecha_declaracion
+    return Prisma.sql` inner join (select last_declaration.rut, last_declaration.max_declaration, last_declaration.max_correlativo, max(d.id) as max_id from
+      bf_data_process_declaraciones as d
+      inner join bf_data_process_personasjuridicas as pj on d.id  = pj.declaracion_id
+		  inner join (
+	        select last_upload.rut, last_upload.max_declaration, max(d.correlativo) as max_correlativo from
+	        bf_data_process_declaraciones as d
+	        inner join bf_data_process_personasjuridicas as pj on d.id  = pj.declaracion_id
+	          inner join (
+	              select
+	                pj.rut,
+	                max(d.fecha_declaracion) as max_declaration
+	              from
+	                bf_data_process_declaraciones as d
+	              inner join
+	                bf_data_process_personasjuridicas as pj
+	              on
+	                d.id = pj.declaracion_id
+	              group by pj.rut
+	        ) as last_upload
+	        on
+	        last_upload.rut = pj.rut  and last_upload.max_declaration = d.fecha_declaracion
+	        group by last_upload.rut, last_upload.max_declaration
+	    ) as last_declaration on
+	    last_declaration.rut = pj.rut  and
+	    last_declaration.max_declaration = d.fecha_declaracion and
+	    last_declaration.max_correlativo = d.correlativo
+	    group by last_declaration.rut, last_declaration.max_declaration, last_declaration.max_correlativo
+	    ) as tb_correlativo
+	    on
+	    tb_correlativo.rut = pj.rut  and
+	    tb_correlativo.max_declaration = d.fecha_declaracion and
+	    tb_correlativo.max_correlativo = d.correlativo and
+	    tb_correlativo.max_id = d.id
   `
   }
   return Prisma.sql``
