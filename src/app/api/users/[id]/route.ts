@@ -48,6 +48,8 @@ export const PUT = async (req: NextRequest, { params }: DeleteParam) => {
         delete data.sameBank
         if (data.password) {
             data.password = await encryptPassword(data.password);
+        } else {
+            delete data.password
         }
         await updateInfoUserById(editUserId, data);
         if(isSameBank){

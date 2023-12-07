@@ -7,8 +7,11 @@ import { handleDownloadCSV } from "@/lib/utils";
 import { Button, TableCell, TableRow } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import dayjs from "dayjs";
+import utc from 'dayjs/plugin/utc';
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { fetchDeclaracionById } from "@/common/declaraciones";
+
+dayjs.extend(utc)
 
 type Pagination = {
   number: number;
@@ -109,10 +112,10 @@ const RowTable = ({
         </Button>
       </TableCell>
       <TableCell>
-        {dayjs(declaracion.fecha_declaracion).format("DD/MM/YYYY")}
+        {dayjs.utc(declaracion.fecha_declaracion).format("DD/MM/YYYY")}
       </TableCell>
       <TableCell>
-        {dayjs(declaracion.fecha_subida).format("DD/MM/YYYY")}
+        {dayjs.utc(declaracion.fecha_subida).format("DD/MM/YYYY")}
       </TableCell>
     </TableRow>
   );
