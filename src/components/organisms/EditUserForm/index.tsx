@@ -212,8 +212,8 @@ export const EditUserForm = ({
                   onBlur={onBlur}
                   ref={ref}
                   required={!!watch('password')}
-                  label='Confirmar constraseña'
-                  placeholder='Confirmar constraseña'
+                  label='Confirmar contraseña'
+                  placeholder='Confirmar contraseña'
                   error={hasError('password_confirmation', errors)}
                   helperText={getValidationErrorText('password_confirmation', errors)}
                 />
