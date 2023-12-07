@@ -12,12 +12,16 @@ import {
   Select,
   Checkbox,
   FormControlLabel,
+  Tooltip,
+  IconButton,
+  FormHelperText,
 } from "@mui/material";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { getValidationErrorText, hasError, validatorOptions } from "@/common/form-validation";
+import { errorMessages, getValidationErrorText, hasError, validatorOptions } from "@/common/form-validation";
 import PasswordTextField from "@/components/atoms/PasswordTextField";
 import SinaText from "@/components/atoms/SinaText";
+import { Info } from "@mui/icons-material";
 
 export const EditUserForm = ({
   handleSubmit,
@@ -175,24 +179,40 @@ export const EditUserForm = ({
             </SinaText>
           </Grid>
 
-          <Grid item sm={6} padding={"10px"}>
-            <Controller
-              name="password"
-              control={control}
-              rules={{
-                ...validatorOptions.password,
-                required: false,
-              }}
-              render={({ field: { onChange, onBlur, ref } }) => (
-                <PasswordTextField
-                  onChange={onChange}
-                  onBlur={onBlur}
-                  ref={ref}
-                  error={hasError('password', errors) || hasError('password_confirmation', errors)}
-                  helperText={getValidationErrorText('password', errors)}
-                />
-              )}
-            />
+          <Grid item container sm={6} padding={"10px"} alignItems="center">
+            <Grid item xs>
+              <Controller
+                name="password"
+                control={control}
+                rules={{
+                  ...validatorOptions.password,
+                  required: false,
+                }}
+                render={({ field: { onChange, onBlur, ref } }) => (
+                  <PasswordTextField
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    ref={ref}
+                    error={hasError('password', errors) || hasError('password_confirmation', errors)}
+                    helperText={getValidationErrorText('password', errors)}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item>
+              <Tooltip
+                arrow
+                title={
+                  <SinaText size="xs" color="inherit">
+                    {errorMessages.passwordMustMatchRequirement}
+                  </SinaText>
+                }
+              >
+                <IconButton>
+                  <Info />
+                </IconButton>
+              </Tooltip>
+            </Grid>
           </Grid>
           <Grid item sm={6} padding={"10px"}>
             <Controller
