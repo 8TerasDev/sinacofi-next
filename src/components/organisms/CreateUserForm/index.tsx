@@ -1,4 +1,4 @@
-import { useForm, SubmitHandler } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import { CreateFormsProps } from "@/app/admin/page";
 import SinaText from "@/components/atoms/SinaText";
 import PhoneInputMask from "@/components/atoms/PhoneInputMask";
@@ -29,10 +29,10 @@ export const CreateUserForm = ({
   banks,
   isBankAdmin,
 }: CreateFormsProps) => {
-  const [bank, setBank] = useState("none");
+  const [bank, setBank] = useState<string>();
   const [newBankAdmin, setNewBankAdmin] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { register, handleSubmit: validateForm, formState: { errors } } = useForm()
+  const { control, register, handleSubmit: validateForm, formState: { errors } } = useForm()
   return (
     <FormControl
       variant='filled'
@@ -45,7 +45,7 @@ export const CreateUserForm = ({
       <Stack overflow={"auto"}>
         <Grid
           container
-          sx={{ justifyContent: "center", height: "100%", flex: 1 }}
+          sx={{ justifyContent: "left", height: "100%", flex: 1 }}
         >
           <Grid item sm={4} padding={"10px"}>
             <TextField
@@ -118,8 +118,8 @@ export const CreateUserForm = ({
                 <TextField
                   required
                   variant='filled'
-                  label='Password'
-                  placeholder='Password'
+                  label={translate('password')}
+                  placeholder={translate('password')}
                   sx={{ width: "100%" }}
                   id='password'
                   autoComplete='password'
@@ -165,30 +165,40 @@ export const CreateUserForm = ({
           {!isBankAdmin && (
             <>
               <Grid item sm={4} padding={"10px"}>
-                <FormControl fullWidth variant='filled' error={hasError('banco', errors)}>
-                  <InputLabel id='select-label'>
-                    Banco
-                  </InputLabel>
-                  <Select
-                    labelId='select-label'
-                    id='select'
-                    label='Banco'
-                    fullWidth
-                    placeholder='Banco'
-                    value={bank}
-                    onChange={(e) => setBank(e.target.value)}
-                  >
-                    <MenuItem disabled value='none'>
-                      Banco
-                    </MenuItem>
-                    {banks.map((bank: any, index: any) => (
-                      <MenuItem key={index} value={bank.id}>
-                        {bank.nombre}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <FormHelperText>{getValidationErrorText('banco', errors)}</FormHelperText>
-                </FormControl>
+                <Controller
+                  name="banco"
+                  control={control}
+                  rules={validatorOptions.required}
+                  render={({ field: { onChange, onBlur, ref } }) => (
+                    <FormControl required fullWidth variant='filled' error={hasError('banco', errors)}>
+                      <InputLabel id='select-label'>
+                        Banco
+                      </InputLabel>
+                      <Select
+                        required
+                        ref={ref}
+                        labelId='select-label'
+                        id='select'
+                        label='Banco'
+                        fullWidth
+                        placeholder='Banco'
+                        value={bank}
+                        onBlur={onBlur}
+                        onChange={(e) => {
+                          setBank(e.target.value)
+                          onChange(e)
+                        }}
+                      >
+                        {banks.map((bank: any) => (
+                          <MenuItem value={bank.id}>
+                            {bank.nombre}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      <FormHelperText>{getValidationErrorText('banco', errors)}</FormHelperText>
+                    </FormControl>
+                  )}
+                />
               </Grid>
               <Grid item sm={4} padding={"10px"}>
                 <Stack flexDirection={'row'} alignItems={'center'}>

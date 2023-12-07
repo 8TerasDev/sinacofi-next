@@ -131,29 +131,40 @@ export const EditUserForm = ({
           {!isBankAdmin && banks && (
             <>
               <Grid item sm={4} padding={"10px"}>
-                <FormControl fullWidth variant='filled'>
-                  <InputLabel id='select-label'>
-                    Banco
-                  </InputLabel>
-                  <Select
-                    labelId='select-label'
-                    id='select'
-                    label='Banco'
-                    fullWidth
-                    placeholder='Banco'
-                    value={bank}
-                    onChange={(e) => setBank(e.target.value)}
-                  >
-                    <MenuItem disabled value='none'>
-                      Banco
-                    </MenuItem>
-                    {banks.map((bank: any, index: any) => (
-                      <MenuItem value={bank.id}>
-                        {bank.nombre}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                <Controller
+                  name="banco"
+                  control={control}
+                  rules={validatorOptions.required}
+                  render={({ field: { onChange, onBlur, ref } }) => (
+                    <FormControl required fullWidth variant='filled' error={hasError('banco', errors)}>
+                      <InputLabel id='select-label'>
+                        Banco
+                      </InputLabel>
+                      <Select
+                        required
+                        ref={ref}
+                        labelId='select-label'
+                        id='select'
+                        label='Banco'
+                        fullWidth
+                        placeholder='Banco'
+                        value={bank}
+                        onBlur={onBlur}
+                        onChange={(e) => {
+                          setBank(e.target.value)
+                          onChange(e)
+                        }}
+                      >
+                        {banks.map((bank: any) => (
+                          <MenuItem value={bank.id}>
+                            {bank.nombre}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      <FormHelperText>{getValidationErrorText('banco', errors)}</FormHelperText>
+                    </FormControl>
+                  )}
+                />
               </Grid>
               <Grid item sm={12} padding={"10px"}>
                 <Stack flexDirection={'row'} alignItems={'center'}>
@@ -232,8 +243,8 @@ export const EditUserForm = ({
                   onBlur={onBlur}
                   ref={ref}
                   required={!!watch('password')}
-                  label='Confirmar contraseña'
-                  placeholder='Confirmar contraseña'
+                  label={translate('confirmPassword')}
+                  placeholder={translate('confirmPassword')}
                   error={hasError('password_confirmation', errors)}
                   helperText={getValidationErrorText('password_confirmation', errors)}
                 />
