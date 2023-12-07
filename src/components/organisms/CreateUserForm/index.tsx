@@ -166,11 +166,11 @@ export const CreateUserForm = ({
             <>
               <Grid item sm={4} padding={"10px"}>
                 <Controller
-                  name="banco"
+                  name="bank_id"
                   control={control}
                   rules={validatorOptions.required}
                   render={({ field: { onChange, onBlur, ref } }) => (
-                    <FormControl required fullWidth variant='filled' error={hasError('banco', errors)}>
+                    <FormControl required fullWidth variant='filled' error={hasError('bank_id', errors)}>
                       <InputLabel id='select-label'>
                         Banco
                       </InputLabel>
@@ -190,12 +190,12 @@ export const CreateUserForm = ({
                         }}
                       >
                         {banks.map((bank: any) => (
-                          <MenuItem value={bank.id}>
+                          <MenuItem key={bank.id} value={bank.id}>
                             {bank.nombre}
                           </MenuItem>
                         ))}
                       </Select>
-                      <FormHelperText>{getValidationErrorText('banco', errors)}</FormHelperText>
+                      <FormHelperText>{getValidationErrorText('bank_id', errors)}</FormHelperText>
                     </FormControl>
                   )}
                 />
