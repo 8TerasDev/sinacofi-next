@@ -1,3 +1,4 @@
+import { useForm, SubmitHandler } from "react-hook-form"
 import { CreateFormsProps } from "@/app/admin/page";
 import SinaText from "@/components/atoms/SinaText";
 import PhoneInputMask from "@/components/atoms/PhoneInputMask";
@@ -16,10 +17,11 @@ import {
   InputAdornment,
   IconButton,
   Tooltip,
+  FormHelperText,
 } from "@mui/material";
 import React, { useState } from "react";
-
-const Fields = ["Username", "Nombre", "Apellido"];
+import { translate } from "@/common/translations";
+import { errorMessages, getValidationErrorText, hasError, passwordPattern, validatorOptions } from "@/common/form-validation";
 
 export const CreateUserForm = ({
   handleSubmit,
@@ -30,13 +32,14 @@ export const CreateUserForm = ({
   const [bank, setBank] = useState("none");
   const [newBankAdmin, setNewBankAdmin] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const { register, handleSubmit: validateForm, formState: { errors } } = useForm()
   return (
     <FormControl
       variant='filled'
       fullWidth
       required
       component={"form"}
-      onSubmit={handleSubmit}
+      onSubmit={validateForm((_, event) => { handleSubmit(event) })}
       sx={{ justifyContent: "space-between", flex: 1 }}
     >
       <Stack overflow={"auto"}>
@@ -44,17 +47,42 @@ export const CreateUserForm = ({
           container
           sx={{ justifyContent: "center", height: "100%", flex: 1 }}
         >
-          {Fields.map((item, index) => (
-            <Grid item sm={4} padding={"10px"} key={index}>
-              <TextField
-                required
-                variant='filled'
-                label={item}
-                placeholder={item}
-                sx={{ width: "100%" }}
-              />
-            </Grid>
-          ))}
+          <Grid item sm={4} padding={"10px"}>
+            <TextField
+              required
+              variant='filled'
+              label={translate('username')}
+              placeholder={translate('username')}
+              sx={{ width: "100%" }}
+              error={hasError('username', errors)}
+              helperText={getValidationErrorText('username', errors)}
+              {...register('username', { required: true })}
+            />
+          </Grid>
+          <Grid item sm={4} padding={"10px"}>
+            <TextField
+              required
+              variant='filled'
+              label='Nombre'
+              placeholder='Nombre'
+              sx={{ width: "100%" }}
+              error={hasError('first_name', errors)}
+              helperText={getValidationErrorText('first_name', errors)}
+              {...register('first_name', { required: true })}
+            />
+          </Grid>
+          <Grid item sm={4} padding={"10px"}>
+            <TextField
+              required
+              variant='filled'
+              label='Apellido'
+              placeholder='Apellido'
+              sx={{ width: "100%" }}
+              error={hasError('last_name', errors)}
+              helperText={getValidationErrorText('last_name', errors)}
+              {...register('last_name', { required: true })}
+            />
+          </Grid>
           <Grid item sm={4} padding={"10px"}>
             <TextField
               required
@@ -63,6 +91,9 @@ export const CreateUserForm = ({
               placeholder={'Email'}
               sx={{ width: "100%" }}
               type='email'
+              error={hasError('email', errors)}
+              helperText={getValidationErrorText('email', errors)}
+              {...register('email', validatorOptions.email)}
             />
           </Grid>
           <Grid item sm={4} padding={"10px"}>
@@ -76,10 +107,13 @@ export const CreateUserForm = ({
               InputProps={{
                 inputComponent: PhoneInputMask as any,
               }}
+              error={hasError('telefono', errors)}
+              helperText={getValidationErrorText('telefono', errors)}
+              {...register('telefono', validatorOptions.telefono)}
             />
           </Grid>
           <Grid item sm={4} padding={"10px"}>
-          <Grid container alignItems="center">
+            <Grid container alignItems="center">
               <Grid item xs>
                 <TextField
                   required
@@ -88,11 +122,13 @@ export const CreateUserForm = ({
                   placeholder='Password'
                   sx={{ width: "100%" }}
                   id='password'
-                  name='password'
                   autoComplete='password'
                   type={showPassword ? "text" : "password"}
+                  error={hasError('password', errors)}
+                  helperText={getValidationErrorText('password', errors)}
+                  {...register('password', validatorOptions.password)}
                   inputProps={{
-                    pattern: "(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[a-z]).{8,}",
+                    pattern: passwordPattern,
                     //(?=.*?[#?!@$ %^&*-])
                   }}
                   InputProps={{
@@ -114,7 +150,7 @@ export const CreateUserForm = ({
                   arrow
                   title={
                     <SinaText size="xs" color="inherit">
-                      Debe contener un mínimo de 8 caracteres con una combinación de mayúsculas, minúsculas y caracteres numéricos.
+                      {errorMessages.passwordMustMatchRequirement}
                     </SinaText>
                   }
                 >
@@ -129,38 +165,41 @@ export const CreateUserForm = ({
           {!isBankAdmin && (
             <>
               <Grid item sm={4} padding={"10px"}>
-                <InputLabel id='select-label' sx={{ visibility: "hidden" }}>
-                  Banco
-                </InputLabel>
-                <Select
-                  labelId='select-label'
-                  id='select'
-                  label='Banco'
-                  fullWidth
-                  placeholder='Banco'
-                  value={bank}
-                  onChange={(e) => setBank(e.target.value)}
-                >
-                  <MenuItem disabled value='none'>
+                <FormControl fullWidth variant='filled' error={hasError('banco', errors)}>
+                  <InputLabel id='select-label'>
                     Banco
-                  </MenuItem>
-                  {banks.map((bank: any, index: any) => (
-                    <MenuItem key={index} value={bank.id}>
-                      {bank.nombre}
+                  </InputLabel>
+                  <Select
+                    labelId='select-label'
+                    id='select'
+                    label='Banco'
+                    fullWidth
+                    placeholder='Banco'
+                    value={bank}
+                    onChange={(e) => setBank(e.target.value)}
+                  >
+                    <MenuItem disabled value='none'>
+                      Banco
                     </MenuItem>
-                  ))}
-                </Select>
+                    {banks.map((bank: any, index: any) => (
+                      <MenuItem key={index} value={bank.id}>
+                        {bank.nombre}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <FormHelperText>{getValidationErrorText('banco', errors)}</FormHelperText>
+                </FormControl>
               </Grid>
               <Grid item sm={4} padding={"10px"}>
                 <Stack flexDirection={'row'} alignItems={'center'}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      value={newBankAdmin}
-                      onChange={(e) => setNewBankAdmin(e.target.checked)}
-                    />
-                  }
-                  label="Usuario Administrador de banco" />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        value={newBankAdmin}
+                        onChange={(e) => setNewBankAdmin(e.target.checked)}
+                      />
+                    }
+                    label="Usuario Administrador de banco" />
                 </Stack>
               </Grid>
             </>

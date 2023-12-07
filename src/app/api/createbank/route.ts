@@ -15,7 +15,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     (data as any).status = 'ACTIVE'
     const bank = await getBankByCode(data.codigo)
     if (bank != undefined) {
-      throw new Error('Codigo banco registrado')
+      throw new Error('Código banco registrado')
     }
     await createBank(data);
     const banks = await getBanks();

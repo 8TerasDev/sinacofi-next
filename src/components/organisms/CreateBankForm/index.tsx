@@ -1,18 +1,21 @@
 import { CreateFormsProps } from '@/app/admin/page';
+import { getValidationErrorText, hasError, validatorOptions } from '@/common/form-validation';
 import PhoneInputMask from '@/components/atoms/PhoneInputMask';
 import { FormControl, Stack, Grid, TextField, Button } from '@mui/material';
 import React from 'react';
+import { useForm } from 'react-hook-form';
 
 export const CreateBankForm = ({
   handleSubmit,
   setOpenModal,
 }: CreateFormsProps) => {
+  const { register, handleSubmit: validateForm, formState: { errors } } = useForm()
   return (
     <FormControl
       fullWidth
       required
       component={'form'}
-      onSubmit={handleSubmit}
+      onSubmit={validateForm((_, event) => { handleSubmit(event) })}
       sx={{ justifyContent: 'space-between', flex: 1 }}
     >
       <Stack overflow={'auto'}>
@@ -24,15 +27,21 @@ export const CreateBankForm = ({
               label='Nombre'
               placeholder='Nombre'
               sx={{ width: '100%' }}
+              error={hasError('nombre', errors)}
+              helperText={getValidationErrorText('nombre', errors)}
+              {...register('nombre', validatorOptions.required)}
             />
           </Grid>
           <Grid item sm={4} padding={'10px'}>
             <TextField
               required
               variant='filled'
-              label='Codigo'
-              placeholder='Codigo'
+              label='Código'
+              placeholder='Código'
               sx={{ width: '100%' }}
+              error={hasError('codigo', errors)}
+              helperText={getValidationErrorText('codigo', errors)}
+              {...register('codigo', validatorOptions.required)}
             />
           </Grid>
           <Grid item sm={4} padding={"10px"}>
@@ -46,6 +55,9 @@ export const CreateBankForm = ({
               InputProps={{
                 inputComponent: PhoneInputMask as any,
               }}
+              error={hasError('telefono', errors)}
+              helperText={getValidationErrorText('telefono', errors)}
+              {...register('telefono', validatorOptions.telefono)}
             />
           </Grid>
         </Grid>
