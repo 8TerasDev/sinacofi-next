@@ -187,6 +187,7 @@ const AdminPage = () => {
       { value: last_name },
       { value: email },
       { value: telefono },
+      { value: password },
     ] = e.target;
 
     try {
@@ -198,6 +199,7 @@ const AdminPage = () => {
         email,
         bank_id: currentRow.bank_id,
         sameBank: true,
+        password,
       };
       const res = await axios.put(`api/users/${currentRow._id}`, data);
       const newUsersList = res.data;

@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic'
 
+import { encryptPassword } from '@/lib/backend.utils';
 import { processError } from '@/lib/error';
 import { getSessionUser, validateAdminPermission } from '@/lib/security';
 import { getUsers } from '@/lib/users/getusers.prisma';
@@ -45,6 +46,9 @@ export const PUT = async (req: NextRequest, { params }: DeleteParam) => {
         const isSameBank = data.sameBank;
         validateAdminPermission(user)
         delete data.sameBank
+        if (data.password) {
+            data.password = await encryptPassword(data.password);
+        }
         await updateInfoUserById(editUserId, data);
         if(isSameBank){
             const newUsers = await getUsersSameBank(data.bank_id);

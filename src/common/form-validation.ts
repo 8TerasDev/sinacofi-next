@@ -14,7 +14,7 @@ export const hasError = (fieldName: string, errors: FieldErrors<FieldValues>): b
 
 export const errorMessages = {
   requiredField: 'Este campo no puede estar vacío',
-  invalidFormat: 'Este format es inválido',
+  invalidFormat: 'Este formato es inválido',
   passwordMustMatchRequirement: 'Debe contener un mínimo de 8 caracteres con una combinación de mayúsculas, minúsculas y caracteres numéricos.',
 }
 
