@@ -321,6 +321,7 @@ const AdminPage = () => {
       { value: telefono },
       { value: bank_id },
       { value: is_staff },
+      { value: password },
     ] = e.target;
 
     try {
@@ -332,6 +333,7 @@ const AdminPage = () => {
         email,
         is_staff: Boolean(is_staff),
         bank_id,
+        password,
       };
       const res = await axios.put(`api/users/${currentRow._id}`, data);
       if (res.status < 400) {

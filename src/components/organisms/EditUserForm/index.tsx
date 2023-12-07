@@ -14,8 +14,10 @@ import {
   FormControlLabel,
 } from "@mui/material";
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { getValidationErrorText, hasError, validatorOptions } from "@/common/form-validation";
+import PasswordTextField from "@/components/atoms/PasswordTextField";
+import SinaText from "@/components/atoms/SinaText";
 
 export const EditUserForm = ({
   handleSubmit,
@@ -27,7 +29,7 @@ export const EditUserForm = ({
   const { username, first_name, last_name, is_staff, bank_id, email, telefono } = currentRow;
   const [bank, setBank] = useState(bank_id);
   const [newBankAdmin, setNewBankAdmin] = useState(is_staff);
-  const { register, handleSubmit: validateForm, formState: { errors } } = useForm()
+  const { register, watch, control, handleSubmit: validateForm, formState: { errors } } = useForm()
 
   return (
     <FormControl
@@ -41,7 +43,7 @@ export const EditUserForm = ({
       <Stack overflow={"auto"}>
         <Grid
           container
-          sx={{ justifyContent: "center", height: "100%", flex: 1 }}
+          sx={{ justifyContent: "left", height: "100%", flex: 1, marginBottom: "20px" }}
         >
           <Grid item sm={4} padding={"10px"}>
             <TextField
@@ -149,7 +151,7 @@ export const EditUserForm = ({
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item sm={4} padding={"10px"}>
+              <Grid item sm={12} padding={"10px"}>
                 <Stack flexDirection={'row'} alignItems={'center'}>
                   <FormControlLabel
                     label="Usuario Administrador de banco"
@@ -164,6 +166,60 @@ export const EditUserForm = ({
               </Grid>
             </>
           )}
+        </Grid>
+
+        <Grid container>
+          <Grid item xs={12} padding={"10px 10px 0"}>
+            <SinaText>
+              Actualizar contraseña (opcional)
+            </SinaText>
+          </Grid>
+
+          <Grid item sm={6} padding={"10px"}>
+            <Controller
+              name="password"
+              control={control}
+              rules={{
+                ...validatorOptions.password,
+                required: false,
+              }}
+              render={({ field: { onChange, onBlur, ref } }) => (
+                <PasswordTextField
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  ref={ref}
+                  error={hasError('password', errors) || hasError('password_confirmation', errors)}
+                  helperText={getValidationErrorText('password', errors)}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item sm={6} padding={"10px"}>
+            <Controller
+              name="password_confirmation"
+              control={control}
+              rules={{
+                validate: (val: string) => {
+                  const password = watch('password');
+                  if (password && password != val) {
+                    return "Las contraseñas no coinciden.";
+                  }
+                },
+              }}
+              render={({ field: { onChange, onBlur, ref } }) => (
+                <PasswordTextField
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  ref={ref}
+                  required={!!watch('password')}
+                  label='Confirmar constraseña'
+                  placeholder='Confirmar constraseña'
+                  error={hasError('password_confirmation', errors)}
+                  helperText={getValidationErrorText('password_confirmation', errors)}
+                />
+              )}
+            />
+          </Grid>
         </Grid>
       </Stack>
       <Stack
