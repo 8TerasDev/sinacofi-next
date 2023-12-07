@@ -12,12 +12,16 @@ import {
   Select,
   Checkbox,
   FormControlLabel,
+  Tooltip,
+  IconButton,
+  FormHelperText,
 } from "@mui/material";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { getValidationErrorText, hasError, validatorOptions } from "@/common/form-validation";
+import { errorMessages, getValidationErrorText, hasError, validatorOptions } from "@/common/form-validation";
 import PasswordTextField from "@/components/atoms/PasswordTextField";
 import SinaText from "@/components/atoms/SinaText";
+import { Info } from "@mui/icons-material";
 
 export const EditUserForm = ({
   handleSubmit,
@@ -127,29 +131,40 @@ export const EditUserForm = ({
           {!isBankAdmin && banks && (
             <>
               <Grid item sm={4} padding={"10px"}>
-                <FormControl fullWidth variant='filled'>
-                  <InputLabel id='select-label'>
-                    Banco
-                  </InputLabel>
-                  <Select
-                    labelId='select-label'
-                    id='select'
-                    label='Banco'
-                    fullWidth
-                    placeholder='Banco'
-                    value={bank}
-                    onChange={(e) => setBank(e.target.value)}
-                  >
-                    <MenuItem disabled value='none'>
-                      Banco
-                    </MenuItem>
-                    {banks.map((bank: any, index: any) => (
-                      <MenuItem value={bank.id}>
-                        {bank.nombre}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                <Controller
+                  name="banco"
+                  control={control}
+                  rules={validatorOptions.required}
+                  render={({ field: { onChange, onBlur, ref } }) => (
+                    <FormControl required fullWidth variant='filled' error={hasError('banco', errors)}>
+                      <InputLabel id='select-label'>
+                        Banco
+                      </InputLabel>
+                      <Select
+                        required
+                        ref={ref}
+                        labelId='select-label'
+                        id='select'
+                        label='Banco'
+                        fullWidth
+                        placeholder='Banco'
+                        value={bank}
+                        onBlur={onBlur}
+                        onChange={(e) => {
+                          setBank(e.target.value)
+                          onChange(e)
+                        }}
+                      >
+                        {banks.map((bank: any) => (
+                          <MenuItem value={bank.id}>
+                            {bank.nombre}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      <FormHelperText>{getValidationErrorText('banco', errors)}</FormHelperText>
+                    </FormControl>
+                  )}
+                />
               </Grid>
               <Grid item sm={12} padding={"10px"}>
                 <Stack flexDirection={'row'} alignItems={'center'}>
@@ -175,24 +190,40 @@ export const EditUserForm = ({
             </SinaText>
           </Grid>
 
-          <Grid item sm={6} padding={"10px"}>
-            <Controller
-              name="password"
-              control={control}
-              rules={{
-                ...validatorOptions.password,
-                required: false,
-              }}
-              render={({ field: { onChange, onBlur, ref } }) => (
-                <PasswordTextField
-                  onChange={onChange}
-                  onBlur={onBlur}
-                  ref={ref}
-                  error={hasError('password', errors) || hasError('password_confirmation', errors)}
-                  helperText={getValidationErrorText('password', errors)}
-                />
-              )}
-            />
+          <Grid item container sm={6} padding={"10px"} alignItems="center">
+            <Grid item xs>
+              <Controller
+                name="password"
+                control={control}
+                rules={{
+                  ...validatorOptions.password,
+                  required: false,
+                }}
+                render={({ field: { onChange, onBlur, ref } }) => (
+                  <PasswordTextField
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    ref={ref}
+                    error={hasError('password', errors) || hasError('password_confirmation', errors)}
+                    helperText={getValidationErrorText('password', errors)}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item>
+              <Tooltip
+                arrow
+                title={
+                  <SinaText size="xs" color="inherit">
+                    {errorMessages.passwordMustMatchRequirement}
+                  </SinaText>
+                }
+              >
+                <IconButton>
+                  <Info />
+                </IconButton>
+              </Tooltip>
+            </Grid>
           </Grid>
           <Grid item sm={6} padding={"10px"}>
             <Controller
@@ -212,8 +243,8 @@ export const EditUserForm = ({
                   onBlur={onBlur}
                   ref={ref}
                   required={!!watch('password')}
-                  label='Confirmar contraseña'
-                  placeholder='Confirmar contraseña'
+                  label={translate('confirmPassword')}
+                  placeholder={translate('confirmPassword')}
                   error={hasError('password_confirmation', errors)}
                   helperText={getValidationErrorText('password_confirmation', errors)}
                 />

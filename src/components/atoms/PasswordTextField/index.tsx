@@ -1,4 +1,5 @@
 import { passwordPattern } from '@/common/form-validation'
+import { translate } from '@/common/translations'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { IconButton, InputAdornment, TextField, TextFieldProps } from '@mui/material'
 import React, { useState } from 'react'
@@ -9,8 +10,8 @@ const PasswordTextField = (props: TextFieldProps) => {
   return (
     <TextField
       id='password'
-      label='Contraseña'
-      placeholder='Contraseña'
+      label={translate('password')}
+      placeholder={translate('password')}
       {...props}
       variant='filled'
       sx={{ width: "100%" }}
