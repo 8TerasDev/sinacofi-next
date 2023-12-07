@@ -26,7 +26,7 @@ export const PUT = async (req: NextRequest, { params }: DeleteParam) => {
         validateAdminPermission(user);
         const data = await req.json();
         const bankId = params.id;
-        updateInfoBankById(bankId, data)
+        await updateInfoBankById(bankId, data)
         const banks = await getBanks();
         return Response.json(banks)
     } catch (error) {
