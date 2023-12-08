@@ -93,9 +93,9 @@ function ConvertRegisterEvents(bfDataProcessFilelog: BfDataProcessFilelog[]) {
 export const NotificationBar = () => {
     const { openNotificacionBar, handleOpenNotificacionBar } = useContext(NewDeclaracionesContext);
 
-    const getNotifications = async () => {
+    const getNotifications = async (bank_id: string) => {
         try {
-            const { data } = await axios.get(`api/notifications`);
+            const { data } = await axios.get(`api/notifications?bank_id=${bank_id}`);
             return data;
         } catch (err) {
             console.log(err);
@@ -113,6 +113,8 @@ export const NotificationBar = () => {
     const getProfile = async () => {
         try {
             const { data } = await axios.get("/api/auth/getprofile");
+            console.log(data.user);
+            return data.user;
             setData(data.user);
         } catch (error) {
             console.log(error);
@@ -121,13 +123,15 @@ export const NotificationBar = () => {
 
     useEffect(() => {
         setLoading(true);
-        getProfile();
-        getNotifications()
-            .then((response) => {
-                const registerEvents = ConvertRegisterEvents(response.logs);
-                setRegisterEvents(registerEvents);
+        getProfile()
+            .then((user) => {
+                getNotifications(user.bank_code)
+                    .then((response) => {
+                        const registerEvents = ConvertRegisterEvents(response.logs);
+                        setRegisterEvents(registerEvents);
+                    })
+                    .catch()
             })
-            .catch()
             .finally(() => {
                 setLoading(false);
             })

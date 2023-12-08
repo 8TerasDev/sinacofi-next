@@ -42,7 +42,7 @@ const SinaUser = ({ isOpen }: any) => {
             <div>
               <h1 className={styles.profile_details_text}>Hola, {data.name}</h1>
               <p className={styles.profile_details_sub_text}>
-                <Button onClick={handleOpenNotificacionBar}>{data.bank ?? "-"}</Button>
+                <Button sx={{padding:'0'}} onClick={handleOpenNotificacionBar}>{data.bank ?? "-"}</Button>
               </p>
             </div>
           </div>
