@@ -184,6 +184,11 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
     });
   };
 
+  const [openNotificacionBar, openNotificacionBarSetter] = useState(false);
+  const handleOpenNotificacionBar = () => {
+    openNotificacionBarSetter(!openNotificacionBar);
+  };
+
   const valueContext = {
     isLoadingDetail,
     isLoading,
@@ -205,6 +210,8 @@ export const NewDeclaracionesProvider = ({ children }: any) => {
     firstDeclaracion,
     lastDeclaracion,
     hasData,
+    handleOpenNotificacionBar,
+    openNotificacionBar,
   };
   return (
     <NewDeclaracionesContext.Provider value={valueContext}>

@@ -11,7 +11,6 @@ import SinaCardHeader from "../../molecules/SinaCardHeader";
 import { EmptyTable } from "@/components/organisms/EmptyTable";
 import {
   NewDeclaracionesContext,
-  NewDeclaracionesProvider,
 } from "@/contexts/new-declaraciones.context";
 import AdminComponent from "@/app/admin/AdminComponent";
 
@@ -39,19 +38,17 @@ const HomeTemplate = ({ isAdmin, handleBankAdmin, loading }: any) => {
   const [isOpen, isOpenSetter] = useState(true);
 
   return (
-    <NewDeclaracionesProvider>
-      <MainLayout>
-        <SinaAppBar handleAdmin={handleBankAdmin} />
-        <SinaDrawer isOpen={isOpen} isOpenSetter={isOpenSetter}>
-          {!isAdmin && (
-            <DrawerBody isOpen={isOpen} isOpenSetter={isOpenSetter} />
-          )}
-        </SinaDrawer>
-        <SinaMainCard>
-          <HomeLoader isAdmin={isAdmin} loading={loading} />
-        </SinaMainCard>
-      </MainLayout>
-    </NewDeclaracionesProvider>
+    <MainLayout>
+      <SinaAppBar handleAdmin={handleBankAdmin} />
+      <SinaDrawer isOpen={isOpen} isOpenSetter={isOpenSetter}>
+        {!isAdmin && (
+          <DrawerBody isOpen={isOpen} isOpenSetter={isOpenSetter} />
+        )}
+      </SinaDrawer>
+      <SinaMainCard>
+        <HomeLoader isAdmin={isAdmin} loading={loading} />
+      </SinaMainCard>
+    </MainLayout>
   );
 };
 

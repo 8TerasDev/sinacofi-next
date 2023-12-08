@@ -147,3 +147,15 @@ export interface PFinales {
   fechahora_transformacion?: string;
   fechahora_creacion?: Date; // Assuming this should be a Date object in TypeScript
 }
+
+export interface BfDataProcessFilelog {
+  id: number; // o number, si no necesitas manejar enteros grandes
+  file_name?: string;
+  file_path?: string;
+  full_filePath?: string;
+  created_at?: Date;
+  updated_at?: Date;
+  codigo_banco?: string;
+  errors: boolean;
+  message?: string;
+}
